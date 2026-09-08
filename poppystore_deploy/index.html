@@ -249,54 +249,6 @@
             </div>
           </div>
 
-          <!-- ── STATS COUNTER BAR ── -->
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <!-- Card 1: Members -->
-            <div class="bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-xl p-5 shadow-sm flex items-center gap-4 hover:shadow-md transition-shadow">
-              <div class="w-12 h-12 rounded-xl bg-red-50 dark:bg-red-950/40 text-red-500 dark:text-red-400 flex items-center justify-center flex-shrink-0">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                </svg>
-              </div>
-              <div>
-                <p class="text-[13px] text-slate-500 dark:text-slate-400 font-medium">จำนวนสมาชิกทั้งหมด</p>
-                <h3 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-slate-100 tracking-tight">
-                  <span id="statTotalUsers">187</span> <span class="text-base font-semibold text-slate-700 dark:text-slate-300">คน</span>
-                </h3>
-              </div>
-            </div>
-
-            <!-- Card 2: Topup Revenue -->
-            <div class="bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-xl p-5 shadow-sm flex items-center gap-4 hover:shadow-md transition-shadow">
-              <div class="w-12 h-12 rounded-xl bg-red-50 dark:bg-red-950/40 text-red-500 dark:text-red-400 flex items-center justify-center flex-shrink-0">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </div>
-              <div>
-                <p class="text-[13px] text-slate-500 dark:text-slate-400 font-medium">ยอดเติมเงิน</p>
-                <h3 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-slate-100 tracking-tight">
-                  ฿<span id="statTotalSales">10,419.08</span>
-                </h3>
-              </div>
-            </div>
-
-            <!-- Card 3: Sold Items -->
-            <div class="bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-xl p-5 shadow-sm flex items-center gap-4 hover:shadow-md transition-shadow">
-              <div class="w-12 h-12 rounded-xl bg-red-50 dark:bg-red-950/40 text-red-500 dark:text-red-400 flex items-center justify-center flex-shrink-0">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
-                </svg>
-              </div>
-              <div>
-                <p class="text-[13px] text-slate-500 dark:text-slate-400 font-medium">จำนวนสินค้าที่ขายแล้ว</p>
-                <h3 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-slate-100 tracking-tight">
-                  <span id="statTotalSold">167</span> <span class="text-base font-semibold text-slate-700 dark:text-slate-300">ชิ้น</span>
-                </h3>
-              </div>
-            </div>
-          </div>
-
           <!-- Products Section -->
           <div id="productsSection" class="space-y-4">
             <div class="flex items-center justify-between">
@@ -944,22 +896,6 @@
           if (data.settings.announcement) document.getElementById('heroAnnouncement').textContent = data.settings.announcement;
           if (data.settings.promptpay_number) document.getElementById('topupPromptPay').textContent = data.settings.promptpay_number;
           if (data.settings.truemoney_phone) document.getElementById('topupTrueMoney').textContent = data.settings.truemoney_phone;
-        }
-      } catch (e) {}
-    }
-
-    // ── Load Public Store Stats ──
-    async function loadShopStats() {
-      try {
-        const res = await fetch('/api/stats');
-        const data = await res.json();
-        if (data.success && data.stats) {
-          const uEl = document.getElementById('statTotalUsers');
-          const sEl = document.getElementById('statTotalSales');
-          const oEl = document.getElementById('statTotalSold');
-          if (uEl) uEl.textContent = Number(data.stats.totalUsers).toLocaleString();
-          if (sEl) sEl.textContent = Number(data.stats.totalSales).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-          if (oEl) oEl.textContent = Number(data.stats.totalSold).toLocaleString();
         }
       } catch (e) {}
     }
@@ -1669,11 +1605,10 @@
       refreshUserProfile();
       loadProducts();
       loadShopSettings();
-      loadShopStats();
 
-      // Auto refresh balance when switching back to tab
+      // Auto refresh user balance
       window.addEventListener('focus', refreshUserProfile);
-      setInterval(refreshUserProfile, 10000);
+      setInterval(refreshUserProfile, 5000);
 
       // Check URL hash / parameter: if ?view=wheel or #wheel show wheel, if login show login, else shop
       if (window.location.hash === '#wheel' || window.location.search.includes('view=wheel') || window.location.search.includes('wheel')) {
