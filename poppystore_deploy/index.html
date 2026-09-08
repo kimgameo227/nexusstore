@@ -822,6 +822,21 @@
       }
     }
 
+    async function refreshUserProfile() {
+      const token = localStorage.getItem('poppy_token');
+      if (!token) return;
+      try {
+        const res = await fetch('/api/auth/me', {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const data = await res.json();
+        if (data.success && data.user) {
+          localStorage.setItem('poppy_user', JSON.stringify(data.user));
+          updateAuthUI();
+        }
+      } catch (e) {}
+    }
+
     function logoutUser() {
       localStorage.removeItem('poppy_token');
       localStorage.removeItem('poppy_user');
@@ -1587,8 +1602,13 @@
 
       // Initialize State & Products
       updateAuthUI();
+      refreshUserProfile();
       loadProducts();
       loadShopSettings();
+
+      // Auto refresh balance when switching back to tab
+      window.addEventListener('focus', refreshUserProfile);
+      setInterval(refreshUserProfile, 10000);
 
       // Check URL hash / parameter: if ?view=wheel or #wheel show wheel, if login show login, else shop
       if (window.location.hash === '#wheel' || window.location.search.includes('view=wheel') || window.location.search.includes('wheel')) {
