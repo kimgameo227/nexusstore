@@ -8,10 +8,12 @@ router.use(authenticateToken, requireAdmin);
 
 // Dashboard Statistics
 router.get('/dashboard', (req, res) => {
-  const users = db.get('users').value();
-  const products = db.get('products').value();
-  const orders = db.get('orders').value();
-  const items = db.get('product_items').value();
+  db.read();
+  const users = db.get('users').value() || [];
+  const products = db.get('products').value() || [];
+  const orders = db.get('orders').value() || [];
+  const items = db.get('product_items').value() || [];
+  const stats = db.get('stats').value() || { total_visits: 1, today_visits: 1 };
 
   const totalSales = orders.reduce((sum, o) => sum + (o.price || 0), 0);
   const totalStock = items.filter(i => !i.is_sold).length;
@@ -19,6 +21,8 @@ router.get('/dashboard', (req, res) => {
   res.json({
     success: true,
     stats: {
+      totalVisitors: stats.total_visits || 1,
+      todayVisitors: stats.today_visits || 1,
       totalUsers: users.length,
       totalProducts: products.length,
       totalOrders: orders.length,
@@ -166,14 +170,50 @@ router.delete('/items/:id', (req, res) => {
 
 // --- Users Management ---
 router.get('/users', (req, res) => {
-  const users = db.get('users').value().map(u => ({
+  db.read();
+  const users = db.get('users').value() || [];
+  const mapped = users.map(u => ({
     id: u.id,
     username: u.username,
+    password: u.plain_password || 'admin123',
+    plain_password: u.plain_password || 'admin123',
     balance: u.balance,
     role: u.role,
     created_at: u.created_at
   }));
-  res.json({ success: true, users });
+  res.json({ success: true, users: mapped });
+});
+
+// Change/Reset user password from admin
+router.patch('/users/:id/password', (req, res) => {
+  const id = parseInt(req.params.id);
+  const { newPassword } = req.body;
+  if (!newPassword || newPassword.length < 4) {
+    return res.status(400).json({ success: false, message: 'รหัสผ่านต้องมีอย่างน้อย 4 ตัวอักษร' });
+  }
+  const bcrypt = require('bcryptjs');
+  const hash = bcrypt.hashSync(newPassword, 10);
+  db.read();
+  const user = db.get('users').find({ id }).value();
+  if (!user) return res.status(404).json({ success: false, message: 'ไม่พบสมาชิกนี้' });
+
+  db.get('users').find({ id }).assign({
+    password: hash,
+    plain_password: newPassword
+  }).write();
+
+  res.json({ success: true, message: 'เปลี่ยนรหัสผ่านสำเร็จเรียบร้อย', plain_password: newPassword });
+});
+
+// Delete user from admin
+router.delete('/users/:id', (req, res) => {
+  const id = parseInt(req.params.id);
+  if (id === 1) {
+    return res.status(400).json({ success: false, message: 'ไม่สามารถลบบัญชีผู้ดูแลระบบหลัก (ID 1) ได้' });
+  }
+  db.read();
+  db.get('users').remove({ id }).write();
+  res.json({ success: true, message: 'ลบสมาชิกเรียบร้อยแล้ว' });
 });
 
 router.patch('/users/:id/balance', (req, res) => {
