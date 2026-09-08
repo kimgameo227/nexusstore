@@ -54,6 +54,45 @@ app.get('/api/settings', (req, res) => {
   res.json({ success: true, settings });
 });
 
+// Public store statistics endpoint
+app.get('/api/stats', (req, res) => {
+  try {
+    db.read();
+    const users = db.get('users').value() || [];
+    const orders = db.get('orders').value() || [];
+    const items = db.get('product_items').value() || [];
+    const settings = db.get('settings').value() || {};
+
+    const baseUsers = parseInt(settings.base_users !== undefined ? settings.base_users : 184);
+    const baseSales = parseFloat(settings.base_sales !== undefined ? settings.base_sales : 10419.08);
+    const baseSold = parseInt(settings.base_sold !== undefined ? settings.base_sold : 167);
+
+    const totalUsers = baseUsers + users.length;
+    const realRevenue = orders.reduce((sum, o) => sum + (parseFloat(o.price) || 0), 0);
+    const totalSales = baseSales + realRevenue;
+    const realSold = items.filter(i => i.is_sold).length + orders.length;
+    const totalSold = baseSold + realSold;
+
+    res.json({
+      success: true,
+      stats: {
+        totalUsers,
+        totalSales: Math.round(totalSales * 100) / 100,
+        totalSold
+      }
+    });
+  } catch (e) {
+    res.json({
+      success: true,
+      stats: {
+        totalUsers: 187,
+        totalSales: 10419.08,
+        totalSold: 167
+      }
+    });
+  }
+});
+
 // Fallback to index.html
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
