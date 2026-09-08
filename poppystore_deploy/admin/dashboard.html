@@ -67,26 +67,46 @@
     </div>
 
     <!-- Stat Cards -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
       <div class="p-5 rounded-xl bg-slate-900 border border-slate-800">
-        <p class="text-xs text-slate-400 font-medium">ยอดขายรวมทั้งหมด</p>
+        <div class="flex items-center justify-between">
+          <p class="text-xs text-slate-400 font-medium">ผู้เข้าชมเว็บทั้งหมด</p>
+          <span class="text-base">🌐</span>
+        </div>
+        <h3 id="statVisitors" class="text-2xl font-bold text-amber-400 mt-2">0</h3>
+        <p class="text-[11px] text-slate-500 mt-1">วันนี้: <span id="statTodayVisitors" class="text-amber-300 font-bold">0</span> ครั้ง</p>
+      </div>
+      <div class="p-5 rounded-xl bg-slate-900 border border-slate-800">
+        <div class="flex items-center justify-between">
+          <p class="text-xs text-slate-400 font-medium">จำนวนสมาชิกทั้งหมด</p>
+          <span class="text-base">👥</span>
+        </div>
+        <h3 id="statUsers" class="text-2xl font-bold text-violet-400 mt-2">0</h3>
+        <p class="text-[11px] text-slate-500 mt-1">ผู้ใช้ที่ลงทะเบียนในระบบ</p>
+      </div>
+      <div class="p-5 rounded-xl bg-slate-900 border border-slate-800">
+        <div class="flex items-center justify-between">
+          <p class="text-xs text-slate-400 font-medium">ยอดขายรวมทั้งหมด</p>
+          <span class="text-base">💰</span>
+        </div>
         <h3 id="statSales" class="text-2xl font-bold text-pink-400 mt-2">฿0.00</h3>
         <p class="text-[11px] text-slate-500 mt-1">จากออเดอร์ทั้งหมดในระบบ</p>
       </div>
       <div class="p-5 rounded-xl bg-slate-900 border border-slate-800">
-        <p class="text-xs text-slate-400 font-medium">คำสั่งซื้อสำเร็จ</p>
+        <div class="flex items-center justify-between">
+          <p class="text-xs text-slate-400 font-medium">คำสั่งซื้อสำเร็จ</p>
+          <span class="text-base">🛒</span>
+        </div>
         <h3 id="statOrders" class="text-2xl font-bold text-emerald-400 mt-2">0</h3>
         <p class="text-[11px] text-slate-500 mt-1">รายการสินค้าที่ขายออกแล้ว</p>
       </div>
       <div class="p-5 rounded-xl bg-slate-900 border border-slate-800">
-        <p class="text-xs text-slate-400 font-medium">สต็อกพร้อมขาย</p>
+        <div class="flex items-center justify-between">
+          <p class="text-xs text-slate-400 font-medium">สต็อกพร้อมขาย</p>
+          <span class="text-base">📦</span>
+        </div>
         <h3 id="statStock" class="text-2xl font-bold text-cyan-400 mt-2">0</h3>
         <p class="text-[11px] text-slate-500 mt-1">ไอดี/คีย์ที่ยังไม่ถูกซื้อ</p>
-      </div>
-      <div class="p-5 rounded-xl bg-slate-900 border border-slate-800">
-        <p class="text-xs text-slate-400 font-medium">จำนวนสมาชิกทั้งหมด</p>
-        <h3 id="statUsers" class="text-2xl font-bold text-violet-400 mt-2">0</h3>
-        <p class="text-[11px] text-slate-500 mt-1">ผู้ใช้ที่ลงทะเบียนในเว็บ</p>
       </div>
     </div>
 
@@ -137,6 +157,8 @@
         const data = await res.json();
 
         if (data.success) {
+          document.getElementById('statVisitors').textContent = (data.stats.totalVisitors || 0).toLocaleString();
+          document.getElementById('statTodayVisitors').textContent = (data.stats.todayVisitors || 0).toLocaleString();
           document.getElementById('statSales').textContent = `฿${data.stats.totalSales.toLocaleString('th-TH', { minimumFractionDigits: 2 })}`;
           document.getElementById('statOrders').textContent = data.stats.totalOrders.toLocaleString();
           document.getElementById('statStock').textContent = data.stats.totalStock.toLocaleString();
