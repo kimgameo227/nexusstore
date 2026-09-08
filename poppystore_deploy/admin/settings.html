@@ -83,19 +83,19 @@
       <div class="space-y-4 text-xs">
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <div>
-            <label class="block font-semibold text-slate-300 mb-1">สมาชิกเริ่มต้น (คน)</label>
-            <input type="number" id="base_users" class="w-full px-3 py-2 rounded-lg bg-slate-800 border border-slate-700 text-white focus:outline-none focus:border-pink-500" placeholder="184" />
-            <span class="text-[10px] text-slate-500 mt-1 block">+ จำนวนคนสมัครจริง</span>
+            <label class="block font-semibold text-slate-300 mb-1">จำนวนสมาชิกที่โชว์ (คน)</label>
+            <input type="number" id="base_users" class="w-full px-3 py-2 rounded-lg bg-slate-800 border border-slate-700 text-white focus:outline-none focus:border-pink-500" placeholder="187" />
+            <span class="text-[10px] text-slate-500 mt-1 block">ตัวเลขที่จะแสดงบนหน้าหลัก</span>
           </div>
           <div>
-            <label class="block font-semibold text-slate-300 mb-1">ยอดเติมเริ่มต้น (บาท)</label>
+            <label class="block font-semibold text-slate-300 mb-1">ยอดเติมเงินที่โชว์ (บาท)</label>
             <input type="number" step="0.01" id="base_sales" class="w-full px-3 py-2 rounded-lg bg-slate-800 border border-slate-700 text-white focus:outline-none focus:border-pink-500" placeholder="10419.08" />
-            <span class="text-[10px] text-slate-500 mt-1 block">+ ยอดซื้อ/เติมจริง</span>
+            <span class="text-[10px] text-slate-500 mt-1 block">ตัวเลขที่จะแสดงบนหน้าหลัก</span>
           </div>
           <div>
-            <label class="block font-semibold text-slate-300 mb-1">สินค้าขายแล้ว (ชิ้น)</label>
+            <label class="block font-semibold text-slate-300 mb-1">สินค้าที่ขายแล้วที่โชว์ (ชิ้น)</label>
             <input type="number" id="base_sold" class="w-full px-3 py-2 rounded-lg bg-slate-800 border border-slate-700 text-white focus:outline-none focus:border-pink-500" placeholder="167" />
-            <span class="text-[10px] text-slate-500 mt-1 block">+ สินค้าที่ขายจริง</span>
+            <span class="text-[10px] text-slate-500 mt-1 block">ตัวเลขที่จะแสดงบนหน้าหลัก</span>
           </div>
         </div>
 
@@ -130,7 +130,7 @@
         document.getElementById('promptpay_number').value = data.settings.promptpay_number || '';
 
         // Load stats configuration
-        document.getElementById('base_users').value = data.settings.base_users !== undefined ? data.settings.base_users : 184;
+        document.getElementById('base_users').value = data.settings.base_users !== undefined ? data.settings.base_users : 187;
         document.getElementById('base_sales').value = data.settings.base_sales !== undefined ? data.settings.base_sales : 10419.08;
         document.getElementById('base_sold').value = data.settings.base_sold !== undefined ? data.settings.base_sold : 167;
       }
@@ -142,7 +142,10 @@
         site_name: document.getElementById('site_name').value,
         announcement: document.getElementById('announcement').value,
         truemoney_phone: document.getElementById('truemoney_phone').value,
-        promptpay_number: document.getElementById('promptpay_number').value
+        promptpay_number: document.getElementById('promptpay_number').value,
+        base_users: parseInt(document.getElementById('base_users').value) || 0,
+        base_sales: parseFloat(document.getElementById('base_sales').value) || 0,
+        base_sold: parseInt(document.getElementById('base_sold').value) || 0
       };
 
       const res = await fetch('/api/admin/settings', {
@@ -181,8 +184,8 @@
 
     async function resetStats(mode) {
       const confirmMsg = mode === 'zero' 
-        ? 'คุณต้องการรีเซ็ตค่าสถิติเริ่มต้นทั้งหมดให้เป็น 0 ใช่หรือไม่?' 
-        : 'คุณต้องการรีเซ็ตสถิติกลับเป็นค่าเริ่มต้น (187 คน / 10,419 บ. / 167 ชิ้น) ใช่หรือไม่?';
+        ? 'คุณต้องการรีเซ็ตค่าสถิติทั้งหมดบนหน้าหลักให้เป็น 0 ใช่หรือไม่?' 
+        : 'คุณต้องการรีเซ็ตสถิติกลับเป็นค่าเริ่มต้น (187 คน / 10,419.08 บ. / 167 ชิ้น) ใช่หรือไม่?';
       
       if (!confirm(confirmMsg)) return;
 
@@ -191,9 +194,9 @@
         announcement: document.getElementById('announcement').value || '',
         truemoney_phone: document.getElementById('truemoney_phone').value || '',
         promptpay_number: document.getElementById('promptpay_number').value || '',
-        base_users: mode === 'zero' ? 0 : 184,
-        base_sales: mode === 'zero' ? 0 : 9445.08,
-        base_sold: mode === 'zero' ? 0 : 152
+        base_users: mode === 'zero' ? 0 : 187,
+        base_sales: mode === 'zero' ? 0 : 10419.08,
+        base_sold: mode === 'zero' ? 0 : 167
       };
 
       try {
@@ -206,7 +209,7 @@
         document.getElementById('base_users').value = newSettings.base_users;
         document.getElementById('base_sales').value = newSettings.base_sales;
         document.getElementById('base_sold').value = newSettings.base_sold;
-        alert('รีเซ็ตสถิติเรียบร้อยแล้ว!');
+        alert(mode === 'zero' ? 'รีเซ็ตสถิติเป็น 0 เรียบร้อยแล้ว!' : 'รีเซ็ตสถิติเป็น 187 / 10,419 / 167 เรียบร้อยแล้ว!');
       } catch (e) {
         alert('เกิดข้อผิดพลาดในการรีเซ็ตสถิติ');
       }
