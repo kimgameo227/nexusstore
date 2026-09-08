@@ -16,6 +16,11 @@ db.defaults({
   topup_history: [],
   wheel_history: [],
   wheel_prizes: [],
+  stats: {
+    total_visits: 1,
+    today_visits: 1,
+    last_date: new Date().toDateString()
+  },
   settings: {
     site_name: 'Poppy',
     announcement: 'ยินดีต้อนรับสู่ร้านค้า Poppy ศูนย์รวมไอดีและสินค้าดิจิทัลราคาถูก!',

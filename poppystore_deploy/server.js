@@ -17,6 +17,28 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Track website visitors
+app.use((req, res, next) => {
+  if (req.method === 'GET' && (req.path === '/' || req.path === '/index.html' || req.path === '/register.html')) {
+    try {
+      db.read();
+      let stats = db.get('stats').value();
+      if (!stats) {
+        stats = { total_visits: 0, today_visits: 0, last_date: new Date().toDateString() };
+      }
+      const today = new Date().toDateString();
+      if (stats.last_date !== today) {
+        stats.today_visits = 0;
+        stats.last_date = today;
+      }
+      stats.total_visits = (stats.total_visits || 0) + 1;
+      stats.today_visits = (stats.today_visits || 0) + 1;
+      db.set('stats', stats).write();
+    } catch (e) {}
+  }
+  next();
+});
+
 // Serve static frontend files
 app.use(express.static(path.join(__dirname)));
 
