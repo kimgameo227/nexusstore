@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="th" class="font-sans scroll-smooth">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>สมัครสมาชิก — Poppy</title>
+  <meta name="description" content="ไอดีไก่ตันต่างๆราคาถูก🛒" />
+  <link rel="icon" href="logo.jpg" />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: 'var(--site-primary-color)',
+            'primary-hover': 'var(--site-primary-hover-color)',
+          },
+        },
+      },
+    }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;500;600;700&family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --site-font-family: 'Noto Sans Thai', 'Prompt', sans-serif;
+      --site-primary-color: #ec4899;
+      --site-primary-hover-color: #db2777;
+      --site-primary-light-color: rgba(236, 72, 153, 0.08);
+      --site-primary-border-color: rgba(236, 72, 153, 0.2);
+      --site-secondary-color: #db2777;
+      --site-font-color: #831843;
+      --site-radius: 0.5rem;
+      --site-bg-color: #ffffff;
+      --site-bg-color-elevated: #ffffff;
+    }
+    .dark {
+      --site-primary-color: #f472b6;
+      --site-primary-hover-color: #ec4899;
+      --site-primary-light-color: rgba(244, 114, 182, 0.08);
+      --site-primary-border-color: rgba(244, 114, 182, 0.2);
+      --site-secondary-color: #ec4899;
+      --site-font-color: #fdf2f8;
+      --site-bg-color: #0f172a;
+      --site-bg-color-elevated: #1b2234;
+    }
+    *, *::before, *::after { font-family: var(--site-font-family) !important; }
+    body { background-color: var(--site-bg-color); color: var(--site-font-color); transition: background-color 0.3s, color 0.3s; }
+
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+    .animate-page { animation: fadeIn 0.5s ease-out forwards; }
+    .animate-card { animation: fadeInUp 0.6s ease-out 0.15s forwards; opacity: 0; }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--site-primary-border-color); border-radius: 3px; }
+    .mobile-menu { transform: translateX(100%); transition: transform 0.3s ease-out; }
+    .mobile-menu.open { transform: translateX(0); }
+    .mobile-backdrop { opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+    .mobile-backdrop.open { opacity: 1; pointer-events: auto; }
+    input:focus { box-shadow: 0 0 0 3px var(--site-primary-light-color); }
+  </style>
+</head>
+
+<body class="font-sans antialiased">
+  <div class="main-wrapper animate-page">
+    <div class="min-h-screen flex flex-col justify-between transition-colors duration-300">
+
+      <!-- HEADER -->
+      <header id="header" class="fixed top-0 left-0 right-0 z-50 flex items-center transition-all duration-200 ease-out border-b bg-white dark:bg-slate-900 h-[88px] border-slate-100 dark:border-slate-800/60" style="transform: translateZ(0); will-change: height, box-shadow;">
+        <div class="max-w-7xl mx-auto px-6 w-full flex items-center justify-between relative">
+          <a class="flex items-center gap-2 group transition-transform duration-200 hover:scale-[.98] active:scale-[.95] relative z-50" href="#">
+            <img src="logo.jpg" alt="Logo" class="w-10 h-10 rounded-lg object-contain" />
+            <span class="font-extrabold text-xl sm:text-2xl tracking-tight bg-clip-text text-transparent ml-1" style="background-image: linear-gradient(to right, var(--site-font-color) 50%, var(--site-primary-color) 100%);">Poppy</span>
+          </a>
+          <nav class="hidden md:flex items-center gap-1">
+            <a class="text-[15px] font-bold tracking-tight px-3 py-1.5 rounded-md text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white transition-colors duration-200" href="#">หน้าหลัก</a>
+            <a class="text-[15px] font-bold tracking-tight px-3 py-1.5 rounded-md text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white transition-colors duration-200" href="#">สินค้า</a>
+            <a class="text-[15px] font-bold tracking-tight px-3 py-1.5 rounded-md text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white transition-colors duration-200 flex items-center gap-1" href="#">เติมเงิน <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg></a>
+            <a class="text-[15px] font-bold tracking-tight px-3 py-1.5 rounded-md text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white transition-colors duration-200" href="index.html?view=wheel">วงล้อสุ่มไอดี</a>
+            <a class="text-[15px] font-bold tracking-tight px-3 py-1.5 rounded-md text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white transition-colors duration-200" href="#">ประวัติการสั่งซื้อ</a>
+            <span class="text-[15px] font-bold tracking-tight px-3 py-1.5 rounded-md text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white transition-colors duration-200 cursor-pointer select-none">ติดต่อ</span>
+          </nav>
+          <div class="hidden md:flex items-center gap-3">
+            <button id="themeToggle" class="w-9 h-9 flex items-center justify-center rounded-md border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 transition-all duration-200" title="สลับธีม">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="hidden dark:block"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="block dark:hidden"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+            </button>
+            <a class="text-[14px] font-semibold tracking-tight text-slate-700 dark:text-slate-200 px-4 py-2.5 rounded-md border border-slate-200 dark:border-slate-700 hover:border-slate-350 dark:hover:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all duration-200 flex items-center justify-center" href="register.html">สมัครสมาชิก</a>
+            <a class="text-[14px] font-bold text-white px-4 py-2.5 rounded-md shadow-sm hover:scale-[.98] active:scale-[.95] transition-all duration-200 flex items-center justify-center gap-1.5 group" style="background-color: var(--site-primary-color);" href="index.html">เข้าสู่ระบบ <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="transform group-hover:translate-x-0.5 transition-transform duration-200"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+          </div>
+          <button id="mobileMenuBtn" class="md:hidden flex items-center justify-center w-9 h-9 rounded-md bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 hover:border-slate-300 transition-all duration-200 relative z-50" aria-label="Toggle menu">
+            <div class="relative w-4 h-3.5 flex flex-col justify-between">
+              <span class="w-full h-0.5 bg-slate-700 dark:bg-slate-200 rounded"></span>
+              <span class="w-full h-0.5 bg-slate-700 dark:bg-slate-200 rounded"></span>
+              <span class="w-full h-0.5 bg-slate-700 dark:bg-slate-200 rounded"></span>
+            </div>
+          </button>
+        </div>
+      </header>
+
+      <!-- MOBILE MENU -->
+      <div id="mobileBackdrop" class="mobile-backdrop fixed inset-0 bg-black/50 z-40 md:hidden"></div>
+      <div id="mobileMenu" class="mobile-menu fixed top-0 right-0 h-full w-72 bg-white dark:bg-slate-900 border-l border-slate-200 dark:border-slate-800 z-40 md:hidden shadow-2xl pt-24 px-6">
+        <nav class="flex flex-col gap-2">
+          <a class="text-[15px] font-bold px-3 py-3 rounded-md text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors" href="#">หน้าหลัก</a>
+          <a class="text-[15px] font-bold px-3 py-3 rounded-md text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors" href="#">สินค้า</a>
+          <a class="text-[15px] font-bold px-3 py-3 rounded-md text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors" href="#">เติมเงิน</a>
+          <a class="text-[15px] font-bold px-3 py-3 rounded-md text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors" href="index.html?view=wheel">วงล้อสุ่มไอดี</a>
+          <a class="text-[15px] font-bold px-3 py-3 rounded-md text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors" href="#">ประวัติการสั่งซื้อ</a>
+          <span class="text-[15px] font-bold px-3 py-3 rounded-md text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors cursor-pointer">ติดต่อ</span>
+          <hr class="border-slate-200 dark:border-slate-700 my-2" />
+          <a class="text-[14px] font-semibold text-center py-2.5 rounded-md border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all" href="register.html">สมัครสมาชิก</a>
+          <a class="text-[14px] font-bold text-center text-white py-2.5 rounded-md shadow-sm transition-all flex items-center justify-center gap-1.5" style="background-color: var(--site-primary-color);" href="index.html">เข้าสู่ระบบ</a>
+        </nav>
+      </div>
+
+      <!-- MAIN CONTENT — REGISTER FORM -->
+      <main class="w-full flex-1 py-12 px-3 sm:px-6 mt-[74px] md:mt-[88px] flex items-center justify-center relative overflow-hidden z-10">
+        <div class="animate-card relative w-full max-w-md md:max-w-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg shadow-xl p-5 sm:p-8 z-10 text-left">
+
+          <div class="flex justify-center mb-5">
+            <img alt="Logo" width="70" height="70" class="object-contain max-h-16 rounded-xl" src="logo.jpg" />
+          </div>
+          <div class="text-center mb-6">
+            <h2 class="text-xl sm:text-2xl font-bold tracking-tight" style="color: var(--site-font-color);">สมัครสมาชิกใหม่</h2>
+          </div>
+
+          <form id="registerForm" class="space-y-4" onsubmit="handleRegister(event)">
+            <!-- Username -->
+            <div class="space-y-1.5">
+              <label class="block text-[13px] font-medium" style="color: var(--site-font-color);">ชื่อผู้ใช้งาน / Username</label>
+              <input id="regUsername" type="text" placeholder="กรอกชื่อผู้ใช้งาน" required class="w-full px-3 py-2.5 rounded-lg bg-transparent text-sm font-medium placeholder-slate-400 focus:outline-none transition-all" style="border: 1px solid var(--site-primary-border-color); color: var(--site-font-color);" />
+            </div>
+
+            <!-- Password -->
+            <div class="space-y-1.5">
+              <label class="block text-[13px] font-medium" style="color: var(--site-font-color);">รหัสผ่าน / Password</label>
+              <input id="regPassword" type="password" placeholder="กรอกรหัสผ่าน" required class="w-full px-3 py-2.5 rounded-lg bg-transparent text-sm font-medium placeholder-slate-400 focus:outline-none transition-all" style="border: 1px solid var(--site-primary-border-color); color: var(--site-font-color);" />
+            </div>
+
+            <!-- Confirm Password -->
+            <div class="space-y-1.5">
+              <label class="block text-[13px] font-medium" style="color: var(--site-font-color);">ยืนยันรหัสผ่าน / Confirm Password</label>
+              <input id="regConfirmPassword" type="password" placeholder="กรอกรหัสผ่านอีกครั้ง" required class="w-full px-3 py-2.5 rounded-lg bg-transparent text-sm font-medium placeholder-slate-400 focus:outline-none transition-all" style="border: 1px solid var(--site-primary-border-color); color: var(--site-font-color);" />
+            </div>
+
+            <button type="submit" id="regBtn" class="w-full py-2.5 mt-2 rounded-md text-white text-sm font-semibold transition-all duration-200 hover:scale-[.98] active:scale-[.95] cursor-pointer flex items-center justify-center gap-1.5" style="background-color: var(--site-primary-color);">
+              สมัครสมาชิก
+            </button>
+          </form>
+
+          <div class="mt-6 text-center border-t pt-4" style="border-color: var(--site-primary-border-color);">
+            <p class="text-[12px] sm:text-xs font-semibold leading-normal" style="color: color-mix(in srgb, var(--site-font-color) 70%, transparent);">
+              มีบัญชีสมาชิกอยู่แล้วใช่หรือไม่?
+              <a class="font-bold hover:underline" style="color: var(--site-primary-color);" href="index.html">เข้าสู่ระบบที่นี่</a>
+            </p>
+          </div>
+        </div>
+      </main>
+
+      <!-- FOOTER -->
+      <footer class="w-full mt-auto border-t border-slate-200/90 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 transition-colors duration-300 relative z-20 shadow-sm">
+        <div class="mx-auto flex max-w-7xl flex-col items-center gap-1 px-6 py-4 text-center text-[11px] font-semibold sm:text-xs">
+          <div class="flex w-full flex-col items-center justify-between gap-2 sm:flex-row sm:text-left">
+            <span class="text-slate-600 dark:text-slate-400 font-medium">© 2025 Poppy All Rights Reserved.</span>
+            <div class="flex flex-col items-center gap-1 sm:items-end sm:text-right">
+              <span>Designed &amp; Secured by <a href="https://discord.com/invite/qe3cxQ2n6t" target="_blank" rel="noopener noreferrer" class="bg-gradient-to-r from-[#FF4500] via-[#FF6A00] to-[#FFB800] bg-clip-text text-transparent hover:opacity-80 transition-opacity font-bold">Orynx</a></span>
+              <a target="_blank" rel="noopener noreferrer" class="hover:underline transition-colors" style="color: var(--site-font-color);" href="https://discord.com/invite/qe3cxQ2n6t">ติดต่อเจ้าของร้านไม่ได้ / แจ้งปัญหาร้านค้าโกง</a>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </div>
+
+  <script>
+    function toggleTheme() {
+      document.documentElement.classList.toggle('dark');
+      localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+    }
+    (function() { if (localStorage.getItem('theme') === 'dark') document.documentElement.classList.add('dark'); })();
+    document.getElementById('themeToggle').addEventListener('click', toggleTheme);
+
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    const mobileBackdrop = document.getElementById('mobileBackdrop');
+    let menuOpen = false;
+    function toggleMobileMenu() {
+      menuOpen = !menuOpen;
+      mobileMenu.classList.toggle('open', menuOpen);
+      mobileBackdrop.classList.toggle('open', menuOpen);
+      document.body.style.overflow = menuOpen ? 'hidden' : '';
+    }
+    mobileMenuBtn.addEventListener('click', toggleMobileMenu);
+    mobileBackdrop.addEventListener('click', toggleMobileMenu);
+
+    const header = document.getElementById('header');
+    window.addEventListener('scroll', function() {
+      if (window.scrollY > 20) { header.style.height = '64px'; header.style.boxShadow = '0 1px 3px rgba(0,0,0,0.08)'; }
+      else { header.style.height = '88px'; header.style.boxShadow = 'none'; }
+    });
+
+    async function handleRegister(e) {
+      e.preventDefault();
+      const username = document.getElementById('regUsername').value.trim();
+      const password = document.getElementById('regPassword').value;
+      const confirmPassword = document.getElementById('regConfirmPassword').value;
+      const btn = document.getElementById('regBtn');
+
+      if (password !== confirmPassword) {
+        return alert('รหัสผ่านและการยืนยันรหัสผ่านไม่ตรงกัน!');
+      }
+
+      btn.disabled = true;
+      btn.textContent = 'กำลังสมัครสมาชิก...';
+
+      try {
+        const res = await fetch('/api/auth/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, password })
+        });
+        const data = await res.json();
+
+        btn.disabled = false;
+        btn.textContent = 'สมัครสมาชิก';
+
+        if (data.success) {
+          alert('สมัครสมาชิกสำเร็จเรียบร้อย! กำลังพาไปหน้าเข้าสู่ระบบ');
+          window.location.href = 'index.html';
+        } else {
+          alert(data.message || 'เกิดข้อผิดพลาดในการสมัคร');
+        }
+      } catch (err) {
+        btn.disabled = false;
+        btn.textContent = 'สมัครสมาชิก';
+        alert('ไม่สามารถเชื่อมต่อเซิร์ฟเวอร์ได้');
+      }
+    }
+  </script>
+</body>
+</html>

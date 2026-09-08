@@ -1,0 +1,1605 @@
+<!DOCTYPE html>
+<html lang="th" class="font-sans scroll-smooth">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Poppy</title>
+  <meta name="description" content="ไอดีไก่ตันต่างๆราคาถูก🛒" />
+  <meta property="og:title" content="Poppy" />
+  <meta property="og:description" content="ไอดีไก่ตันต่างๆราคาถูก🛒" />
+  <meta property="og:image" content="logo.jpg" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Poppy" />
+  <meta name="twitter:description" content="ไอดีไก่ตันต่างๆราคาถูก🛒" />
+  <meta name="twitter:image" content="logo.jpg" />
+  <link rel="icon" href="logo.jpg" />
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: 'var(--site-primary-color)',
+            'primary-hover': 'var(--site-primary-hover-color)',
+          },
+          borderRadius: {
+            site: 'var(--site-radius)',
+          },
+        },
+      },
+    }
+  </script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;500;600;700&family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --site-font-family: 'Noto Sans Thai', 'Prompt', sans-serif;
+      --site-primary-color: #ec4899;
+      --site-primary-hover-color: #db2777;
+      --site-primary-light-color: rgba(236, 72, 153, 0.08);
+      --site-primary-border-color: rgba(236, 72, 153, 0.2);
+      --site-secondary-color: #db2777;
+      --site-font-color: #831843;
+      --site-radius: 0.5rem;
+      --site-bg-color: #ffffff;
+      --site-bg-color-elevated: #ffffff;
+    }
+
+    .dark {
+      --site-primary-color: #f472b6;
+      --site-primary-hover-color: #ec4899;
+      --site-primary-light-color: rgba(244, 114, 182, 0.08);
+      --site-primary-border-color: rgba(244, 114, 182, 0.2);
+      --site-secondary-color: #ec4899;
+      --site-font-color: #fdf2f8;
+      --site-bg-color: #0f172a;
+      --site-bg-color-elevated: #1b2234;
+    }
+
+    *, *::before, *::after {
+      font-family: var(--site-font-family) !important;
+    }
+
+    body {
+      background-color: var(--site-bg-color);
+      color: var(--site-font-color);
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    /* Animations */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .animate-page   { animation: fadeIn 0.5s ease-out forwards; }
+    .animate-card   { animation: fadeInUp 0.6s ease-out 0.15s forwards; opacity: 0; }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--site-primary-border-color); border-radius: 3px; }
+
+    /* Mobile menu */
+    .mobile-menu {
+      transform: translateX(100%);
+      transition: transform 0.3s ease-out;
+    }
+    .mobile-menu.open {
+      transform: translateX(0);
+    }
+    .mobile-backdrop {
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
+    }
+    .mobile-backdrop.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    /* Input focus glow */
+    input:focus {
+      box-shadow: 0 0 0 3px var(--site-primary-light-color);
+    }
+  </style>
+</head>
+
+<body class="font-sans antialiased">
+  <div class="main-wrapper animate-page">
+    <div class="min-h-screen flex flex-col justify-between transition-colors duration-300">
+
+      <!-- ═══════════ HEADER ═══════════ -->
+      <header id="header" class="fixed top-0 left-0 right-0 z-50 flex items-center transition-all duration-200 ease-out border-b bg-white dark:bg-slate-900 h-[88px] border-slate-100 dark:border-slate-800/60" style="transform: translateZ(0); will-change: height, box-shadow;">
+        <div class="max-w-7xl mx-auto px-6 w-full flex items-center justify-between relative">
+
+          <!-- Logo / Brand -->
+          <a class="flex items-center gap-2 group transition-transform duration-200 hover:scale-[.98] active:scale-[.95] relative z-50" href="#">
+            <img src="logo.jpg" alt="Logo" class="w-10 h-10 rounded-lg object-contain" />
+            <span class="font-extrabold text-xl sm:text-2xl tracking-tight bg-clip-text text-transparent ml-1" style="background-image: linear-gradient(to right, var(--site-font-color) 50%, var(--site-primary-color) 100%);">
+              Poppy
+            </span>
+          </a>
+
+          <!-- Desktop Nav -->
+          <nav class="hidden md:flex items-center gap-1">
+            <a class="text-[15px] font-bold tracking-tight px-3 py-1.5 rounded-md text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white transition-colors duration-200 cursor-pointer" onclick="showShopView()">หน้าหลัก</a>
+            <a class="text-[15px] font-bold tracking-tight px-3 py-1.5 rounded-md text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white transition-colors duration-200 cursor-pointer" onclick="showShopView('#productsSection')">สินค้า</a>
+            <a class="text-[15px] font-bold tracking-tight px-3 py-1.5 rounded-md text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white transition-colors duration-200 flex items-center gap-1 cursor-pointer" onclick="openTopupModal()">
+              เติมเงิน
+              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg>
+            </a>
+            <a class="text-[15px] font-bold tracking-tight px-3 py-1.5 rounded-md text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white transition-colors duration-200 cursor-pointer flex items-center gap-1.5" onclick="showWheelView()">
+              <span class="text-pink-500">🎡</span> วงล้อสุ่มไอดี
+            </a>
+            <a class="text-[15px] font-bold tracking-tight px-3 py-1.5 rounded-md text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white transition-colors duration-200 cursor-pointer" onclick="openHistoryModal()">ประวัติการสั่งซื้อ</a>
+            <span class="text-[15px] font-bold tracking-tight px-3 py-1.5 rounded-md text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white transition-colors duration-200 cursor-pointer select-none" onclick="alert('ติดต่อเจ้าของร้าน: Line @poppyshop หรือ Discord Poppy Community')">ติดต่อ</span>
+          </nav>
+
+          <!-- Desktop Buttons -->
+          <div class="hidden md:flex items-center gap-3">
+            <!-- Dark Mode Toggle -->
+            <button id="themeToggle" class="w-9 h-9 flex items-center justify-center rounded-md border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 transition-all duration-200" title="สลับธีม">
+              <svg id="sunIcon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="hidden dark:block"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+              <svg id="moonIcon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="block dark:hidden"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+            </button>
+
+            <!-- Dynamic Auth Area (Desktop) -->
+            <div id="desktopAuthArea" class="flex items-center gap-2">
+              <a class="text-[14px] font-semibold tracking-tight text-slate-700 dark:text-slate-200 px-4 py-2.5 rounded-md border border-slate-200 dark:border-slate-700 hover:border-slate-350 dark:hover:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all duration-200 flex items-center justify-center" href="register.html">สมัครสมาชิก</a>
+              <button onclick="showLoginView()" class="text-[14px] font-bold text-white px-4 py-2.5 rounded-md shadow-sm hover:scale-[.98] active:scale-[.95] transition-all duration-200 flex items-center justify-center gap-1.5 group cursor-pointer" style="background-color: var(--site-primary-color);">
+                เข้าสู่ระบบ
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="transform group-hover:translate-x-0.5 transition-transform duration-200"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Mobile Hamburger -->
+          <button id="mobileMenuBtn" class="md:hidden flex items-center justify-center w-9 h-9 rounded-md bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 hover:border-slate-300 transition-all duration-200 relative z-50" aria-label="Toggle menu">
+            <div class="relative w-4 h-3.5 flex flex-col justify-between">
+              <span class="w-full h-0.5 bg-slate-700 dark:bg-slate-200 rounded transition-all duration-300" id="bar1"></span>
+              <span class="w-full h-0.5 bg-slate-700 dark:bg-slate-200 rounded transition-all duration-300" id="bar2"></span>
+              <span class="w-full h-0.5 bg-slate-700 dark:bg-slate-200 rounded transition-all duration-300" id="bar3"></span>
+            </div>
+          </button>
+        </div>
+      </header>
+
+      <!-- ═══════════ MOBILE MENU ═══════════ -->
+      <div id="mobileBackdrop" class="mobile-backdrop fixed inset-0 bg-black/50 z-40 md:hidden"></div>
+      <div id="mobileMenu" class="mobile-menu fixed top-0 right-0 h-full w-72 bg-white dark:bg-slate-900 border-l border-slate-200 dark:border-slate-800 z-40 md:hidden shadow-2xl pt-24 px-6 flex flex-col justify-between pb-8">
+        <nav class="flex flex-col gap-2">
+          <a class="text-[15px] font-bold px-3 py-3 rounded-md text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors cursor-pointer" onclick="showShopView(); toggleMobileMenu();">หน้าหลัก</a>
+          <a class="text-[15px] font-bold px-3 py-3 rounded-md text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors cursor-pointer" onclick="showShopView('#productsSection'); toggleMobileMenu();">สินค้า</a>
+          <a class="text-[15px] font-bold px-3 py-3 rounded-md text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors cursor-pointer" onclick="openTopupModal(); toggleMobileMenu();">เติมเงิน</a>
+          <a class="text-[15px] font-bold px-3 py-3 rounded-md text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors cursor-pointer flex items-center gap-2" onclick="showWheelView(); toggleMobileMenu();">
+            <span class="text-pink-500">🎡</span>
+            <span>วงล้อสุ่มไอดี</span>
+          </a>
+          <a class="text-[15px] font-bold px-3 py-3 rounded-md text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors cursor-pointer" onclick="openHistoryModal(); toggleMobileMenu();">ประวัติการสั่งซื้อ</a>
+          <hr class="border-slate-200 dark:border-slate-700 my-2" />
+          <!-- Dark Mode Toggle Mobile -->
+          <button id="themeToggleMobile" class="text-[15px] font-bold px-3 py-3 rounded-md text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors text-left flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="block dark:hidden"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="hidden dark:block"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+            <span class="dark:hidden">โหมดมืด</span>
+            <span class="hidden dark:inline">โหมดสว่าง</span>
+          </button>
+          <div id="mobileAuthArea" class="flex flex-col gap-2 pt-2">
+            <a class="text-[14px] font-semibold text-center py-2.5 rounded-md border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all" href="register.html">สมัครสมาชิก</a>
+            <button onclick="showLoginView(); toggleMobileMenu();" class="text-[14px] font-bold text-center text-white py-2.5 rounded-md shadow-sm transition-all flex items-center justify-center gap-1.5 cursor-pointer" style="background-color: var(--site-primary-color);">
+              เข้าสู่ระบบ
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            </button>
+          </div>
+        </nav>
+      </div>
+
+      <!-- ═══════════ MAIN VIEW CONTAINER ═══════════ -->
+      <main class="w-full flex-1 mt-[74px] md:mt-[88px] relative z-10 flex flex-col">
+
+        <!-- ── VIEW 1: SHOP STOREFRONT (DEFAULT WHEN LOGGED IN OR USER BROWSES) ── -->
+        <div id="shopView" class="w-full max-w-7xl mx-auto px-4 sm:px-6 py-8 flex flex-col gap-8">
+          <!-- Announcement Hero Banner -->
+          <div class="relative overflow-hidden rounded-2xl bg-gradient-to-r from-pink-500 via-pink-600 to-rose-500 text-white p-6 sm:p-10 shadow-lg">
+            <div class="relative z-10 max-w-2xl">
+              <span class="inline-block px-3 py-1 bg-white/20 backdrop-blur-sm rounded-full text-xs font-bold uppercase tracking-wider mb-3">📢 ข่าวสาร &amp; อัปเดต</span>
+              <h1 class="text-2xl sm:text-4xl font-extrabold tracking-tight mb-2" id="heroTitle">ร้านค้า Poppy</h1>
+              <p class="text-sm sm:text-base opacity-90 leading-relaxed" id="heroAnnouncement">ยินดีต้อนรับสู่ร้านค้า Poppy ศูนย์รวมไอดีและสินค้าดิจิทัลราคาถูก!</p>
+              <div class="mt-6 flex flex-wrap gap-3">
+                <a href="#productsSection" class="px-5 py-2.5 bg-white text-pink-600 rounded-xl font-bold text-sm shadow hover:bg-pink-50 transition-transform active:scale-95">ดูสินค้าทั้งหมด</a>
+                <button onclick="openTopupModal()" class="px-5 py-2.5 bg-black/20 hover:bg-black/30 backdrop-blur-sm border border-white/30 text-white rounded-xl font-bold text-sm transition-transform active:scale-95">เติมเงินเข้าสู่ระบบ</button>
+              </div>
+            </div>
+            <div class="absolute -right-6 -bottom-8 opacity-20 pointer-events-none hidden sm:block">
+              <img src="logo.jpg" alt="Poppy Bg" class="w-72 h-72 rounded-full object-cover" />
+            </div>
+          </div>
+
+          <!-- User Quick Stats Bar (Visible when logged in) -->
+          <div id="userGreetingBar" class="hidden bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-4 sm:p-5 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="flex items-center gap-3 w-full sm:w-auto">
+              <div class="w-12 h-12 rounded-full bg-pink-100 dark:bg-pink-900/40 text-pink-600 dark:text-pink-400 flex items-center justify-center font-black text-lg">
+                <span id="userAvatarChar">U</span>
+              </div>
+              <div>
+                <p class="text-xs text-slate-500 dark:text-slate-400 font-medium">ยินดีต้อนรับเข้าสู่ระบบ</p>
+                <h3 class="text-base sm:text-lg font-bold" id="greetingUsername">ผู้ใช้งาน</h3>
+              </div>
+            </div>
+            <div class="flex items-center gap-3 w-full sm:w-auto justify-end">
+              <div class="text-right">
+                <p class="text-xs text-slate-500 dark:text-slate-400 font-medium">ยอดเงินคงเหลือ</p>
+                <p class="text-lg sm:text-xl font-extrabold text-pink-600 dark:text-pink-400">฿<span id="greetingBalance">0.00</span></p>
+              </div>
+              <button onclick="openTopupModal()" class="px-4 py-2 bg-pink-600 hover:bg-pink-700 text-white font-bold rounded-lg text-xs shadow-sm transition-all flex items-center gap-1 cursor-pointer">
+                + เติมเงิน
+              </button>
+            </div>
+          </div>
+
+          <!-- Products Section -->
+          <div id="productsSection" class="space-y-4">
+            <div class="flex items-center justify-between">
+              <div>
+                <h2 class="text-xl sm:text-2xl font-bold tracking-tight text-slate-800 dark:text-white">รายการสินค้าพร้อมจำหน่าย</h2>
+                <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400">ระบบส่งมอบสินค้าและไอดีอัตโนมัติ 24 ชม.</p>
+              </div>
+            </div>
+
+            <!-- Products Grid Container -->
+            <div id="productsGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+              <div class="col-span-full text-center py-12 text-slate-400 text-sm">กำลังโหลดสินค้า...</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── VIEW 2: LOGIN FORM VIEW ── -->
+        <div id="loginView" class="hidden w-full flex-1 py-12 px-3 sm:px-6 flex items-center justify-center">
+          <div class="animate-card relative w-full max-w-md md:max-w-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg shadow-xl p-5 sm:p-8 z-10 text-left">
+            <!-- Close / Back to shop button -->
+            <button onclick="showShopView()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 text-sm font-semibold flex items-center gap-1 cursor-pointer">
+              <span>✕ ปิด</span>
+            </button>
+
+            <!-- Logo -->
+            <div class="flex justify-center mb-5">
+              <img alt="Logo" width="70" height="70" class="object-contain max-h-16 rounded-xl" src="logo.jpg" />
+            </div>
+
+            <!-- Title -->
+            <div class="text-center mb-6">
+              <h2 class="text-xl sm:text-2xl font-bold tracking-tight" style="color: var(--site-font-color);">เข้าสู่ระบบสมาชิก</h2>
+              <p class="text-xs text-slate-500 mt-1">ยินดีต้อนรับสู่ร้าน Poppy กรุณากรอกข้อมูลเพื่อเข้าใช้งาน</p>
+            </div>
+
+            <!-- Form -->
+            <form id="loginForm" class="space-y-4" onsubmit="handleLogin(event)">
+              <!-- Username -->
+              <div class="space-y-1.5">
+                <label class="block text-[13px] font-medium" style="color: var(--site-font-color);">ชื่อผู้ใช้งาน / Username</label>
+                <input
+                  id="usernameInput"
+                  type="text"
+                  placeholder="กรอกชื่อผู้ใช้งาน"
+                  required
+                  class="w-full px-3 py-2.5 rounded-lg bg-transparent text-sm font-medium placeholder-slate-400 focus:outline-none transition-all"
+                  style="border: 1px solid var(--site-primary-border-color); color: var(--site-font-color);"
+                />
+              </div>
+
+              <!-- Password -->
+              <div class="space-y-1.5">
+                <label class="block text-[13px] font-medium" style="color: var(--site-font-color);">รหัสผ่าน / Password</label>
+                <div class="relative">
+                  <input
+                    id="passwordInput"
+                    type="password"
+                    placeholder="กรอกรหัสผ่าน"
+                    required
+                    class="w-full px-3 py-2.5 rounded-lg bg-transparent text-sm font-medium placeholder-slate-400 focus:outline-none transition-all pr-10"
+                    style="border: 1px solid var(--site-primary-border-color); color: var(--site-font-color);"
+                  />
+                  <button type="button" id="togglePassword" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors">
+                    <svg id="eyeOff" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                    <svg id="eyeOn" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="hidden"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Inline Alert Message Box -->
+              <div id="loginAlert" class="hidden p-3 rounded-lg text-xs font-semibold flex items-center gap-2"></div>
+
+              <!-- Submit Button -->
+              <button type="submit" id="submitBtn" class="w-full py-2.5 mt-2 rounded-md text-white text-sm font-semibold transition-all duration-200 hover:scale-[.98] active:scale-[.95] disabled:opacity-50 disabled:hover:scale-100 cursor-pointer flex items-center justify-center gap-1.5 shadow-md" style="background-color: var(--site-primary-color);">
+                <span id="btnText">เข้าสู่ระบบสมาชิก</span>
+                <svg id="btnSpinner" class="hidden animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+              </button>
+            </form>
+
+            <!-- Register Link -->
+            <div class="mt-6 text-center border-t pt-4" style="border-color: var(--site-primary-border-color);">
+              <p class="text-[12px] sm:text-xs font-semibold leading-normal" style="color: color-mix(in srgb, var(--site-font-color) 70%, transparent);">
+                ยังไม่มีบัญชีสมาชิกใช่หรือไม่?
+                <a class="font-bold hover:underline" style="color: var(--site-primary-color);" href="register.html">สมัครสมาชิกใหม่ได้ที่นี่</a>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── VIEW 3: LUCKY WHEEL VIEW (วงล้อสุ่มไอดี) ── -->
+        <div id="wheelView" class="hidden w-full max-w-7xl mx-auto px-4 sm:px-6 py-8 flex flex-col gap-8 animate-page">
+          <!-- Back button & Header -->
+          <div class="flex items-center justify-between">
+            <button onclick="showShopView()" class="text-sm font-bold text-pink-600 dark:text-pink-400 hover:text-pink-700 flex items-center gap-1.5 cursor-pointer group">
+              <svg class="w-4 h-4 transform group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+              <span>กลับสู่หน้าร้านค้า</span>
+            </button>
+            <span class="text-xs text-slate-400">ระบบสุ่มไอดีอัตโนมัติ 24 ชม.</span>
+          </div>
+
+          <!-- Hero Banner -->
+          <div class="relative overflow-hidden rounded-2xl bg-gradient-to-r from-pink-500 via-rose-500 to-fuchsia-600 text-white p-6 sm:p-8 shadow-xl flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="relative z-10">
+              <div class="inline-flex items-center gap-2 px-3 py-1 bg-white/20 backdrop-blur-sm rounded-full text-xs font-bold uppercase tracking-wider mb-2">
+                <span class="animate-pulse">🔥</span> POPPY LUCKY WHEEL
+              </div>
+              <h1 class="text-2xl sm:text-4xl font-extrabold tracking-tight">🎡 วงล้อสุ่มไอดีสุดคุ้ม</h1>
+              <p class="text-xs sm:text-sm opacity-95 mt-1.5 max-w-xl leading-relaxed">
+                ลุ้นรับไอดีไก่ตัน Blox Fruits ผลโมจิตื่น, ไอดี Valorant สกินปืน, Netflix UltraHD, ไอดี Steam แท้ หรือเครดิตคืนสูงสุด 50 ฿ ในราคาเพียง <span class="bg-white/25 px-2 py-0.5 rounded-lg font-black text-yellow-300">฿<span id="wheelPriceHero">25</span></span> / ครั้ง!
+              </p>
+            </div>
+
+            <!-- Balance Quick Widget -->
+            <div class="relative z-10 flex items-center gap-4 bg-black/25 backdrop-blur-md px-5 py-3.5 rounded-2xl border border-white/20 shadow-inner w-full md:w-auto justify-between md:justify-start">
+              <div>
+                <span class="text-[11px] opacity-80 block">ยอดเงินของคุณ</span>
+                <span class="text-xl font-black text-white tracking-tight">฿<span id="wheelBalanceText">0.00</span></span>
+              </div>
+              <button onclick="openTopupModal()" class="px-4 py-2 bg-white text-pink-600 hover:bg-pink-50 rounded-xl font-bold text-xs shadow-md transition-all active:scale-95 cursor-pointer shrink-0">
+                + เติมเงิน
+              </button>
+            </div>
+            
+            <div class="absolute -right-10 -bottom-10 opacity-15 pointer-events-none">
+              <div class="text-[180px] leading-none">🎡</div>
+            </div>
+          </div>
+
+          <!-- Main Wheel & Info Layout -->
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            
+            <!-- LEFT: WHEEL CONTAINER (7 cols on lg) -->
+            <div class="lg:col-span-7 flex flex-col items-center bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 sm:p-8 shadow-sm">
+              <div class="text-center mb-4">
+                <h2 class="text-xl font-black text-slate-800 dark:text-white flex items-center justify-center gap-2">
+                  <span>🎯</span> หมุนเพื่อลุ้นรับรางวัล
+                </h2>
+                <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">กดปุ่มหมุนด้านล่าง ระบบจะสุ่มและส่งมอบรางวัลทันที</p>
+              </div>
+
+              <!-- WHEEL WRAPPER -->
+              <div class="relative flex items-center justify-center my-4 select-none">
+                <!-- TOP POINTER NEEDLE -->
+                <div class="absolute -top-3 z-30 flex flex-col items-center filter drop-shadow-md pointer-events-none">
+                  <div class="w-8 h-8 flex items-center justify-center">
+                    <svg width="34" height="34" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M17 32L7 10C6 8 8 5 11 5H23C26 5 28 8 27 10L17 32Z" fill="#f43f5e" stroke="#ffffff" stroke-width="2.5" stroke-linejoin="round"/>
+                      <circle cx="17" cy="11" r="3.5" fill="#ffffff" />
+                    </svg>
+                  </div>
+                </div>
+
+                <!-- CANVAS WHEEL -->
+                <div class="relative rounded-full p-2.5 bg-gradient-to-tr from-pink-500 via-rose-400 to-fuchsia-500 shadow-2xl">
+                  <canvas id="wheelCanvas" width="420" height="420" class="rounded-full cursor-pointer max-w-[300px] max-h-[300px] sm:max-w-[390px] sm:max-h-[390px]"></canvas>
+                  
+                  <!-- CENTER HUB / SPIN BUTTON -->
+                  <button id="centerSpinBtn" onclick="spinWheel()" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-white dark:bg-slate-900 border-4 border-pink-500 shadow-xl flex flex-col items-center justify-center text-pink-600 dark:text-pink-400 hover:scale-105 active:scale-95 transition-transform z-20 cursor-pointer">
+                    <span class="text-xs sm:text-sm font-black uppercase">SPIN</span>
+                    <span class="text-[9px] sm:text-[10px] font-bold text-slate-500 dark:text-slate-400">฿<span id="centerPrice">25</span></span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- ACTION BUTTONS -->
+              <div class="w-full max-w-sm mt-4 flex flex-col gap-3">
+                <button id="mainSpinBtn" onclick="spinWheel()" class="w-full py-3.5 bg-gradient-to-r from-pink-500 via-pink-600 to-rose-600 hover:from-pink-600 hover:to-rose-700 text-white font-black text-base rounded-xl shadow-lg shadow-pink-500/30 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50">
+                  <span id="mainSpinBtnText">🎡 เริ่มหมุนวงล้อ (฿<span id="btnPriceText">25</span>)</span>
+                  <svg id="spinSpinner" class="hidden animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                </button>
+
+                <div class="flex items-center justify-between text-xs px-1 text-slate-500 dark:text-slate-400">
+                  <label class="flex items-center gap-1.5 cursor-pointer select-none">
+                    <input type="checkbox" id="wheelSoundToggle" checked class="rounded accent-pink-600 text-pink-600" />
+                    <span>🔊 เปิดเสียงเอฟเฟกต์</span>
+                  </label>
+                  <button onclick="openHistoryModal()" class="hover:text-pink-600 underline cursor-pointer">
+                    ดูของรางวัลที่เคยได้
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- RIGHT: PRIZES LIST & LIVE FEED (5 cols on lg) -->
+            <div class="lg:col-span-5 space-y-6">
+              
+              <!-- PRIZE POOL CARD -->
+              <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 shadow-sm">
+                <div class="flex items-center justify-between mb-3 pb-3 border-b border-slate-100 dark:border-slate-800">
+                  <h3 class="font-bold text-sm text-slate-800 dark:text-white flex items-center gap-2">
+                    <span>🎁</span> ของรางวัลในวงล้อ
+                  </h3>
+                  <span class="text-[11px] text-pink-600 dark:text-pink-400 font-bold bg-pink-50 dark:bg-pink-950/40 px-2 py-0.5 rounded-md">8 รางวัล</span>
+                </div>
+
+                <!-- PRIZES LIST -->
+                <div id="prizesListContainer" class="space-y-2 max-h-[290px] overflow-y-auto pr-1 text-xs">
+                  <div class="text-center py-6 text-slate-400">กำลังโหลดรายการของรางวัล...</div>
+                </div>
+              </div>
+
+              <!-- LIVE RECENT WINNERS CARD -->
+              <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 shadow-sm">
+                <div class="flex items-center justify-between mb-3 pb-3 border-b border-slate-100 dark:border-slate-800">
+                  <h3 class="font-bold text-sm text-slate-800 dark:text-white flex items-center gap-2">
+                    <span class="animate-pulse">⚡</span> ผู้โชคดีล่าสุด
+                  </h3>
+                  <span class="flex h-2 w-2 relative">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                  </span>
+                </div>
+
+                <!-- WINNERS TICKER CONTAINER -->
+                <div id="recentWinnersList" class="space-y-2 max-h-[210px] overflow-y-auto pr-1 text-xs">
+                  <div class="text-center py-4 text-slate-400">ยังไม่มีประวัติการหมุนล่าสุด</div>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+
+      </main>
+
+      <!-- ═══════════ MODAL: BUY CONFIRMATION ═══════════ -->
+      <div id="buyConfirmModal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden items-center justify-center p-4 transition-all">
+        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl w-full max-w-md p-6 shadow-2xl relative text-left transform transition-all scale-100 animate-card">
+          <button onclick="closeBuyConfirmModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 text-lg cursor-pointer">✕</button>
+          
+          <div class="flex items-center gap-3 mb-4">
+            <div class="w-12 h-12 rounded-2xl bg-pink-100 dark:bg-pink-900/40 text-pink-600 dark:text-pink-400 flex items-center justify-center text-2xl shrink-0">
+              🛒
+            </div>
+            <div>
+              <h3 class="text-lg font-bold text-slate-800 dark:text-white">ยืนยันการสั่งซื้อสินค้า</h3>
+              <p class="text-xs text-slate-500 dark:text-slate-400">ระบบจะตัดเงินและส่งมอบสินค้าให้ทันที</p>
+            </div>
+          </div>
+
+          <div class="p-4 bg-slate-50 dark:bg-slate-800/60 rounded-xl border border-slate-100 dark:border-slate-800 space-y-3 mb-4">
+            <div>
+              <span class="text-[11px] text-slate-400 font-semibold block">สินค้าที่เลือก</span>
+              <span id="confirmProductName" class="text-sm font-bold text-slate-800 dark:text-slate-100 block mt-0.5">-</span>
+            </div>
+            <div class="flex items-center justify-between pt-2 border-t border-slate-200/60 dark:border-slate-700/60">
+              <span class="text-xs text-slate-500">ราคาสินค้า</span>
+              <span class="text-base font-extrabold text-pink-600 dark:text-pink-400">฿<span id="confirmProductPrice">0.00</span></span>
+            </div>
+            <div class="flex items-center justify-between pt-1 text-xs">
+              <span class="text-slate-500">ยอดเงินคงเหลือของคุณ</span>
+              <span class="font-bold text-slate-700 dark:text-slate-300">฿<span id="confirmUserBalance">0.00</span></span>
+            </div>
+            <div class="flex items-center justify-between pt-1 text-xs">
+              <span class="text-slate-500">ยอดเงินคงเหลือหลังซื้อ</span>
+              <span id="confirmBalanceAfter" class="font-extrabold text-emerald-600 dark:text-emerald-400">฿0.00</span>
+            </div>
+          </div>
+
+          <div id="confirmWarning" class="hidden p-3 bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/40 rounded-xl text-xs text-red-600 dark:text-red-400 font-semibold mb-4 flex items-center gap-2">
+            <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            <span>ยอดเงินไม่พอสำหรับการสั่งซื้อนี้</span>
+          </div>
+
+          <div class="flex gap-2">
+            <button onclick="closeBuyConfirmModal()" class="flex-1 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 text-xs font-bold transition-all cursor-pointer">
+              ยกเลิก
+            </button>
+            <button id="btnExecuteBuy" onclick="executeBuy()" class="flex-1 py-2.5 rounded-xl bg-pink-600 hover:bg-pink-700 text-white text-xs font-bold shadow-md shadow-pink-500/20 transition-all flex items-center justify-center gap-1.5 cursor-pointer">
+              <span id="btnExecuteBuyText">ยืนยันชำระเงิน</span>
+              <svg id="btnExecuteBuySpinner" class="hidden animate-spin h-3.5 w-3.5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════════ MODAL: BUY SUCCESS ═══════════ -->
+      <div id="buySuccessModal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden items-center justify-center p-4 transition-all">
+        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl w-full max-w-md p-6 shadow-2xl relative text-left animate-card">
+          <div class="text-center mb-4">
+            <div class="w-14 h-14 bg-emerald-100 dark:bg-emerald-950/40 text-emerald-500 rounded-full flex items-center justify-center mx-auto mb-2 text-2xl shadow-inner">
+              ✓
+            </div>
+            <h3 class="text-xl font-black text-slate-800 dark:text-white">สั่งซื้อสำเร็จแล้ว!</h3>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">ระบบได้จัดส่งข้อมูลสินค้าเรียบร้อยแล้ว</p>
+          </div>
+
+          <div class="space-y-3 mb-5">
+            <div>
+              <span class="text-[11px] text-slate-400 font-semibold block">ข้อมูลไอดี / รหัสที่ได้รับ</span>
+              <div class="relative mt-1">
+                <textarea id="successItemContent" readonly class="w-full p-3 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-mono font-medium text-slate-800 dark:text-slate-200 select-all resize-none h-24 focus:outline-none"></textarea>
+                <button onclick="copyBoughtItem()" id="btnCopyItem" class="absolute right-2 top-2 px-2.5 py-1 bg-pink-600 hover:bg-pink-700 text-white rounded-lg text-[11px] font-bold shadow transition-all cursor-pointer">
+                  คัดลอก
+                </button>
+              </div>
+            </div>
+            <div class="p-3 bg-pink-50 dark:bg-pink-900/20 rounded-xl text-[11px] text-pink-700 dark:text-pink-300 font-medium">
+              📌 สามารถกลับมาดูข้อมูลนี้ได้ตลอดเวลาที่เมนู <b>"ประวัติการสั่งซื้อ"</b>
+            </div>
+          </div>
+
+          <div class="flex gap-2">
+            <button onclick="closeBuySuccessModal()" class="flex-1 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 text-xs font-bold transition-all cursor-pointer">
+              ปิดหน้าต่าง
+            </button>
+            <button onclick="closeBuySuccessModal(); openHistoryModal();" class="flex-1 py-2.5 rounded-xl bg-slate-800 dark:bg-slate-700 hover:bg-slate-900 text-white text-xs font-bold transition-all cursor-pointer">
+              ดูประวัติการซื้อ
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════════ MODAL: WHEEL RESULT ═══════════ -->
+      <div id="wheelResultModal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm hidden items-center justify-center p-4 transition-all">
+        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl w-full max-w-md p-6 sm:p-7 shadow-2xl relative text-center animate-card">
+          <button onclick="closeWheelResultModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 text-xl cursor-pointer">✕</button>
+
+          <!-- Icon / Badge -->
+          <div id="wheelResultIconWrapper" class="w-20 h-20 mx-auto rounded-3xl bg-pink-100 dark:bg-pink-900/40 text-pink-600 dark:text-pink-400 flex items-center justify-center text-4xl mb-4 shadow-lg">
+            <span id="wheelResultIcon">🎁</span>
+          </div>
+
+          <!-- Header Titles -->
+          <h3 id="wheelResultTitle" class="text-xl sm:text-2xl font-black text-slate-800 dark:text-white tracking-tight">ยินดีด้วย! คุณได้รับรางวัล</h3>
+          <p id="wheelResultSubtitle" class="text-xs text-slate-500 dark:text-slate-400 mt-1">รายละเอียดของรางวัลที่คุณหมุนได้</p>
+
+          <!-- Prize Highlight Box -->
+          <div class="my-4 p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200/80 dark:border-slate-700/80">
+            <span class="text-[11px] font-semibold text-slate-400 block uppercase tracking-wider">ของรางวัลที่ได้รับ</span>
+            <h4 id="wheelResultPrizeName" class="text-base sm:text-lg font-black text-pink-600 dark:text-pink-400 mt-0.5">-</h4>
+            
+            <!-- Credentials / Code Display (If won an item) -->
+            <div id="wheelResultContentArea" class="hidden mt-3 text-left">
+              <span class="text-[11px] text-slate-400 font-semibold block mb-1">ข้อมูลไอดี / รหัสที่ได้รับ:</span>
+              <div class="relative">
+                <textarea id="wheelResultItemText" readonly class="w-full p-2.5 rounded-xl bg-white dark:bg-slate-900 border border-pink-200 dark:border-pink-900/50 text-xs font-mono font-bold text-slate-800 dark:text-slate-200 select-all resize-none h-20 focus:outline-none"></textarea>
+                <button onclick="copyWheelResultContent()" id="btnCopyWheelResult" class="absolute right-2 top-2 px-2.5 py-1 bg-pink-600 hover:bg-pink-700 text-white rounded-lg text-[11px] font-bold shadow transition-all cursor-pointer">
+                  คัดลอก
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Current Balance status -->
+          <div class="text-xs text-slate-500 dark:text-slate-400 mb-5">
+            ยอดเงินคงเหลือของคุณ: <span class="font-extrabold text-pink-600 dark:text-pink-400">฿<span id="wheelResultNewBalance">0.00</span></span>
+          </div>
+
+          <!-- Actions -->
+          <div class="flex gap-2">
+            <button onclick="closeWheelResultModal()" class="flex-1 py-3 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 text-xs font-bold transition-all cursor-pointer">
+              ปิด
+            </button>
+            <button onclick="closeWheelResultModal(); spinWheel();" class="flex-1 py-3 rounded-xl bg-gradient-to-r from-pink-500 to-rose-600 hover:from-pink-600 hover:to-rose-700 text-white text-xs font-black shadow-md shadow-pink-500/25 transition-all flex items-center justify-center gap-1 cursor-pointer">
+              🎡 หมุนอีกครั้ง
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════════ MODAL: TOPUP ═══════════ -->
+      <div id="topupModal" class="fixed inset-0 z-50 bg-black/60 hidden items-center justify-center p-4">
+        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl w-full max-w-md p-6 shadow-2xl relative text-left">
+          <button onclick="closeTopupModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 text-lg cursor-pointer">✕</button>
+          <h3 class="text-xl font-bold mb-4 flex items-center gap-2">
+            <span class="text-pink-500">💳</span> เติมเงินเข้าสู่ระบบ
+          </h3>
+          <div class="space-y-4 text-sm">
+            <div class="p-4 bg-pink-50 dark:bg-pink-900/20 border border-pink-200 dark:border-pink-800/40 rounded-xl space-y-2">
+              <p class="font-bold text-pink-600 dark:text-pink-400">ช่องทางการโอนเงิน</p>
+              <div class="flex justify-between items-center py-1 border-b border-pink-100 dark:border-pink-900/30">
+                <span class="text-slate-600 dark:text-slate-300">พร้อมเพย์ (PromptPay):</span>
+                <span class="font-mono font-bold" id="topupPromptPay">081-234-5678</span>
+              </div>
+              <div class="flex justify-between items-center py-1">
+                <span class="text-slate-600 dark:text-slate-300">ทรูมันนี่วอลเล็ท:</span>
+                <span class="font-mono font-bold" id="topupTrueMoney">081-234-5678</span>
+              </div>
+            </div>
+            <div class="p-3 bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-amber-300 rounded-xl text-xs leading-relaxed">
+              💡 หลังโอนเงินเสร็จสิ้น แจ้งสลิปผ่านทางแอดมิน หรือเข้าสู่ระบบเพื่อรับเครดิตอัตโนมัติ
+            </div>
+            <button onclick="closeTopupModal()" class="w-full py-2.5 bg-pink-600 hover:bg-pink-700 text-white font-bold rounded-xl text-sm transition-all cursor-pointer">
+              เข้าใจแล้ว
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════════ MODAL: HISTORY / ORDERS ═══════════ -->
+      <div id="historyModal" class="fixed inset-0 z-50 bg-black/60 hidden items-center justify-center p-4">
+        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl w-full max-w-2xl p-6 shadow-2xl relative text-left max-h-[85vh] flex flex-col">
+          <button onclick="closeHistoryModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 text-lg cursor-pointer">✕</button>
+          <h3 class="text-xl font-bold mb-4 flex items-center gap-2">
+            <span class="text-pink-500">📦</span> ประวัติการสั่งซื้อของคุณ
+          </h3>
+          <div id="historyContent" class="overflow-y-auto flex-1 space-y-3 pr-1 text-sm">
+            <div class="text-center py-12 text-slate-400 text-sm">กรุณาเข้าสู่ระบบเพื่อดูประวัติการสั่งซื้อ</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════════ FOOTER ═══════════ -->
+      <footer class="w-full mt-auto border-t border-slate-200/90 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 transition-colors duration-300 relative z-20 shadow-sm">
+        <div class="mx-auto flex max-w-7xl flex-col items-center gap-1 px-6 py-4 text-center text-[11px] font-semibold sm:text-xs">
+          <div class="flex w-full flex-col items-center justify-between gap-2 sm:flex-row sm:text-left">
+            <span class="text-slate-600 dark:text-slate-400 font-medium">© 2025 Poppy All Rights Reserved.</span>
+            <div class="flex flex-col items-center gap-1 sm:items-end sm:text-right">
+              <span>Designed &amp; Secured by
+                <a href="https://discord.com/invite/qe3cxQ2n6t" target="_blank" rel="noopener noreferrer" class="bg-gradient-to-r from-[#FF4500] via-[#FF6A00] to-[#FFB800] bg-clip-text text-transparent hover:opacity-80 transition-opacity font-bold">Orynx</a>
+              </span>
+              <a target="_blank" rel="noopener noreferrer" class="hover:underline transition-colors" style="color: var(--site-font-color);" href="https://discord.com/invite/qe3cxQ2n6t">ติดต่อเจ้าของร้านไม่ได้ / แจ้งปัญหาร้านค้าโกง</a>
+            </div>
+          </div>
+        </div>
+      </footer>
+
+    </div>
+  </div>
+
+  <!-- ═══════════ SCRIPTS ═══════════ -->
+  <script>
+    // ── Helper: Show Alert Message ──
+    function showAlert(msg, isError = true) {
+      const alertBox = document.getElementById('loginAlert');
+      if (!alertBox) return;
+      alertBox.classList.remove('hidden');
+      if (isError) {
+        alertBox.className = 'p-3 rounded-lg text-xs font-semibold flex items-center gap-2 border bg-red-500/10 text-red-500 border-red-500/20';
+        alertBox.innerHTML = `
+          <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+          <span>${msg}</span>
+        `;
+      } else {
+        alertBox.className = 'p-3 rounded-lg text-xs font-semibold flex items-center gap-2 border bg-emerald-500/10 text-emerald-500 border-emerald-500/20';
+        alertBox.innerHTML = `
+          <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+          <span>${msg}</span>
+        `;
+      }
+    }
+
+    // ── Dark Mode Toggle ──
+    function toggleTheme() {
+      document.documentElement.classList.toggle('dark');
+      localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+    }
+
+    if (localStorage.getItem('theme') === 'dark') {
+      document.documentElement.classList.add('dark');
+    }
+
+    // ── Mobile Menu Toggle ──
+    function toggleMobileMenu() {
+      const mobileMenu = document.getElementById('mobileMenu');
+      const mobileBackdrop = document.getElementById('mobileBackdrop');
+      if (!mobileMenu || !mobileBackdrop) return;
+      const isOpen = mobileMenu.classList.toggle('open');
+      mobileBackdrop.classList.toggle('open', isOpen);
+      document.body.style.overflow = isOpen ? 'hidden' : '';
+    }
+
+    // ── Header Scroll Effect ──
+    window.addEventListener('scroll', function() {
+      const header = document.getElementById('header');
+      if (!header) return;
+      if (window.scrollY > 20) {
+        header.style.height = '64px';
+        header.style.boxShadow = '0 1px 3px rgba(0,0,0,0.08)';
+      } else {
+        header.style.height = '88px';
+        header.style.boxShadow = 'none';
+      }
+    });
+
+    // ── View Switching: Shop vs Login vs Wheel ──
+    function showShopView(targetAnchor) {
+      document.getElementById('shopView')?.classList.remove('hidden');
+      document.getElementById('loginView')?.classList.add('hidden');
+      document.getElementById('wheelView')?.classList.add('hidden');
+      if (targetAnchor) {
+        const el = document.querySelector(targetAnchor);
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
+      } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }
+
+    function showLoginView() {
+      document.getElementById('shopView')?.classList.add('hidden');
+      document.getElementById('loginView')?.classList.remove('hidden');
+      document.getElementById('wheelView')?.classList.add('hidden');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function showWheelView() {
+      document.getElementById('shopView')?.classList.add('hidden');
+      document.getElementById('loginView')?.classList.add('hidden');
+      document.getElementById('wheelView')?.classList.remove('hidden');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      initWheel();
+      loadRecentWinners();
+      updateWheelBalanceDisplay();
+    }
+
+    // ── Auth State & Header Rendering ──
+    function getCurrentUser() {
+      try {
+        const u = localStorage.getItem('poppy_user');
+        return u ? JSON.parse(u) : null;
+      } catch (e) {
+        return null;
+      }
+    }
+
+    function updateAuthUI() {
+      const user = getCurrentUser();
+      const desktopArea = document.getElementById('desktopAuthArea');
+      const mobileArea = document.getElementById('mobileAuthArea');
+      const userGreetingBar = document.getElementById('userGreetingBar');
+
+      if (user) {
+        // User logged in
+        const userHtml = `
+          <div class="flex items-center gap-2">
+            <div class="px-3 py-1.5 rounded-lg bg-pink-50 dark:bg-pink-950/40 border border-pink-200 dark:border-pink-800/40 text-xs flex items-center gap-1.5">
+              <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+              <span class="font-bold text-slate-800 dark:text-slate-100">${user.username}</span>
+              <span class="text-pink-600 dark:text-pink-400 font-extrabold ml-1">฿${parseFloat(user.balance || 0).toFixed(2)}</span>
+            </div>
+            ${user.role === 'admin' ? `
+              <a href="/admin/dashboard.html" class="text-xs px-3 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-lg transition-all">หลังบ้าน</a>
+            ` : ''}
+            <button onclick="logoutUser()" class="text-xs px-3 py-2 border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 font-bold rounded-lg transition-all cursor-pointer">
+              ออกจากระบบ
+            </button>
+          </div>
+        `;
+
+        if (desktopArea) desktopArea.innerHTML = userHtml;
+        if (mobileArea) mobileArea.innerHTML = userHtml;
+
+        // Show greeting bar
+        if (userGreetingBar) {
+          userGreetingBar.classList.remove('hidden');
+          document.getElementById('userAvatarChar').textContent = (user.username || 'U')[0].toUpperCase();
+          document.getElementById('greetingUsername').textContent = user.username;
+          document.getElementById('greetingBalance').textContent = parseFloat(user.balance || 0).toFixed(2);
+        }
+
+        // If user was on login screen, take them to shop
+        const loginView = document.getElementById('loginView');
+        if (loginView && !loginView.classList.contains('hidden')) {
+          showShopView();
+        }
+        updateWheelBalanceDisplay();
+      } else {
+        // Not logged in
+        const guestHtml = `
+          <a class="text-[14px] font-semibold tracking-tight text-slate-700 dark:text-slate-200 px-4 py-2.5 rounded-md border border-slate-200 dark:border-slate-700 hover:border-slate-350 dark:hover:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all duration-200 flex items-center justify-center" href="register.html">สมัครสมาชิก</a>
+          <button onclick="showLoginView()" class="text-[14px] font-bold text-white px-4 py-2.5 rounded-md shadow-sm hover:scale-[.98] active:scale-[.95] transition-all duration-200 flex items-center justify-center gap-1.5 group cursor-pointer" style="background-color: var(--site-primary-color);">
+            เข้าสู่ระบบ
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="transform group-hover:translate-x-0.5 transition-transform duration-200"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </button>
+        `;
+        if (desktopArea) desktopArea.innerHTML = guestHtml;
+        if (mobileArea) mobileArea.innerHTML = guestHtml;
+        if (userGreetingBar) userGreetingBar.classList.add('hidden');
+      }
+    }
+
+    function logoutUser() {
+      localStorage.removeItem('poppy_token');
+      localStorage.removeItem('poppy_user');
+      localStorage.removeItem('poppy_role');
+      updateAuthUI();
+      showLoginView();
+      showAlert('ออกจากระบบเรียบร้อยแล้ว', false);
+    }
+
+    // ── Load Products ──
+    async function loadProducts() {
+      const grid = document.getElementById('productsGrid');
+      try {
+        const res = await fetch('/api/products');
+        const data = await res.json();
+        if (!data.success || !data.products || data.products.length === 0) {
+          grid.innerHTML = '<div class="col-span-full text-center py-12 text-slate-400">ยังไม่มีสินค้าวางจำหน่ายในขณะนี้</div>';
+          return;
+        }
+
+        grid.innerHTML = data.products.map(p => `
+          <div class="group bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
+            <div>
+              <div class="relative w-full aspect-video rounded-xl overflow-hidden bg-slate-100 dark:bg-slate-800 mb-3">
+                <img src="${p.image || 'logo.jpg'}" alt="${p.name}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" onerror="this.src='logo.jpg'" />
+                <span class="absolute top-2 right-2 px-2.5 py-1 rounded-full text-[11px] font-extrabold ${p.stock > 0 ? 'bg-emerald-500 text-white' : 'bg-red-500 text-white'}">
+                  ${p.stock > 0 ? `สต็อก: ${p.stock}` : 'หมดชั่วคราว'}
+                </span>
+              </div>
+              <span class="text-[11px] font-bold text-pink-500 uppercase">${p.category_name || 'ทั่วไป'}</span>
+              <h3 class="font-bold text-base text-slate-800 dark:text-white line-clamp-1 mt-0.5">${p.name}</h3>
+              <p class="text-xs text-slate-500 dark:text-slate-400 line-clamp-2 mt-1">${p.description || ''}</p>
+            </div>
+            <div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
+              <div>
+                <span class="text-[11px] text-slate-400 block">ราคา</span>
+                <span class="text-lg font-black text-pink-600 dark:text-pink-400">฿${parseFloat(p.price).toFixed(2)}</span>
+              </div>
+              <button onclick="buyProduct(${p.id}, '${p.name.replace(/'/g, "\\'")}', ${p.price})" class="px-4 py-2 bg-pink-600 hover:bg-pink-700 disabled:opacity-50 disabled:cursor-not-allowed text-white text-xs font-bold rounded-xl transition-all shadow-sm flex items-center gap-1 cursor-pointer" ${p.stock <= 0 ? 'disabled' : ''}>
+                🛒 ซื้อเลย
+              </button>
+            </div>
+          </div>
+        `).join('');
+      } catch (e) {
+        grid.innerHTML = '<div class="col-span-full text-center py-12 text-red-500">โหลดข้อมูลสินค้าไม่สำเร็จ</div>';
+      }
+    }
+
+    // ── Load Settings ──
+    async function loadShopSettings() {
+      try {
+        const res = await fetch('/api/settings');
+        const data = await res.json();
+        if (data.success && data.settings) {
+          if (data.settings.site_name) document.getElementById('heroTitle').textContent = `ร้านค้า ${data.settings.site_name}`;
+          if (data.settings.announcement) document.getElementById('heroAnnouncement').textContent = data.settings.announcement;
+          if (data.settings.promptpay_number) document.getElementById('topupPromptPay').textContent = data.settings.promptpay_number;
+          if (data.settings.truemoney_phone) document.getElementById('topupTrueMoney').textContent = data.settings.truemoney_phone;
+        }
+      } catch (e) {}
+    }
+
+    // ── Purchase Popup Logic ──
+    let currentPurchase = null;
+
+    function buyProduct(id, name, price) {
+      const user = getCurrentUser();
+      if (!user) {
+        showLoginView();
+        showAlert('กรุณาเข้าสู่ระบบก่อนทำการสั่งซื้อสินค้า', true);
+        return;
+      }
+
+      currentPurchase = { id, name, price };
+
+      // Fill data into Confirm Modal
+      document.getElementById('confirmProductName').textContent = name;
+      document.getElementById('confirmProductPrice').textContent = parseFloat(price).toFixed(2);
+      
+      const balance = parseFloat(user.balance || 0);
+      document.getElementById('confirmUserBalance').textContent = balance.toFixed(2);
+
+      const balanceAfter = balance - price;
+      const balanceAfterEl = document.getElementById('confirmBalanceAfter');
+      const warningEl = document.getElementById('confirmWarning');
+      const btnBuy = document.getElementById('btnExecuteBuy');
+
+      if (balanceAfter < 0) {
+        balanceAfterEl.textContent = `ติดลบ ฿${Math.abs(balanceAfter).toFixed(2)}`;
+        balanceAfterEl.className = 'font-extrabold text-red-500';
+        warningEl.classList.remove('hidden');
+        btnBuy.innerHTML = `<span>ยอดเงินไม่พอ (เติมเงิน)</span>`;
+        btnBuy.onclick = function() {
+          closeBuyConfirmModal();
+          openTopupModal();
+        };
+      } else {
+        balanceAfterEl.textContent = `฿${balanceAfter.toFixed(2)}`;
+        balanceAfterEl.className = 'font-extrabold text-emerald-600 dark:text-emerald-400';
+        warningEl.classList.add('hidden');
+        btnBuy.innerHTML = `
+          <span id="btnExecuteBuyText">ยืนยันชำระเงิน</span>
+          <svg id="btnExecuteBuySpinner" class="hidden animate-spin h-3.5 w-3.5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+        `;
+        btnBuy.onclick = executeBuy;
+      }
+
+      // Show modal
+      const modal = document.getElementById('buyConfirmModal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function closeBuyConfirmModal() {
+      const modal = document.getElementById('buyConfirmModal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+      currentPurchase = null;
+    }
+
+    async function executeBuy() {
+      if (!currentPurchase) return;
+      const user = getCurrentUser();
+      const token = localStorage.getItem('poppy_token');
+      const btnBuy = document.getElementById('btnExecuteBuy');
+      const btnText = document.getElementById('btnExecuteBuyText');
+      const btnSpinner = document.getElementById('btnExecuteBuySpinner');
+
+      btnBuy.disabled = true;
+      if (btnText) btnText.textContent = 'กำลังดำเนินการ...';
+      if (btnSpinner) btnSpinner.classList.remove('hidden');
+
+      try {
+        const res = await fetch(`/api/products/${currentPurchase.id}/buy`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        const data = await res.json();
+
+        btnBuy.disabled = false;
+        if (btnText) btnText.textContent = 'ยืนยันชำระเงิน';
+        if (btnSpinner) btnSpinner.classList.add('hidden');
+
+        if (data.success) {
+          // Close confirm modal
+          closeBuyConfirmModal();
+
+          // Update user balance locally
+          user.balance = (typeof data.balance !== 'undefined') ? data.balance : data.new_balance;
+          localStorage.setItem('poppy_user', JSON.stringify(user));
+          updateAuthUI();
+          loadProducts();
+
+          // Open Success Modal
+          const itemContent = (data.item && data.item.content) || (data.order && data.order.item_content) || 'จัดส่งเรียบร้อยแล้ว';
+          document.getElementById('successItemContent').value = itemContent;
+          const succModal = document.getElementById('buySuccessModal');
+          succModal.classList.remove('hidden');
+          succModal.classList.add('flex');
+        } else {
+          alert(data.message || 'เกิดข้อผิดพลาดในการซื้อสินค้า');
+        }
+      } catch (e) {
+        console.error('Buy error:', e);
+        btnBuy.disabled = false;
+        if (btnText) btnText.textContent = 'ยืนยันชำระเงิน';
+        if (btnSpinner) btnSpinner.classList.add('hidden');
+        alert('เกิดข้อผิดพลาดในการเชื่อมต่อเซิร์ฟเวอร์');
+      }
+    }
+
+    function closeBuySuccessModal() {
+      const modal = document.getElementById('buySuccessModal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    function copyBoughtItem() {
+      const textarea = document.getElementById('successItemContent');
+      textarea.select();
+      navigator.clipboard.writeText(textarea.value).then(() => {
+        const btn = document.getElementById('btnCopyItem');
+        btn.textContent = 'คัดลอกแล้ว!';
+        btn.className = 'absolute right-2 top-2 px-2.5 py-1 bg-emerald-600 text-white rounded-lg text-[11px] font-bold shadow transition-all cursor-pointer';
+        setTimeout(() => {
+          btn.textContent = 'คัดลอก';
+          btn.className = 'absolute right-2 top-2 px-2.5 py-1 bg-pink-600 hover:bg-pink-700 text-white rounded-lg text-[11px] font-bold shadow transition-all cursor-pointer';
+        }, 1500);
+      });
+    }
+
+    // ── Modals: Topup & History ──
+    function openTopupModal() {
+      document.getElementById('topupModal').classList.remove('hidden');
+      document.getElementById('topupModal').classList.add('flex');
+    }
+    function closeTopupModal() {
+      document.getElementById('topupModal').classList.add('hidden');
+      document.getElementById('topupModal').classList.remove('flex');
+    }
+
+    async function openHistoryModal() {
+      const modal = document.getElementById('historyModal');
+      const content = document.getElementById('historyContent');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+
+      const token = localStorage.getItem('poppy_token');
+      if (!token) {
+        content.innerHTML = '<div class="text-center py-12 text-slate-400">กรุณาเข้าสู่ระบบเพื่อดูประวัติการสั่งซื้อของคุณ</div>';
+        return;
+      }
+
+      content.innerHTML = '<div class="text-center py-12 text-slate-400">กำลังโหลดประวัติการสั่งซื้อ...</div>';
+      try {
+        const res = await fetch('/api/products/my/orders', {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const data = await res.json();
+        if (!data.success || !data.orders || data.orders.length === 0) {
+          content.innerHTML = '<div class="text-center py-12 text-slate-400">คุณยังไม่มีประวัติการสั่งซื้อสินค้า</div>';
+          return;
+        }
+
+        content.innerHTML = data.orders.map(o => `
+          <div class="p-4 bg-slate-50 dark:bg-slate-800/60 rounded-xl border border-slate-200 dark:border-slate-700 space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="font-bold text-slate-800 dark:text-white">${o.product_name || 'สินค้า'}</span>
+              <span class="text-pink-600 font-extrabold">฿${parseFloat(o.price).toFixed(2)}</span>
+            </div>
+            <div class="p-2.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg font-mono text-xs select-all text-slate-700 dark:text-slate-300">
+              ${o.item_content || 'ไม่มีข้อมูล'}
+            </div>
+            <span class="text-[11px] text-slate-400 block">${new Date(o.created_at).toLocaleString('th-TH')}</span>
+          </div>
+        `).join('');
+      } catch (e) {
+        content.innerHTML = '<div class="text-center py-12 text-red-500">โหลดข้อมูลไม่สำเร็จ</div>';
+      }
+    }
+    function closeHistoryModal() {
+      document.getElementById('historyModal').classList.add('hidden');
+      document.getElementById('historyModal').classList.remove('flex');
+    }
+
+    // ── Login Form Handler (Real Backend API) ──
+    async function handleLogin(e) {
+      if (e) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+
+      const btn = document.getElementById('submitBtn');
+      const btnText = document.getElementById('btnText');
+      const btnSpinner = document.getElementById('btnSpinner');
+      const usernameInput = document.getElementById('usernameInput');
+      const passwordInput = document.getElementById('passwordInput');
+
+      const username = usernameInput ? usernameInput.value.trim() : '';
+      const password = passwordInput ? passwordInput.value : '';
+
+      if (!username || !password) {
+        showAlert('กรุณากรอกชื่อผู้ใช้งานและรหัสผ่านให้ครบถ้วน', true);
+        return false;
+      }
+
+      btn.disabled = true;
+      btnText.textContent = 'กำลังเข้าสู่ระบบ...';
+      btnSpinner.classList.remove('hidden');
+
+      try {
+        const res = await fetch('/api/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, password })
+        });
+        const data = await res.json();
+
+        btn.disabled = false;
+        btnText.textContent = 'เข้าสู่ระบบสมาชิก';
+        btnSpinner.classList.add('hidden');
+
+        if (data.success) {
+          localStorage.setItem('poppy_token', data.token);
+          localStorage.setItem('poppy_user', JSON.stringify(data.user));
+          localStorage.setItem('poppy_role', data.user.role);
+
+          showAlert(data.user.role === 'admin' 
+            ? 'เข้าสู่ระบบสำเร็จ! ยินดีต้อนรับผู้ดูแลระบบ กำลังพาไปหน้าหลังบ้าน...' 
+            : `เข้าสู่ระบบสำเร็จ! ยินดีต้อนรับคุณ ${data.user.username} (ยอดเงิน: ฿${data.user.balance})`, false);
+
+          setTimeout(() => {
+            if (data.user.role === 'admin') {
+              window.location.href = '/admin/dashboard.html';
+            } else {
+              updateAuthUI();
+              showShopView();
+            }
+          }, 600);
+        } else {
+          showAlert(data.message || 'ชื่อผู้ใช้งานหรือรหัสผ่านไม่ถูกต้อง', true);
+        }
+      } catch (err) {
+        console.error('Login error:', err);
+        btn.disabled = false;
+        btnText.textContent = 'เข้าสู่ระบบสมาชิก';
+        btnSpinner.classList.add('hidden');
+        showAlert('ไม่สามารถเชื่อมต่อเซิร์ฟเวอร์ได้ กรุณาตรวจสอบว่าเซิร์ฟเวอร์เปิดอยู่', true);
+      }
+      return false;
+    }
+
+    // ═══════════════════════════════════════════════════
+    // ── LUCKY WHEEL LOGIC (วงล้อสุ่มไอดี) ──
+    // ═══════════════════════════════════════════════════
+    let wheelPrizes = [];
+    let wheelPrice = 25;
+    let wheelCurrentAngle = 0;
+    let isWheelSpinning = false;
+    let lastWonPrize = null;
+    let audioCtx = null;
+
+    function playWheelTickSound() {
+      try {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(520, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(120, audioCtx.currentTime + 0.035);
+        gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.035);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.035);
+      } catch (e) {}
+    }
+
+    function playWheelWinSound() {
+      try {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        const notes = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
+        notes.forEach((freq, idx) => {
+          setTimeout(() => {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+            gain.gain.setValueAtTime(0.18, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.28);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.28);
+          }, idx * 110);
+        });
+      } catch (e) {}
+    }
+
+    function updateWheelBalanceDisplay() {
+      const user = getCurrentUser();
+      const bal = user ? parseFloat(user.balance || 0).toFixed(2) : '0.00';
+      const el = document.getElementById('wheelBalanceText');
+      if (el) el.textContent = bal;
+    }
+
+    async function initWheel() {
+      try {
+        const res = await fetch('/api/wheel/info');
+        const data = await res.json();
+        if (data.success) {
+          wheelPrizes = data.prizes || [];
+          wheelPrice = data.price || 25;
+
+          // Update Price labels
+          const heroEl = document.getElementById('wheelPriceHero');
+          if (heroEl) heroEl.textContent = wheelPrice;
+          const centerEl = document.getElementById('centerPrice');
+          if (centerEl) centerEl.textContent = wheelPrice;
+          const btnEl = document.getElementById('btnPriceText');
+          if (btnEl) btnEl.textContent = wheelPrice;
+
+          renderPrizesList();
+          drawWheel(wheelCurrentAngle);
+        }
+      } catch (e) {
+        console.error('Failed to init wheel:', e);
+      }
+    }
+
+    function renderPrizesList() {
+      const container = document.getElementById('prizesListContainer');
+      if (!container) return;
+      if (!wheelPrizes || wheelPrizes.length === 0) {
+        container.innerHTML = '<div class="text-center py-4 text-slate-400">ไม่พบข้อมูลรางวัล</div>';
+        return;
+      }
+
+      container.innerHTML = wheelPrizes.map((p) => `
+        <div class="flex items-center justify-between p-2.5 rounded-xl border border-slate-100 dark:border-slate-800/80 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+          <div class="flex items-center gap-2.5 truncate">
+            <span class="w-7 h-7 rounded-lg flex items-center justify-center text-sm shadow-sm" style="background-color: ${p.color}; color: ${p.text_color};">
+              ${p.icon || '🎁'}
+            </span>
+            <span class="font-bold text-slate-700 dark:text-slate-200 truncate">${p.name}</span>
+          </div>
+          <span class="text-[10px] px-2 py-0.5 rounded-full font-bold uppercase shrink-0 ${
+            p.type === 'item' ? 'bg-pink-100 dark:bg-pink-900/40 text-pink-600 dark:text-pink-400' :
+            p.type === 'credit' ? 'bg-emerald-100 dark:bg-emerald-900/40 text-emerald-600 dark:text-emerald-400' :
+            'bg-slate-100 dark:bg-slate-800 text-slate-500'
+          }">
+            ${p.type === 'item' ? 'ไอดีเกม' : p.type === 'credit' ? `+฿${p.amount}` : 'ไม่ได้รางวัล'}
+          </span>
+        </div>
+      `).join('');
+    }
+
+    async function loadRecentWinners() {
+      const listEl = document.getElementById('recentWinnersList');
+      if (!listEl) return;
+      try {
+        const res = await fetch('/api/wheel/recent');
+        const data = await res.json();
+        if (data.success && data.winners && data.winners.length > 0) {
+          listEl.innerHTML = data.winners.map(w => {
+            const timeStr = new Date(w.created_at).toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' });
+            return `
+              <div class="flex items-center justify-between p-2 rounded-lg bg-pink-50/50 dark:bg-pink-950/20 border border-pink-100/60 dark:border-pink-900/30 animate-card">
+                <div class="flex items-center gap-2 truncate">
+                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0"></span>
+                  <span class="font-bold text-slate-800 dark:text-slate-100">${w.username}</span>
+                  <span class="text-slate-400 text-[10px]">ได้รับ</span>
+                  <span class="font-extrabold text-pink-600 dark:text-pink-400 truncate">${w.prize_name}</span>
+                </div>
+                <span class="text-[10px] text-slate-400 shrink-0 ml-2">${timeStr}</span>
+              </div>
+            `;
+          }).join('');
+        } else {
+          listEl.innerHTML = '<div class="text-center py-4 text-slate-400">ยังไม่มีประวัติการหมุนล่าสุด เป็นคนแรกเลย!</div>';
+        }
+      } catch (e) {
+        console.error('Failed to load recent winners:', e);
+      }
+    }
+
+    function drawWheel(rotationDeg) {
+      const canvas = document.getElementById('wheelCanvas');
+      if (!canvas || !wheelPrizes || wheelPrizes.length === 0) return;
+      const ctx = canvas.getContext('2d');
+      const width = canvas.width;
+      const height = canvas.height;
+      const cx = width / 2;
+      const cy = height / 2;
+      const radius = 196;
+      const numSlices = wheelPrizes.length;
+      const sliceRad = (2 * Math.PI) / numSlices;
+
+      ctx.clearRect(0, 0, width, height);
+
+      // Save context
+      ctx.save();
+      ctx.translate(cx, cy);
+      ctx.rotate((rotationDeg * Math.PI) / 180);
+
+      // Draw slices
+      for (let i = 0; i < numSlices; i++) {
+        const p = wheelPrizes[i];
+        const startRad = i * sliceRad;
+        const endRad = (i + 1) * sliceRad;
+
+        // Slice path
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.arc(0, 0, radius, startRad, endRad);
+        ctx.closePath();
+
+        // Fill slice
+        ctx.fillStyle = p.color || '#ec4899';
+        ctx.fill();
+
+        // Slice divider
+        ctx.lineWidth = 2.5;
+        ctx.strokeStyle = '#ffffff';
+        ctx.stroke();
+
+        // Text & Icon
+        ctx.save();
+        const centerAngle = startRad + sliceRad / 2;
+        ctx.rotate(centerAngle);
+
+        // Draw Icon
+        ctx.font = '22px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(p.icon || '🎁', radius * 0.76, 0);
+
+        // Draw Prize Name
+        ctx.fillStyle = p.text_color || '#ffffff';
+        ctx.font = 'bold 11px prompt, sans-serif';
+        ctx.textAlign = 'right';
+        let displayName = p.name;
+        if (displayName.length > 15) displayName = displayName.substring(0, 14) + '..';
+        ctx.fillText(displayName, radius * 0.63, 0);
+
+        ctx.restore();
+      }
+
+      // Outer bezel with glowing dots
+      const numDots = 24;
+      for (let d = 0; d < numDots; d++) {
+        const dotAngle = (d * (2 * Math.PI)) / numDots;
+        const dotX = (radius - 5) * Math.cos(dotAngle);
+        const dotY = (radius - 5) * Math.sin(dotAngle);
+
+        ctx.beginPath();
+        ctx.arc(dotX, dotY, 3.5, 0, 2 * Math.PI);
+        ctx.fillStyle = d % 2 === 0 ? '#fbbf24' : '#ffffff';
+        ctx.fill();
+        ctx.lineWidth = 1;
+        ctx.strokeStyle = '#ec4899';
+        ctx.stroke();
+      }
+
+      ctx.restore();
+    }
+
+    async function spinWheel() {
+      if (isWheelSpinning) return;
+
+      const user = getCurrentUser();
+      const token = localStorage.getItem('poppy_token');
+
+      if (!user || !token) {
+        showLoginView();
+        showAlert('กรุณาเข้าสู่ระบบก่อนหมุนวงล้อสุ่มไอดี', true);
+        return;
+      }
+
+      if (user.balance < wheelPrice) {
+        alert(`ยอดเงินของคุณไม่เพียงพอสำหรับการหมุน (ต้องการ ฿${wheelPrice.toFixed(2)}) กรุณาเติมเงินก่อน`);
+        openTopupModal();
+        return;
+      }
+
+      const mainBtn = document.getElementById('mainSpinBtn');
+      const centerBtn = document.getElementById('centerSpinBtn');
+      const btnText = document.getElementById('mainSpinBtnText');
+      const spinner = document.getElementById('spinSpinner');
+
+      if (mainBtn) mainBtn.disabled = true;
+      if (centerBtn) centerBtn.disabled = true;
+      if (btnText) btnText.textContent = 'กำลังเริ่มหมุน...';
+      if (spinner) spinner.classList.remove('hidden');
+
+      try {
+        const res = await fetch('/api/wheel/spin', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          }
+        });
+
+        const data = await res.json();
+
+        if (!data.success) {
+          alert(data.message || 'เกิดข้อผิดพลาดในการหมุนวงล้อ');
+          if (mainBtn) mainBtn.disabled = false;
+          if (centerBtn) centerBtn.disabled = false;
+          if (btnText) btnText.innerHTML = `🎡 เริ่มหมุนวงล้อ (฿<span id="btnPriceText">${wheelPrice}</span>)`;
+          if (spinner) spinner.classList.add('hidden');
+          return;
+        }
+
+        // Server confirmed! Now start smooth rotation physics
+        isWheelSpinning = true;
+        if (btnText) btnText.textContent = 'วงล้อกำลังหมุน...';
+
+        const N = wheelPrizes.length;
+        const sliceDeg = 360 / N;
+        const fullTurns = 6 * 360; // 6 full revolutions
+
+        // Target angle to put winning slice under 270 deg (Top pointer)
+        const targetBase = 270 - (data.winning_index + 0.5) * sliceDeg;
+        const normTarget = ((targetBase % 360) + 360) % 360;
+        const normCurrent = ((wheelCurrentAngle % 360) + 360) % 360;
+        let delta = normTarget - normCurrent;
+        if (delta < 0) delta += 360;
+        const finalAngle = wheelCurrentAngle + fullTurns + delta;
+
+        const startTime = performance.now();
+        const duration = 4800; // 4.8 seconds
+        const startAngle = wheelCurrentAngle;
+        let lastTickSlice = -1;
+
+        function easeOutCubic(t) {
+          return 1 - Math.pow(1 - t, 3);
+        }
+
+        function animate(now) {
+          const elapsed = now - startTime;
+          const progress = Math.min(elapsed / duration, 1);
+          const ease = easeOutCubic(progress);
+          wheelCurrentAngle = startAngle + (finalAngle - startAngle) * ease;
+          drawWheel(wheelCurrentAngle);
+
+          // Audio ticking on slice crossing
+          const currentSlice = Math.floor((((270 - wheelCurrentAngle) % 360) + 360) % 360 / sliceDeg);
+          if (currentSlice !== lastTickSlice) {
+            lastTickSlice = currentSlice;
+            if (document.getElementById('wheelSoundToggle')?.checked) {
+              playWheelTickSound();
+            }
+          }
+
+          if (progress < 1) {
+            requestAnimationFrame(animate);
+          } else {
+            // Spin Finished!
+            isWheelSpinning = false;
+            wheelCurrentAngle = finalAngle;
+            drawWheel(wheelCurrentAngle);
+
+            if (mainBtn) mainBtn.disabled = false;
+            if (centerBtn) centerBtn.disabled = false;
+            if (btnText) btnText.innerHTML = `🎡 เริ่มหมุนวงล้อ (฿<span id="btnPriceText">${wheelPrice}</span>)`;
+            if (spinner) spinner.classList.add('hidden');
+
+            // Update user balance
+            user.balance = data.new_balance;
+            localStorage.setItem('poppy_user', JSON.stringify(user));
+            updateAuthUI();
+            updateWheelBalanceDisplay();
+
+            // Handle reward sound & modal
+            if (data.prize.type !== 'empty') {
+              playWheelWinSound();
+            }
+            openWheelResultModal(data.prize, data.new_balance, data.order);
+            loadRecentWinners();
+          }
+        }
+
+        requestAnimationFrame(animate);
+
+      } catch (err) {
+        console.error('Wheel spin error:', err);
+        alert('เกิดข้อผิดพลาดในการเชื่อมต่อเซิร์ฟเวอร์');
+        if (mainBtn) mainBtn.disabled = false;
+        if (centerBtn) centerBtn.disabled = false;
+        if (btnText) btnText.innerHTML = `🎡 เริ่มหมุนวงล้อ (฿<span id="btnPriceText">${wheelPrice}</span>)`;
+        if (spinner) spinner.classList.add('hidden');
+      }
+    }
+
+    function openWheelResultModal(prize, newBalance, order) {
+      const modal = document.getElementById('wheelResultModal');
+      if (!modal) return;
+
+      lastWonPrize = prize;
+
+      const title = document.getElementById('wheelResultTitle');
+      const subtitle = document.getElementById('wheelResultSubtitle');
+      const icon = document.getElementById('wheelResultIcon');
+      const iconWrap = document.getElementById('wheelResultIconWrapper');
+      const name = document.getElementById('wheelResultPrizeName');
+      const contentArea = document.getElementById('wheelResultContentArea');
+      const itemText = document.getElementById('wheelResultItemText');
+      const balanceEl = document.getElementById('wheelResultNewBalance');
+
+      if (balanceEl) balanceEl.textContent = parseFloat(newBalance || 0).toFixed(2);
+      if (name) name.textContent = prize.name;
+      if (icon) icon.textContent = prize.icon || '🎁';
+
+      if (prize.type === 'item') {
+        title.textContent = '🎉 ยินดีด้วย! คุณได้รับรางวัลใหญ่!';
+        subtitle.textContent = 'ระบบได้จัดส่งข้อมูลไอดีเข้าสู่กระเป๋าของคุณแล้ว';
+        iconWrap.className = 'w-20 h-20 mx-auto rounded-3xl bg-emerald-100 dark:bg-emerald-900/40 text-emerald-500 flex items-center justify-center text-4xl mb-4 shadow-lg';
+        contentArea.classList.remove('hidden');
+        itemText.value = prize.reward_content || 'ไอดีจากวงล้อ Poppy';
+      } else if (prize.type === 'credit') {
+        title.textContent = `💰 ได้รับเครดิตคืน ${prize.amount} บาท!`;
+        subtitle.textContent = 'ระบบเพิ่มยอดเงินเข้าบัญชีของคุณเรียบร้อยแล้ว';
+        iconWrap.className = 'w-20 h-20 mx-auto rounded-3xl bg-pink-100 dark:bg-pink-900/40 text-pink-600 flex items-center justify-center text-4xl mb-4 shadow-lg';
+        contentArea.classList.add('hidden');
+      } else {
+        // empty
+        title.textContent = '😢 เสียใจด้วยนะ รอบนี้ยังไม่ถูกรางวัล';
+        subtitle.textContent = 'อย่าเพิ่งท้อ! โอกาสรอบหน้าอาจเป็นรางวัลใหญ่ของคุณ';
+        iconWrap.className = 'w-20 h-20 mx-auto rounded-3xl bg-slate-100 dark:bg-slate-800 text-slate-400 flex items-center justify-center text-4xl mb-4 shadow-lg';
+        contentArea.classList.add('hidden');
+      }
+
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function closeWheelResultModal() {
+      const modal = document.getElementById('wheelResultModal');
+      if (modal) {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+      }
+    }
+
+    function copyWheelResultContent() {
+      const text = document.getElementById('wheelResultItemText')?.value;
+      if (!text) return;
+      navigator.clipboard.writeText(text).then(() => {
+        const btn = document.getElementById('btnCopyWheelResult');
+        if (btn) {
+          const orig = btn.textContent;
+          btn.textContent = '✓ คัดลอกแล้ว!';
+          btn.classList.replace('bg-pink-600', 'bg-emerald-600');
+          setTimeout(() => {
+            btn.textContent = orig;
+            btn.classList.replace('bg-emerald-600', 'bg-pink-600');
+          }, 1800);
+        }
+      }).catch(err => {
+        console.error('Clipboard error:', err);
+      });
+    }
+
+    // ── Safe Event Listener Bindings ──
+    document.addEventListener('DOMContentLoaded', () => {
+      // Theme toggle listeners
+      document.getElementById('themeToggle')?.addEventListener('click', toggleTheme);
+      document.getElementById('themeToggleMobile')?.addEventListener('click', toggleTheme);
+
+      // Mobile menu listeners
+      document.getElementById('mobileMenuBtn')?.addEventListener('click', toggleMobileMenu);
+      document.getElementById('mobileBackdrop')?.addEventListener('click', toggleMobileMenu);
+
+      // Password visibility
+      const togglePassword = document.getElementById('togglePassword');
+      const passwordInput = document.getElementById('passwordInput');
+      const eyeOff = document.getElementById('eyeOff');
+      const eyeOn = document.getElementById('eyeOn');
+
+      if (togglePassword && passwordInput) {
+        togglePassword.addEventListener('click', function() {
+          const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+          passwordInput.setAttribute('type', type);
+          eyeOff?.classList.toggle('hidden');
+          eyeOn?.classList.toggle('hidden');
+        });
+      }
+
+      // Form submit binding
+      const form = document.getElementById('loginForm');
+      if (form) {
+        form.addEventListener('submit', handleLogin);
+      }
+
+      // Initialize State & Products
+      updateAuthUI();
+      loadProducts();
+      loadShopSettings();
+
+      // Check URL hash / parameter: if ?view=wheel or #wheel show wheel, if login show login, else shop
+      if (window.location.hash === '#wheel' || window.location.search.includes('view=wheel') || window.location.search.includes('wheel')) {
+        showWheelView();
+      } else if (window.location.hash === '#login' || window.location.search.includes('login')) {
+        showLoginView();
+      } else if (!getCurrentUser()) {
+        // If not logged in, keep login accessible
+        showLoginView();
+      }
+    });
+  </script>
+</body>
+</html>
