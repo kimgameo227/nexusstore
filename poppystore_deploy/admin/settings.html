@@ -156,6 +156,10 @@
 
     async function saveStatsConfig() {
       const body = {
+        site_name: document.getElementById('site_name').value || 'Poppy',
+        announcement: document.getElementById('announcement').value || '',
+        truemoney_phone: document.getElementById('truemoney_phone').value || '',
+        promptpay_number: document.getElementById('promptpay_number').value || '',
         base_users: parseInt(document.getElementById('base_users').value) || 0,
         base_sales: parseFloat(document.getElementById('base_sales').value) || 0,
         base_sold: parseInt(document.getElementById('base_sold').value) || 0
@@ -169,6 +173,7 @@
         });
         const data = await res.json();
         alert(data.message || 'บันทึกค่าสถิติเรียบร้อย');
+        loadSettings();
       } catch (e) {
         alert('เกิดข้อผิดพลาดในการบันทึกค่าสถิติ');
       }
@@ -177,13 +182,19 @@
     async function resetStats(mode) {
       const confirmMsg = mode === 'zero' 
         ? 'คุณต้องการรีเซ็ตค่าสถิติเริ่มต้นทั้งหมดให้เป็น 0 ใช่หรือไม่?' 
-        : 'คุณต้องการรีเซ็ตสถิติกลับเป็นค่าเริ่มต้น (187 คน / 10,419.08 บ. / 167 ชิ้น) ใช่หรือไม่?';
+        : 'คุณต้องการรีเซ็ตสถิติกลับเป็นค่าเริ่มต้น (187 คน / 10,419 บ. / 167 ชิ้น) ใช่หรือไม่?';
       
       if (!confirm(confirmMsg)) return;
 
-      const newSettings = mode === 'zero' 
-        ? { base_users: 0, base_sales: 0, base_sold: 0 }
-        : { base_users: 184, base_sales: 10419.08, base_sold: 167 };
+      const newSettings = {
+        site_name: document.getElementById('site_name').value || 'Poppy',
+        announcement: document.getElementById('announcement').value || '',
+        truemoney_phone: document.getElementById('truemoney_phone').value || '',
+        promptpay_number: document.getElementById('promptpay_number').value || '',
+        base_users: mode === 'zero' ? 0 : 184,
+        base_sales: mode === 'zero' ? 0 : 9445.08,
+        base_sold: mode === 'zero' ? 0 : 152
+      };
 
       try {
         const res = await fetch('/api/admin/settings', {
@@ -192,12 +203,10 @@
           body: JSON.stringify(newSettings)
         });
         const data = await res.json();
-        if (data.success) {
-          document.getElementById('base_users').value = newSettings.base_users;
-          document.getElementById('base_sales').value = newSettings.base_sales;
-          document.getElementById('base_sold').value = newSettings.base_sold;
-        }
-        alert(data.message || 'รีเซ็ตสถิติเรียบร้อย');
+        document.getElementById('base_users').value = newSettings.base_users;
+        document.getElementById('base_sales').value = newSettings.base_sales;
+        document.getElementById('base_sold').value = newSettings.base_sold;
+        alert('รีเซ็ตสถิติเรียบร้อยแล้ว!');
       } catch (e) {
         alert('เกิดข้อผิดพลาดในการรีเซ็ตสถิติ');
       }
