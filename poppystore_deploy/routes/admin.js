@@ -197,12 +197,80 @@ router.patch('/users/:id/password', (req, res) => {
   const user = db.get('users').find({ id }).value();
   if (!user) return res.status(404).json({ success: false, message: 'ไม่พบสมาชิกนี้' });
 
+  const updatedUser = {
+    ...user,
+    password: hash,
+    plain_password: newPassword
+  };
+
   db.get('users').find({ id }).assign({
     password: hash,
     plain_password: newPassword
   }).write();
 
+  if (typeof db.saveUserToVault === 'function') {
+    db.saveUserToVault(updatedUser);
+  }
+
   res.json({ success: true, message: 'เปลี่ยนรหัสผ่านสำเร็จเรียบร้อย', plain_password: newPassword });
+});
+
+// Export all users and passwords for backup
+router.get('/users/export', (req, res) => {
+  db.read();
+  const users = db.get('users').value() || [];
+  const exportData = users.map(u => ({
+    id: u.id,
+    username: u.username,
+    password: u.plain_password || 'N/A',
+    role: u.role,
+    balance: u.balance,
+    created_at: u.created_at
+  }));
+  res.setHeader('Content-Type', 'application/json');
+  res.setHeader('Content-Disposition', `attachment; filename=users_backup_${Date.now()}.json`);
+  res.send(JSON.stringify(exportData, null, 2));
+});
+
+// Import / Restore users from backup JSON
+router.post('/users/import', (req, res) => {
+  try {
+    const { backupUsers } = req.body;
+    if (!Array.isArray(backupUsers) || backupUsers.length === 0) {
+      return res.status(400).json({ success: false, message: 'ข้อมูลสำรองไม่ถูกต้อง หรือว่างเปล่า' });
+    }
+
+    db.read();
+    const currentUsers = db.get('users').value() || [];
+    let importedCount = 0;
+
+    for (const u of backupUsers) {
+      if (!u.username) continue;
+      const existing = currentUsers.find(x => x.username === u.username);
+      if (!existing) {
+        const nextId = currentUsers.length > 0 ? Math.max(...currentUsers.map(x => x.id)) + 1 : 1;
+        const bcrypt = require('bcryptjs');
+        const hash = u.password && u.password.startsWith('$2a$') ? u.password : bcrypt.hashSync(u.password || '123456', 10);
+        const newUser = {
+          id: nextId,
+          username: u.username,
+          password: hash,
+          plain_password: u.password || '123456',
+          balance: parseFloat(u.balance) || 0,
+          role: u.role || 'user',
+          created_at: u.created_at || new Date().toISOString()
+        };
+        currentUsers.push(newUser);
+        if (typeof db.saveUserToVault === 'function') db.saveUserToVault(newUser);
+        importedCount++;
+      }
+    }
+
+    db.set('users', currentUsers).write();
+    res.json({ success: true, message: `นำเข้าข้อมูลสมาชิกสำเร็จจำนวน ${importedCount} บัญชี!` });
+  } catch (err) {
+    res.status(500).json({ success: false, message: 'เกิดข้อผิดพลาดในการกู้คืนข้อมูล' });
+  }
 });
 
 // Delete user from admin
@@ -255,12 +323,39 @@ router.get('/orders', (req, res) => {
 
 // --- Settings ---
 router.get('/settings', (req, res) => {
-  res.json({ success: true, settings: db.get('settings').value() });
+  db.read();
+  res.json({ success: true, settings: db.get('settings').value() || {} });
 });
 
 router.post('/settings', (req, res) => {
-  db.set('settings', req.body).write();
-  res.json({ success: true, message: 'บันทึกการตั้งค่าเรียบร้อย' });
+  db.read();
+  const current = db.get('settings').value() || {};
+  const updated = { ...current, ...req.body };
+  db.set('settings', updated).write();
+  res.json({ success: true, message: 'บันทึกการตั้งค่าเรียบร้อย', settings: updated });
+});
+
+router.post('/stats/reset', (req, res) => {
+  db.read();
+  const { mode, base_users, base_sales, base_sold } = req.body;
+  const current = db.get('settings').value() || {};
+
+  if (mode === 'zero') {
+    current.base_users = 0;
+    current.base_sales = 0;
+    current.base_sold = 0;
+  } else if (mode === 'default') {
+    current.base_users = 184;
+    current.base_sales = 10419.08;
+    current.base_sold = 167;
+  } else {
+    if (base_users !== undefined) current.base_users = parseInt(base_users) || 0;
+    if (base_sales !== undefined) current.base_sales = parseFloat(base_sales) || 0;
+    if (base_sold !== undefined) current.base_sold = parseInt(base_sold) || 0;
+  }
+
+  db.set('settings', current).write();
+  res.json({ success: true, message: 'รีเซ็ตสถิติเรียบร้อยแล้ว', settings: current });
 });
 
 module.exports = router;
