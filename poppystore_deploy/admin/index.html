@@ -124,6 +124,123 @@
     input:focus {
       box-shadow: 0 0 0 3px var(--site-primary-light-color);
     }
+
+    /* ═══════════ NAVBAR NAVIGATION PILL STATES ═══════════ */
+    .nav-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.5rem 1rem;
+      border-radius: 0.75rem;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      cursor: pointer;
+      user-select: none;
+      white-space: nowrap;
+    }
+
+    /* INACTIVE BUTTON - DARK THEME */
+    html.dark .nav-pill:not(.active) {
+      background-color: transparent !important;
+      color: #d4d4d8 !important;
+      border: 1px solid #27272a !important;
+      box-shadow: none !important;
+    }
+    html.dark .nav-pill:not(.active):hover {
+      background-color: #27272a !important;
+      color: #ffffff !important;
+      border-color: #3f3f46 !important;
+    }
+    html.dark .nav-pill:not(.active) svg {
+      stroke: #a1a1aa !important;
+    }
+    html.dark .nav-pill:not(.active):hover svg {
+      stroke: #ffffff !important;
+    }
+
+    /* INACTIVE BUTTON - LIGHT THEME */
+    html:not(.dark) .nav-pill:not(.active) {
+      background-color: transparent !important;
+      color: #52525b !important;
+      border: 1px solid #e4e4e7 !important;
+      box-shadow: none !important;
+    }
+    html:not(.dark) .nav-pill:not(.active):hover {
+      background-color: #f4f4f5 !important;
+      color: #09090b !important;
+      border-color: #d4d4d8 !important;
+    }
+    html:not(.dark) .nav-pill:not(.active) svg {
+      stroke: #71717a !important;
+    }
+    html:not(.dark) .nav-pill:not(.active):hover svg {
+      stroke: #09090b !important;
+    }
+
+    /* ACTIVE BUTTON IN DARK THEME: เป็นสีขาว (White background with black text) */
+    html.dark .nav-pill.active {
+      background-color: #ffffff !important;
+      color: #09090b !important;
+      border: 1px solid #ffffff !important;
+      font-weight: 700 !important;
+      box-shadow: 0 4px 14px rgba(255, 255, 255, 0.18) !important;
+    }
+    html.dark .nav-pill.active svg {
+      stroke: #09090b !important;
+    }
+
+    /* ACTIVE BUTTON IN LIGHT THEME: ถ้าเป็นธีมสีขาวให้เป็นสีดำ (Black background with white text) */
+    html:not(.dark) .nav-pill.active {
+      background-color: #09090b !important;
+      color: #ffffff !important;
+      border: 1px solid #09090b !important;
+      font-weight: 700 !important;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.16) !important;
+    }
+    html:not(.dark) .nav-pill.active svg {
+      stroke: #ffffff !important;
+    }
+
+    /* Category Filter Buttons */
+    .cat-filter-btn {
+      transition: all 0.2s ease;
+      cursor: pointer;
+      user-select: none;
+    }
+    html.dark .cat-filter-btn:not(.active) {
+      background-color: transparent;
+      color: #a1a1aa;
+      border: 1px solid #27272a;
+    }
+    html.dark .cat-filter-btn:not(.active):hover {
+      background-color: #27272a;
+      color: #ffffff;
+      border-color: #3f3f46;
+    }
+    html:not(.dark) .cat-filter-btn:not(.active) {
+      background-color: transparent;
+      color: #52525b;
+      border: 1px solid #e4e4e7;
+    }
+    html:not(.dark) .cat-filter-btn:not(.active):hover {
+      background-color: #f4f4f5;
+      color: #09090b;
+      border-color: #d4d4d8;
+    }
+    html.dark .cat-filter-btn.active {
+      background-color: #ffffff !important;
+      color: #09090b !important;
+      border: 1px solid #ffffff !important;
+      box-shadow: 0 2px 8px rgba(255, 255, 255, 0.15);
+    }
+    html:not(.dark) .cat-filter-btn.active {
+      background-color: #09090b !important;
+      color: #ffffff !important;
+      border: 1px solid #09090b !important;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    }
   </style>
 </head>
 
@@ -141,13 +258,13 @@
           </a>
 
           <!-- Desktop Nav -->
-          <nav class="hidden md:flex items-center gap-3.5 p-2 rounded-2xl bg-zinc-100/80 dark:bg-[#141416] border border-zinc-200 dark:border-zinc-800 shadow-sm">
-            <a class="text-[13px] font-semibold tracking-tight px-4 py-2 rounded-xl border border-zinc-200 dark:border-zinc-700/80 bg-white dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 hover:border-zinc-300 dark:hover:border-zinc-600 hover:text-zinc-950 dark:hover:text-white hover:bg-zinc-50 dark:hover:bg-zinc-800/80 shadow-xs transition-all cursor-pointer" onclick="showShopView()">หน้าหลัก</a>
-            <a class="text-[13px] font-semibold tracking-tight px-4 py-2 rounded-xl border border-zinc-200 dark:border-zinc-700/80 bg-white dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 hover:border-zinc-300 dark:hover:border-zinc-600 hover:text-zinc-950 dark:hover:text-white hover:bg-zinc-50 dark:hover:bg-zinc-800/80 shadow-xs transition-all cursor-pointer" onclick="showShopView('#productsSection')">สินค้า</a>
+          <nav class="hidden md:flex items-center gap-2 p-1.5 rounded-2xl bg-zinc-100/80 dark:bg-[#141416] border border-zinc-200 dark:border-zinc-800 shadow-sm">
+            <a id="nav-home" class="nav-pill active" onclick="showHomeView()">หน้าหลัก</a>
+            <a id="nav-products" class="nav-pill" onclick="showProductsView()">สินค้า</a>
             
             <!-- Topup Dropdown Trigger (Themed button matching site palette) -->
             <div class="relative" id="topupDropdownContainer">
-              <button type="button" onclick="toggleTopupDropdown(event)" id="topupNavBtn" class="text-[13px] font-bold tracking-tight px-4 py-2 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-white dark:bg-white dark:text-zinc-950 dark:hover:bg-zinc-200 shadow-sm transition-all cursor-pointer flex items-center gap-1.5 border border-zinc-800 dark:border-white">
+              <button type="button" onclick="toggleTopupDropdown(event)" id="nav-topup" class="nav-pill flex items-center gap-1.5">
                 <span>เติมเงิน</span>
                 <svg id="topupNavChevron" class="w-3.5 h-3.5 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"></path></svg>
               </button>
@@ -159,32 +276,18 @@
                 </div>
                 <!-- Option 1: เติมเงินธนาคาร -->
                 <a onclick="showBankTopupView(); closeTopupDropdown();" class="flex items-center gap-3 p-2.5 rounded-xl hover:bg-zinc-100 dark:hover:bg-zinc-800/70 cursor-pointer transition-colors group">
-                  <div class="w-10 h-10 rounded-xl bg-emerald-500/10 dark:bg-emerald-500/15 border border-emerald-500/20 flex items-center justify-center p-1.5 shrink-0 shadow-xs">
-                    <svg viewBox="0 0 100 100" class="w-7 h-7" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M50 16 C38 32 26 44 18 56 C28 56 38 50 45 40 C46 50 40 60 28 66 C38 66 46 60 50 50 C54 60 62 66 72 66 C60 60 54 50 55 40 C62 50 72 56 82 56 C74 44 62 32 50 16 Z" fill="#16a34a"/>
-                      <rect x="47" y="52" width="6" height="30" rx="3" fill="#16a34a"/>
-                    </svg>
+                  <div class="w-10 h-10 rounded-xl overflow-hidden bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 flex items-center justify-center p-0.5 shrink-0 shadow-xs">
+                    <img src="bank_logo.png" class="w-full h-full object-cover rounded-lg" alt="ธนาคาร" />
                   </div>
                   <div>
-                    <div class="text-xs font-bold text-zinc-900 dark:text-white group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">เติมเงินธนาคาร</div>
+                    <div class="text-xs font-bold text-zinc-900 dark:text-white group-hover:text-sky-600 dark:group-hover:text-sky-400 transition-colors">เติมเงินธนาคาร</div>
                     <div class="text-[11px] text-zinc-400">ตรวจสอบสลิปอัตโนมัติ</div>
                   </div>
                 </a>
                 <!-- Option 2: TrueMoney Wallet -->
                 <a onclick="showTruemoneyTopupView(); closeTopupDropdown();" class="flex items-center gap-3 p-2.5 rounded-xl hover:bg-zinc-100 dark:hover:bg-zinc-800/70 cursor-pointer transition-colors group">
-                  <div class="w-10 h-10 rounded-xl bg-orange-500/10 dark:bg-orange-500/15 border border-orange-500/20 flex items-center justify-center p-1.5 shrink-0 shadow-xs">
-                    <svg viewBox="0 0 100 100" class="w-7 h-7" xmlns="http://www.w3.org/2000/svg">
-                      <defs>
-                        <linearGradient id="tmnGradNav" x1="0%" y1="0%" x2="100%" y2="100%">
-                          <stop offset="0%" stop-color="#ff7a00"/>
-                          <stop offset="100%" stop-color="#ea580c"/>
-                        </linearGradient>
-                      </defs>
-                      <rect width="100" height="100" rx="24" fill="url(#tmnGradNav)"/>
-                      <path d="M24 64 L46 22 L58 36 L36 78 Z" fill="#ffffff"/>
-                      <path d="M76 64 L54 22 L42 36 L64 78 Z" fill="#fef08a"/>
-                      <circle cx="50" cy="50" r="12" fill="#ffffff"/>
-                    </svg>
+                  <div class="w-10 h-10 rounded-xl overflow-hidden bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 flex items-center justify-center p-1 shrink-0 shadow-xs">
+                    <img src="truemoney_logo.png" class="w-full h-full object-contain rounded-lg" alt="TrueMoney" />
                   </div>
                   <div>
                     <div class="text-xs font-bold text-zinc-900 dark:text-white group-hover:text-orange-500 transition-colors">ทรูมันนี่ วอลเล็ท (Wallet)</div>
@@ -194,11 +297,11 @@
               </div>
             </div>
 
-            <a class="text-[13px] font-semibold tracking-tight px-4 py-2 rounded-xl border border-zinc-200 dark:border-zinc-700/80 bg-white dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 hover:border-zinc-300 dark:hover:border-zinc-600 hover:text-zinc-950 dark:hover:text-white hover:bg-zinc-50 dark:hover:bg-zinc-800/80 shadow-xs transition-all cursor-pointer flex items-center gap-1.5" onclick="showWheelView()">
+            <a id="nav-wheel" class="nav-pill flex items-center gap-1.5" onclick="showWheelView()">
               <span>🎡</span> มินิเกม
             </a>
-            <a class="text-[13px] font-semibold tracking-tight px-4 py-2 rounded-xl border border-zinc-200 dark:border-zinc-700/80 bg-white dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 hover:border-zinc-300 dark:hover:border-zinc-600 hover:text-zinc-950 dark:hover:text-white hover:bg-zinc-50 dark:hover:bg-zinc-800/80 shadow-xs transition-all cursor-pointer" onclick="openHistoryModal()">ประวัติการสั่งซื้อ</a>
-            <span class="text-[13px] font-semibold tracking-tight px-4 py-2 rounded-xl border border-zinc-200 dark:border-zinc-700/80 bg-white dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 hover:border-zinc-300 dark:hover:border-zinc-600 hover:text-zinc-950 dark:hover:text-white hover:bg-zinc-50 dark:hover:bg-zinc-800/80 shadow-xs transition-all cursor-pointer select-none" onclick="alert('ติดต่อเจ้าของร้าน: Line @poppyshop หรือ Discord Poppy Community')">ติดต่อ</span>
+            <a id="nav-history" class="nav-pill" onclick="openHistoryModal()">ประวัติการสั่งซื้อ</a>
+            <span id="nav-contact" class="nav-pill select-none" onclick="openContactModal()">ติดต่อ</span>
           </nav>
 
           <!-- Desktop Buttons -->
@@ -242,9 +345,9 @@
               <svg id="moonIconMobile" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="block dark:hidden"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
             </button>
           </div>
-          <a class="text-[14px] font-semibold px-3 py-2 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-950 dark:hover:text-white transition-colors cursor-pointer" onclick="showShopView(); toggleMobileMenu();">หน้าหลัก</a>
-          <a class="text-[14px] font-semibold px-3 py-2 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-950 dark:hover:text-white transition-colors cursor-pointer" onclick="showShopView('#productsSection'); toggleMobileMenu();">สินค้า</a>
-          <a class="text-[14px] font-semibold px-3 py-2 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-950 dark:hover:text-white transition-colors cursor-pointer flex items-center gap-2" onclick="showWheelView(); toggleMobileMenu();">
+          <a id="nav-mobile-home" class="nav-pill active w-full justify-start text-[14px]" onclick="showHomeView(); toggleMobileMenu();">หน้าหลัก</a>
+          <a id="nav-mobile-products" class="nav-pill w-full justify-start text-[14px]" onclick="showProductsView(); toggleMobileMenu();">สินค้า</a>
+          <a id="nav-mobile-wheel" class="nav-pill w-full justify-start text-[14px] flex items-center gap-2" onclick="showWheelView(); toggleMobileMenu();">
             <span>🎡</span>
             <span>มินิเกม</span>
           </a>
@@ -260,8 +363,8 @@
               </button>
             </div>
           </div>
-          <a class="text-[14px] font-semibold px-3 py-2 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-950 dark:hover:text-white transition-colors cursor-pointer" onclick="openHistoryModal(); toggleMobileMenu();">ประวัติการสั่งซื้อ</a>
-          <span class="text-[14px] font-semibold px-3 py-2 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-950 dark:hover:text-white transition-colors cursor-pointer" onclick="alert('ติดต่อเจ้าของร้าน: Line @poppyshop หรือ Discord Poppy Community'); toggleMobileMenu();">ติดต่อ</span>
+          <a id="nav-mobile-history" class="nav-pill w-full justify-start text-[14px]" onclick="openHistoryModal(); toggleMobileMenu();">ประวัติการสั่งซื้อ</a>
+          <span id="nav-mobile-contact" class="nav-pill w-full justify-start text-[14px]" onclick="openContactModal(); toggleMobileMenu();">ติดต่อ</span>
           <hr class="border-zinc-200 dark:border-zinc-800 my-2" />
           <div id="mobileAuthArea" class="flex flex-col gap-2 pt-2">
             <a class="text-[14px] font-semibold text-center py-2.5 rounded-xl border border-zinc-300 dark:border-zinc-700/80 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all" href="register.html">สมัครสมาชิก</a>
@@ -276,23 +379,74 @@
       <!-- ═══════════ MAIN VIEW CONTAINER ═══════════ -->
       <main class="w-full flex-1 mt-[74px] md:mt-[88px] relative z-10 flex flex-col">
 
-        <!-- ── VIEW 1: SHOP STOREFRONT (DEFAULT WHEN LOGGED IN OR USER BROWSES) ── -->
-        <div id="shopView" class="w-full max-w-7xl mx-auto px-4 sm:px-6 py-8 flex flex-col gap-8">
-          <!-- Announcement Hero Banner -->
-          <div class="relative overflow-hidden rounded-[24px] bg-white dark:bg-gradient-to-br dark:from-[#18181b] dark:via-[#121215] dark:to-[#09090b] border border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-white p-6 sm:p-10 shadow-sm dark:shadow-2xl transition-colors duration-200">
-            <div class="relative z-10 max-w-2xl">
-              <span class="inline-block px-3 py-1 bg-zinc-100 dark:bg-zinc-800/80 border border-zinc-200 dark:border-zinc-700/60 rounded-full text-xs font-semibold text-zinc-700 dark:text-zinc-300 uppercase tracking-wider mb-3">📢 ข่าวสาร &amp; อัปเดต</span>
-              <h1 class="text-2xl sm:text-4xl font-extrabold tracking-tight mb-2 text-zinc-900 dark:text-white" id="heroTitle">ร้านค้า Poppy</h1>
-              <p class="text-sm sm:text-base text-zinc-600 dark:text-zinc-400 leading-relaxed" id="heroAnnouncement">ยินดีต้อนรับสู่ร้านค้า Poppy ศูนย์รวมไอดีและสินค้าดิจิทัลราคาถูก!</p>
-              <div class="mt-6 flex flex-wrap gap-3">
-                <a href="#productsSection" class="px-5 py-2.5 bg-zinc-900 hover:bg-zinc-800 text-white dark:bg-white dark:text-zinc-950 dark:hover:bg-zinc-200 rounded-xl font-bold text-sm shadow transition-all active:scale-95 cursor-pointer">ดูสินค้าทั้งหมด</a>
-                <button onclick="openTopupModal()" class="px-5 py-2.5 bg-zinc-100 hover:bg-zinc-200 border border-zinc-300 text-zinc-800 dark:bg-[#222226] dark:hover:bg-[#2c2c32] dark:border-zinc-700 dark:text-zinc-200 rounded-xl font-semibold text-sm transition-all active:scale-95 cursor-pointer">เติมเงินเข้าสู่ระบบ</button>
+        <!-- ── VIEW 1: HOME VIEW (หน้าหลัก) ── -->
+        <div id="homeView" class="w-full max-w-7xl mx-auto px-4 sm:px-6 py-8 flex flex-col gap-8">
+          <!-- ═══════════ ZEIN-STYLE HERO SECTION ═══════════ -->
+          <section class="relative overflow-hidden rounded-[32px] bg-gradient-to-b from-zinc-50 via-white to-zinc-50/50 dark:from-[#161619] dark:via-[#111114] dark:to-[#0a0a0c] border border-zinc-200 dark:border-zinc-800/80 p-8 sm:p-14 lg:p-20 text-center shadow-xl dark:shadow-2xl">
+            <!-- Ambient Glow & Dot Grid -->
+            <div class="absolute inset-0 pointer-events-none opacity-40 dark:opacity-20" style="background-image: radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0); background-size: 32px 32px;"></div>
+            <div class="absolute -top-24 left-1/2 -translate-x-1/2 w-96 h-96 bg-blue-500/10 dark:bg-cyan-500/15 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="absolute -bottom-24 right-10 w-80 h-80 bg-emerald-500/10 dark:bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+            <div class="relative z-10 max-w-4xl mx-auto flex flex-col items-center">
+              <!-- Main Heading -->
+              <h1 class="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight leading-[1.15] sm:leading-[1.15] mb-6 text-zinc-950 dark:text-white">
+                <span>ปลดล็อกทุกขีดจำกัด</span><br/>
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-cyan-500 to-emerald-500 dark:from-blue-400 dark:via-cyan-300 dark:to-emerald-400">ไอดีเกมแท้ระดับพรีเมียม</span><br/>
+                <span>ในแบบที่คุณต้องการ</span>
+              </h1>
+
+              <!-- Announcement Banner (Dynamic from admin/settings) -->
+              <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-500/10 dark:bg-cyan-500/10 border border-blue-500/20 dark:border-cyan-500/20 text-blue-700 dark:text-cyan-300 text-xs font-semibold mb-6">
+                <span class="inline-block w-2 h-2 rounded-full bg-cyan-500 animate-ping"></span>
+                <span id="heroAnnouncement">ยินดีต้อนรับสู่ร้านค้า NexusStore ศูนย์รวมไอดีและบริการเกมคุณภาพ</span>
+              </div>
+
+              <!-- Subtitle Description -->
+              <p class="text-base sm:text-xl text-zinc-600 dark:text-zinc-400 mb-10 max-w-2xl mx-auto leading-relaxed font-normal">
+                สัมผัสประสบการณ์ซื้อขายไอดีเกมที่สะดวกรวดเร็ว <span class="font-bold text-cyan-600 dark:text-cyan-400">การันตีความปลอดภัย 100%</span><br class="hidden sm:block"/>
+                ส่งมอบทันทีผ่านระบบอัตโนมัติตลอด 24 ชม. พร้อมทีมงานดูแลทุกคำสั่งซื้อ
+              </p>
+
+              <!-- Action CTA Button -->
+              <div class="flex justify-center items-center mb-16">
+                <button onclick="showProductsView()" class="group relative px-10 py-4 bg-zinc-900 hover:bg-zinc-800 text-white dark:bg-white dark:text-zinc-950 dark:hover:bg-zinc-200 rounded-2xl font-bold text-base sm:text-lg shadow-xl shadow-zinc-900/10 dark:shadow-white/5 hover:shadow-2xl transition-all duration-300 hover:scale-105 flex items-center justify-center gap-3 cursor-pointer">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="transform group-hover:rotate-12 transition-transform duration-300"><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></svg>
+                  <span>เลือกชมสินค้า</span>
+                </button>
+              </div>
+
+              <!-- 3 Feature Cards (Same as Zein Store structure, fully original wording & theme) -->
+              <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full text-left">
+                <!-- Card 1: ความปลอดภัย 100% -->
+                <div class="group relative p-7 rounded-3xl bg-white dark:bg-[#151518]/90 border-2 border-zinc-200/80 dark:border-zinc-800 hover:border-emerald-500/60 dark:hover:border-emerald-500/50 transition-all duration-300 hover:-translate-y-1 shadow-md hover:shadow-xl hover:shadow-emerald-500/10 overflow-hidden">
+                  <div class="w-13 h-13 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-500 flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-300">
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                  </div>
+                  <h3 class="text-xl font-black text-zinc-900 dark:text-white mb-2">ปลอดภัย 100%</h3>
+                  <p class="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed font-medium">คัดสรรไอดีคุณภาพ ตรวจสอบประวัติทุกบัญชีอย่างละเอียด ปลอดภัย ไม่มีการดึงคืน</p>
+                </div>
+
+                <!-- Card 2: จัดส่งทันที -->
+                <div class="group relative p-7 rounded-3xl bg-white dark:bg-[#151518]/90 border-2 border-zinc-200/80 dark:border-zinc-800 hover:border-cyan-500/60 dark:hover:border-cyan-500/50 transition-all duration-300 hover:-translate-y-1 shadow-md hover:shadow-xl hover:shadow-cyan-500/10 overflow-hidden">
+                  <div class="w-13 h-13 rounded-2xl bg-cyan-500/10 border border-cyan-500/20 text-cyan-500 flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-300">
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                  </div>
+                  <h3 class="text-xl font-black text-zinc-900 dark:text-white mb-2">จัดส่งอัตโนมัติ</h3>
+                  <p class="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed font-medium">ระบบออโต้ตัดจ่ายและส่งมอบข้อมูลไอดีทันทีหลังชำระเงิน รวดเร็ว แม่นยำ ไม่ต้องรอนาน</p>
+                </div>
+
+                <!-- Card 3: ดูแล 24 ชม. -->
+                <div class="group relative p-7 rounded-3xl bg-white dark:bg-[#151518]/90 border-2 border-zinc-200/80 dark:border-zinc-800 hover:border-blue-500/60 dark:hover:border-blue-500/50 transition-all duration-300 hover:-translate-y-1 shadow-md hover:shadow-xl hover:shadow-blue-500/10 overflow-hidden">
+                  <div class="w-13 h-13 rounded-2xl bg-blue-500/10 border border-blue-500/20 text-blue-500 flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-300">
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                  </div>
+                  <h3 class="text-xl font-black text-zinc-900 dark:text-white mb-2">ดูแลตลอด 24 ชม.</h3>
+                  <p class="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed font-medium">ทีมงานพร้อมสแตนด์บายซัพพอร์ต ให้คำปรึกษาและแก้ไขปัญหาทุกช่วงเวลา 24/7</p>
+                </div>
               </div>
             </div>
-            <div class="absolute -right-6 -bottom-8 opacity-10 dark:opacity-15 pointer-events-none hidden sm:block">
-              <img src="logo_wide.png" onerror="this.onerror=null; this.src='logo.jpg';" alt="Poppy Bg" class="w-80 h-auto object-contain dark:invert-0 invert" />
-            </div>
-          </div>
+          </section>
 
           <!-- User Quick Stats Bar (Visible when logged in) -->
           <div id="userGreetingBar" class="hidden bg-white dark:bg-[#141416] border border-zinc-200 dark:border-zinc-800 rounded-2xl p-4 sm:p-5 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4">
@@ -316,19 +470,60 @@
             </div>
           </div>
 
-          <!-- Products Section -->
-          <div id="productsSection" class="space-y-4">
+          <!-- Featured Products Preview on Home -->
+          <div class="space-y-4">
             <div class="flex items-center justify-between">
               <div>
-                <h2 class="text-xl sm:text-2xl font-bold tracking-tight text-slate-800 dark:text-white">รายการสินค้าพร้อมจำหน่าย</h2>
-                <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400">ระบบส่งมอบสินค้าและไอดีอัตโนมัติ 24 ชม.</p>
+                <h2 class="text-xl sm:text-2xl font-bold tracking-tight text-zinc-900 dark:text-white flex items-center gap-2">
+                  <span>🔥</span> สินค้าแนะนำล่าสุด
+                </h2>
+                <p class="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400">ไอดีเกมและไอเทมยอดนิยมที่กำลังมาแรง</p>
               </div>
+              <button onclick="showProductsView()" class="group px-4 py-2 rounded-xl bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-850 dark:hover:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-xs font-bold text-zinc-800 dark:text-zinc-200 transition-all flex items-center gap-1.5 cursor-pointer">
+                <span>ดูสินค้าทั้งหมด</span>
+                <span class="transform group-hover:translate-x-0.5 transition-transform">➔</span>
+              </button>
             </div>
 
-            <!-- Products Grid Container -->
-            <div id="productsGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
-              <div class="col-span-full text-center py-12 text-slate-400 text-sm">กำลังโหลดสินค้า...</div>
+            <!-- Featured Products Grid -->
+            <div id="featuredProductsGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+              <div class="col-span-full text-center py-12 text-zinc-400 text-sm">กำลังโหลดสินค้า...</div>
             </div>
+          </div>
+        </div>
+
+        <!-- ── VIEW 2: DEDICATED PRODUCTS STOREFRONT (หน้าสินค้า) ── -->
+        <div id="productsView" class="hidden w-full max-w-7xl mx-auto px-4 sm:px-6 py-8 flex flex-col gap-8">
+          <!-- Products Page Banner / Header -->
+          <div class="relative overflow-hidden rounded-[24px] bg-white dark:bg-gradient-to-r dark:from-zinc-900 dark:via-[#18181b] dark:to-zinc-900 text-zinc-900 dark:text-white p-6 sm:p-10 border border-zinc-200 dark:border-zinc-800 shadow-sm dark:shadow-xl">
+            <div class="relative z-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <div>
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-zinc-100 dark:bg-white/10 border border-zinc-200 dark:border-white/15 rounded-full text-xs font-semibold text-cyan-600 dark:text-cyan-300 uppercase tracking-wider mb-2">
+                  <span>🛍️</span> คลังสินค้าและไอดีเกม
+                </span>
+                <h1 class="text-2xl sm:text-4xl font-extrabold tracking-tight text-zinc-900 dark:text-white">รายการสินค้าพร้อมจำหน่าย</h1>
+                <p class="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400 mt-1">ระบบจัดส่งรหัสและสินค้าอัตโนมัติตลอด 24 ชั่วโมง ได้รับของทันทีหลังชำระเงิน</p>
+              </div>
+              <button onclick="showHomeView()" class="px-4 py-2 rounded-xl bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 border border-zinc-300 dark:border-zinc-700 text-zinc-800 dark:text-zinc-200 text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer">
+                <span>←</span> กลับหน้าหลัก
+              </button>
+            </div>
+          </div>
+
+          <!-- Filter & Search Bar -->
+          <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 bg-white dark:bg-[#141416] p-4 rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-sm">
+            <div class="relative flex-1 max-w-md">
+              <svg class="w-4 h-4 text-zinc-400 absolute left-3.5 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+              <input type="text" id="productSearchInput" oninput="filterProducts()" placeholder="ค้นหาสินค้าหรือไอดีเกม..." class="w-full pl-10 pr-4 py-2.5 rounded-xl text-xs sm:text-sm bg-zinc-100 dark:bg-zinc-850 border border-zinc-200 dark:border-zinc-750 text-zinc-900 dark:text-white placeholder-zinc-400 focus:outline-none focus:ring-1 focus:ring-cyan-500" />
+            </div>
+            <div class="flex items-center gap-2 overflow-x-auto pb-1 sm:pb-0" id="categoryFilterContainer">
+              <button onclick="setCategoryFilter('all', this)" class="cat-filter-btn active px-3.5 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer">ทั้งหมด</button>
+            </div>
+          </div>
+
+          <!-- Products Grid Container -->
+          <div id="productsGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+            <div class="col-span-full text-center py-12 text-zinc-400 text-sm">กำลังโหลดสินค้า...</div>
           </div>
         </div>
 
@@ -535,11 +730,8 @@
         <div id="bankTopupView" class="hidden w-full max-w-2xl mx-auto px-4 sm:px-6 py-8 flex flex-col gap-5 animate-page">
           <!-- View Header -->
           <div class="flex items-center gap-3.5">
-            <div class="w-12 h-12 rounded-2xl bg-emerald-500/10 dark:bg-emerald-500/15 border border-emerald-500/20 flex items-center justify-center p-2 shrink-0 shadow-sm">
-              <svg viewBox="0 0 100 100" class="w-7 h-7" xmlns="http://www.w3.org/2000/svg">
-                <path d="M50 16 C38 32 26 44 18 56 C28 56 38 50 45 40 C46 50 40 60 28 66 C38 66 46 60 50 50 C54 60 62 66 72 66 C60 60 54 50 55 40 C62 50 72 56 82 56 C74 44 62 32 50 16 Z" fill="#16a34a"/>
-                <rect x="47" y="52" width="6" height="30" rx="3" fill="#16a34a"/>
-              </svg>
+            <div class="w-12 h-12 rounded-2xl overflow-hidden bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 p-0.5 flex items-center justify-center shrink-0 shadow-sm">
+              <img src="bank_logo.png" class="w-full h-full object-cover rounded-xl" alt="Bank" />
             </div>
             <div>
               <h1 class="text-xl sm:text-2xl font-black text-zinc-900 dark:text-white tracking-tight">เติมเงินผ่านธนาคาร</h1>
@@ -558,15 +750,12 @@
           <div class="rounded-2xl bg-white dark:bg-[#141416] border border-zinc-200 dark:border-zinc-800 p-6 shadow-sm">
             <!-- Bank Brand Header -->
             <div class="flex items-center gap-3.5 pb-4 border-b border-zinc-100 dark:border-zinc-800/80">
-              <div class="w-12 h-12 rounded-2xl bg-emerald-500/10 dark:bg-emerald-500/15 border border-emerald-500/20 flex items-center justify-center p-2 shrink-0 shadow-xs">
-                <svg viewBox="0 0 100 100" class="w-7 h-7" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M50 16 C38 32 26 44 18 56 C28 56 38 50 45 40 C46 50 40 60 28 66 C38 66 46 60 50 50 C54 60 62 66 72 66 C60 60 54 50 55 40 C62 50 72 56 82 56 C74 44 62 32 50 16 Z" fill="#16a34a"/>
-                  <rect x="47" y="52" width="6" height="30" rx="3" fill="#16a34a"/>
-                </svg>
+              <div class="w-12 h-12 rounded-2xl overflow-hidden bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 p-0.5 flex items-center justify-center shrink-0 shadow-xs">
+                <img src="bank_logo.png" class="w-full h-full object-cover rounded-xl" alt="Bank" />
               </div>
               <div>
-                <h3 class="text-base font-bold text-zinc-900 dark:text-white" id="bankViewBankName">ธนาคารกสิกรไทย</h3>
-                <p class="text-xs text-zinc-400">Kasikorn Bank</p>
+                <h3 class="text-base font-bold text-zinc-900 dark:text-white" id="bankViewBankName">ธนาคารกรุงไทย (Krungthai Bank)</h3>
+                <p class="text-xs text-zinc-400">Krungthai Bank</p>
               </div>
             </div>
 
@@ -574,13 +763,13 @@
             <div class="pt-4 space-y-4">
               <div>
                 <span class="text-xs text-zinc-400 font-medium block">ชื่อบัญชี</span>
-                <span class="text-sm font-semibold text-zinc-800 dark:text-zinc-200 mt-0.5 block" id="bankViewAccName">พีรพงศ์ เจือจันทร์</span>
+                <span class="text-sm font-semibold text-zinc-800 dark:text-zinc-200 mt-0.5 block" id="bankViewAccName">นาย ณัฐวุฒิ อมันตระกูล</span>
               </div>
 
               <div>
                 <span class="text-xs text-zinc-400 font-medium block">เลขบัญชี</span>
                 <div class="flex items-center justify-between mt-1">
-                  <span class="text-2xl sm:text-3xl font-black font-mono tracking-wider text-zinc-900 dark:text-white select-all" id="bankViewAccNumber">1588989972</span>
+                  <span class="text-2xl sm:text-3xl font-black font-mono tracking-wider text-zinc-900 dark:text-white select-all" id="bankViewAccNumber">6614635557</span>
                   <button type="button" onclick="copyBankViewAcc(this)" id="btnCopyBankViewAcc" class="p-2.5 rounded-xl border border-zinc-200 dark:border-zinc-700 hover:border-zinc-300 dark:hover:border-zinc-600 bg-zinc-50 dark:bg-zinc-850 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-all shadow-xs cursor-pointer" title="คัดลอกเลขบัญชี">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect width="14" height="14" x="8" y="8" rx="2" ry="2" stroke-width="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" stroke-width="2"/></svg>
                   </button>
@@ -658,19 +847,8 @@
         <div id="truemoneyTopupView" class="hidden w-full max-w-2xl mx-auto px-4 sm:px-6 py-8 flex flex-col gap-5 animate-page">
           <!-- View Header -->
           <div class="flex items-center gap-3.5">
-            <div class="w-12 h-12 rounded-full bg-[#ff5a00]/10 border border-[#ff5a00]/25 flex items-center justify-center shrink-0 shadow-xs overflow-hidden">
-              <svg viewBox="0 0 100 100" class="w-8 h-8" xmlns="http://www.w3.org/2000/svg">
-                <defs>
-                  <linearGradient id="tmnGradHeader" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stop-color="#ff7a00"/>
-                    <stop offset="100%" stop-color="#e11d48"/>
-                  </linearGradient>
-                </defs>
-                <rect width="100" height="100" rx="26" fill="url(#tmnGradHeader)"/>
-                <path d="M24 64 L46 22 L58 36 L36 78 Z" fill="#ffffff"/>
-                <path d="M76 64 L54 22 L42 36 L64 78 Z" fill="#fef08a"/>
-                <circle cx="50" cy="50" r="12" fill="#ffffff"/>
-              </svg>
+            <div class="w-12 h-12 rounded-2xl overflow-hidden bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 p-1 flex items-center justify-center shrink-0 shadow-sm">
+              <img src="truemoney_logo.png" class="w-full h-full object-contain rounded-xl" alt="TrueMoney" />
             </div>
             <div>
               <h1 class="text-xl sm:text-2xl font-black text-zinc-900 dark:text-white tracking-tight">เติมเงินผ่านทรูมันนี่ วอลเล็ท</h1>
@@ -1155,6 +1333,47 @@
         </div>
       </div>
 
+      <!-- ═══════════ MODAL: CONTACT US ═══════════ -->
+      <div id="contactModal" class="fixed inset-0 z-50 bg-black/70 hidden items-center justify-center p-4">
+        <div class="bg-white dark:bg-[#151518] rounded-2xl border border-zinc-200 dark:border-zinc-800 w-full max-w-md p-6 relative shadow-2xl animate-card text-left">
+          <button onclick="closeContactModal()" class="absolute top-4 right-4 text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-300 text-lg cursor-pointer">✕</button>
+          <div class="flex items-center gap-3 mb-5">
+            <div class="w-10 h-10 rounded-xl bg-cyan-500/10 border border-cyan-500/20 text-cyan-500 flex items-center justify-center font-bold text-lg">
+              💬
+            </div>
+            <div>
+              <h3 class="text-base font-extrabold text-zinc-900 dark:text-white">ติดต่อเรา</h3>
+              <p class="text-xs text-zinc-500 dark:text-zinc-400">ช่องทางการติดต่อทีมงาน NexusStore</p>
+            </div>
+          </div>
+          <div class="space-y-3">
+            <div class="p-3.5 rounded-xl bg-zinc-50 dark:bg-zinc-850 border border-zinc-200 dark:border-zinc-750 flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                <span class="text-2xl">🟢</span>
+                <div>
+                  <div class="text-xs font-bold text-zinc-900 dark:text-white">Line Official</div>
+                  <div class="text-xs text-emerald-600 dark:text-emerald-400 font-semibold">@nexusstore</div>
+                </div>
+              </div>
+              <button onclick="navigator.clipboard.writeText('@nexusstore'); showThemeToast('📋 คัดลอก Line ID เรียบร้อย');" class="px-3 py-1.5 rounded-lg bg-zinc-200 dark:bg-zinc-700 text-xs font-bold text-zinc-800 dark:text-zinc-200 hover:bg-zinc-300 dark:hover:bg-zinc-600 transition-colors cursor-pointer">คัดลอก</button>
+            </div>
+            <div class="p-3.5 rounded-xl bg-zinc-50 dark:bg-zinc-850 border border-zinc-200 dark:border-zinc-750 flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                <span class="text-2xl">🟣</span>
+                <div>
+                  <div class="text-xs font-bold text-zinc-900 dark:text-white">Discord Community</div>
+                  <div class="text-xs text-indigo-500 font-semibold">NexusStore Community</div>
+                </div>
+              </div>
+              <button onclick="navigator.clipboard.writeText('NexusStore Community'); showThemeToast('📋 คัดลอก Discord เรียบร้อย');" class="px-3 py-1.5 rounded-lg bg-zinc-200 dark:bg-zinc-700 text-xs font-bold text-zinc-800 dark:text-zinc-200 hover:bg-zinc-300 dark:hover:bg-zinc-600 transition-colors cursor-pointer">คัดลอก</button>
+            </div>
+          </div>
+          <div class="mt-6">
+            <button onclick="closeContactModal()" class="w-full py-2.5 rounded-xl bg-zinc-900 dark:bg-white text-white dark:text-zinc-950 font-bold text-xs shadow-md transition-all cursor-pointer hover:opacity-90">ปิดหน้าต่าง</button>
+          </div>
+        </div>
+      </div>
+
       <!-- ═══════════ FOOTER ═══════════ -->
       <footer class="w-full mt-auto border-t border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#09090b] text-zinc-500 transition-colors duration-300 relative z-20 shadow-sm">
         <div class="mx-auto flex max-w-7xl flex-col items-center gap-1 px-6 py-4 text-center text-[11px] font-semibold sm:text-xs">
@@ -1251,8 +1470,58 @@
       }
     });
 
-    // ── View Switching: Shop vs Login vs Wheel vs Bank vs TrueMoney ──
+    // ── Active Navigation Pill Manager ──
+    function setActiveNav(navKey) {
+      window.__currentNav = navKey;
+      const keys = ['home', 'products', 'topup', 'wheel', 'history', 'contact'];
+      keys.forEach(k => {
+        const dEl = document.getElementById(`nav-${k}`);
+        const mEl = document.getElementById(`nav-mobile-${k}`);
+        if (dEl) {
+          if (k === navKey) dEl.classList.add('active');
+          else dEl.classList.remove('active');
+        }
+        if (mEl) {
+          if (k === navKey) mEl.classList.add('active');
+          else mEl.classList.remove('active');
+        }
+      });
+    }
+
+    function openContactModal() {
+      setActiveNav('contact');
+      const modal = document.getElementById('contactModal');
+      if (modal) {
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+      }
+    }
+
+    function closeContactModal() {
+      const modal = document.getElementById('contactModal');
+      if (modal) {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+      }
+      restoreCurrentViewNav();
+    }
+
+    function restoreCurrentViewNav() {
+      if (!document.getElementById('wheelView')?.classList.contains('hidden')) {
+        setActiveNav('wheel');
+      } else if (!document.getElementById('bankTopupView')?.classList.contains('hidden') || !document.getElementById('truemoneyTopupView')?.classList.contains('hidden')) {
+        setActiveNav('topup');
+      } else if (!document.getElementById('productsView')?.classList.contains('hidden')) {
+        setActiveNav('products');
+      } else {
+        setActiveNav('home');
+      }
+    }
+
+    // ── View Switching: Home vs Products vs Login vs Wheel vs Bank vs TrueMoney ──
     function hideAllViews() {
+      document.getElementById('homeView')?.classList.add('hidden');
+      document.getElementById('productsView')?.classList.add('hidden');
       document.getElementById('shopView')?.classList.add('hidden');
       document.getElementById('loginView')?.classList.add('hidden');
       document.getElementById('wheelView')?.classList.add('hidden');
@@ -1260,14 +1529,30 @@
       document.getElementById('truemoneyTopupView')?.classList.add('hidden');
     }
 
-    function showShopView(targetAnchor) {
+    function showHomeView() {
       hideAllViews();
-      document.getElementById('shopView')?.classList.remove('hidden');
-      if (targetAnchor) {
-        const el = document.querySelector(targetAnchor);
-        if (el) el.scrollIntoView({ behavior: 'smooth' });
+      document.getElementById('homeView')?.classList.remove('hidden');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      setActiveNav('home');
+    }
+
+    function showProductsView() {
+      hideAllViews();
+      document.getElementById('productsView')?.classList.remove('hidden');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      setActiveNav('products');
+      if (!allProductsList || allProductsList.length === 0) {
+        loadProducts();
       } else {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        renderFilteredProducts();
+      }
+    }
+
+    function showShopView(targetAnchor) {
+      if (targetAnchor && (targetAnchor.includes('product') || targetAnchor.includes('shop'))) {
+        showProductsView();
+      } else {
+        showHomeView();
       }
     }
 
@@ -1281,6 +1566,7 @@
       hideAllViews();
       document.getElementById('wheelView')?.classList.remove('hidden');
       window.scrollTo({ top: 0, behavior: 'smooth' });
+      setActiveNav('wheel');
       initWheel();
       loadRecentWinners();
       updateWheelBalanceDisplay();
@@ -1290,6 +1576,7 @@
       hideAllViews();
       document.getElementById('bankTopupView')?.classList.remove('hidden');
       window.scrollTo({ top: 0, behavior: 'smooth' });
+      setActiveNav('topup');
       initBankTopupView();
     }
 
@@ -1297,6 +1584,7 @@
       hideAllViews();
       document.getElementById('truemoneyTopupView')?.classList.remove('hidden');
       window.scrollTo({ top: 0, behavior: 'smooth' });
+      setActiveNav('topup');
       initTruemoneyTopupView();
     }
 
@@ -1390,44 +1678,111 @@
       showAlert('ออกจากระบบเรียบร้อยแล้ว', false);
     }
 
-    // ── Load Products ──
+    // ── Load Products & Filtering ──
+    let allProductsList = [];
+    let currentCategoryFilter = 'all';
+
     async function loadProducts() {
       const grid = document.getElementById('productsGrid');
+      const featuredGrid = document.getElementById('featuredProductsGrid');
       try {
         const res = await fetch('/api/products');
         const data = await res.json();
         if (!data.success || !data.products || data.products.length === 0) {
-          grid.innerHTML = '<div class="col-span-full text-center py-12 text-zinc-500">ยังไม่มีสินค้าวางจำหน่ายในขณะนี้</div>';
+          if (grid) grid.innerHTML = '<div class="col-span-full text-center py-12 text-zinc-500">ยังไม่มีสินค้าวางจำหน่ายในขณะนี้</div>';
+          if (featuredGrid) featuredGrid.innerHTML = '<div class="col-span-full text-center py-12 text-zinc-500">ยังไม่มีสินค้าวางจำหน่ายในขณะนี้</div>';
           return;
         }
 
-        grid.innerHTML = data.products.map(p => `
-          <div class="group bg-white dark:bg-[#141416] border border-zinc-200 dark:border-zinc-800 hover:border-zinc-400 dark:hover:border-zinc-700 rounded-2xl p-4 shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
-            <div>
-              <div class="relative w-full aspect-video rounded-xl overflow-hidden bg-zinc-100 dark:bg-zinc-900 mb-3">
-                <img src="${p.image || 'logo.jpg'}" alt="${p.name}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" onerror="this.src='logo.jpg'" />
-                <span class="absolute top-2 right-2 px-2.5 py-1 rounded-full text-[11px] font-bold ${p.stock > 0 ? 'bg-emerald-500/90 text-white' : 'bg-red-500/90 text-white'}">
-                  ${p.stock > 0 ? `สต็อก: ${p.stock}` : 'หมดชั่วคราว'}
-                </span>
-              </div>
-              <span class="text-[11px] font-bold text-zinc-500 dark:text-zinc-400 uppercase">${p.category_name || 'ทั่วไป'}</span>
-              <h3 class="font-bold text-base text-zinc-900 dark:text-white line-clamp-1 mt-0.5">${p.name}</h3>
-              <p class="text-xs text-zinc-600 dark:text-zinc-400 line-clamp-2 mt-1">${p.description || ''}</p>
-            </div>
-            <div class="mt-4 pt-3 border-t border-zinc-100 dark:border-zinc-800 flex items-center justify-between">
-              <div>
-                <span class="text-[11px] text-zinc-400 dark:text-zinc-500 block">ราคา</span>
-                <span class="text-lg font-black text-zinc-900 dark:text-white">฿${parseFloat(p.price).toFixed(2)}</span>
-              </div>
-              <button onclick="buyProduct(${p.id}, '${p.name.replace(/'/g, "\\'")}', ${p.price})" class="px-4 py-2 bg-zinc-900 hover:bg-zinc-800 dark:bg-[#27272a] dark:hover:bg-[#38383e] border border-zinc-800 dark:border-[#3f3f46] disabled:opacity-50 disabled:cursor-not-allowed text-white text-xs font-semibold rounded-xl transition-all shadow-sm flex items-center gap-1 cursor-pointer" ${p.stock <= 0 ? 'disabled' : ''}>
-                🛒 ซื้อเลย
-              </button>
-            </div>
-          </div>
-        `).join('');
+        allProductsList = data.products;
+
+        // Render Featured on Home View (up to 4 items)
+        if (featuredGrid) {
+          featuredGrid.innerHTML = data.products.slice(0, 4).map(p => renderProductCardHtml(p)).join('');
+        }
+
+        // Populate Categories in Filter Bar
+        populateCategoryFilters(data.products);
+
+        // Render All on Products View
+        renderFilteredProducts();
       } catch (e) {
-        grid.innerHTML = '<div class="col-span-full text-center py-12 text-red-500">โหลดข้อมูลสินค้าไม่สำเร็จ</div>';
+        if (grid) grid.innerHTML = '<div class="col-span-full text-center py-12 text-red-500">โหลดข้อมูลสินค้าไม่สำเร็จ</div>';
+        if (featuredGrid) featuredGrid.innerHTML = '<div class="col-span-full text-center py-12 text-red-500">โหลดข้อมูลสินค้าไม่สำเร็จ</div>';
       }
+    }
+
+    function renderProductCardHtml(p) {
+      return `
+        <div class="group bg-white dark:bg-[#141416] border border-zinc-200 dark:border-zinc-800 hover:border-zinc-400 dark:hover:border-zinc-700 rounded-2xl p-4 shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
+          <div>
+            <div class="relative w-full aspect-video rounded-xl overflow-hidden bg-zinc-100 dark:bg-zinc-900 mb-3">
+              <img src="${p.image || 'logo.jpg'}" alt="${p.name}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" onerror="this.src='logo.jpg'" />
+              <span class="absolute top-2 right-2 px-2.5 py-1 rounded-full text-[11px] font-bold ${p.stock > 0 ? 'bg-emerald-500/90 text-white' : 'bg-red-500/90 text-white'}">
+                ${p.stock > 0 ? `สต็อก: ${p.stock}` : 'หมดชั่วคราว'}
+              </span>
+            </div>
+            <span class="text-[11px] font-bold text-zinc-500 dark:text-zinc-400 uppercase">${p.category_name || 'ทั่วไป'}</span>
+            <h3 class="font-bold text-base text-zinc-900 dark:text-white line-clamp-1 mt-0.5">${p.name}</h3>
+            <p class="text-xs text-zinc-600 dark:text-zinc-400 line-clamp-2 mt-1">${p.description || ''}</p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-zinc-100 dark:border-zinc-800 flex items-center justify-between">
+            <div>
+              <span class="text-[11px] text-zinc-400 dark:text-zinc-500 block">ราคา</span>
+              <span class="text-lg font-black text-zinc-900 dark:text-white">฿${parseFloat(p.price).toFixed(2)}</span>
+            </div>
+            <button onclick="buyProduct(${p.id}, '${p.name.replace(/'/g, "\\'")}', ${p.price})" class="px-4 py-2 bg-zinc-900 hover:bg-zinc-800 dark:bg-[#27272a] dark:hover:bg-[#38383e] border border-zinc-800 dark:border-[#3f3f46] disabled:opacity-50 disabled:cursor-not-allowed text-white text-xs font-semibold rounded-xl transition-all shadow-sm flex items-center gap-1 cursor-pointer" ${p.stock <= 0 ? 'disabled' : ''}>
+              🛒 ซื้อเลย
+            </button>
+          </div>
+        </div>
+      `;
+    }
+
+    function populateCategoryFilters(products) {
+      const container = document.getElementById('categoryFilterContainer');
+      if (!container) return;
+      const categories = ['all'];
+      products.forEach(p => {
+        const cat = p.category_name || 'ทั่วไป';
+        if (!categories.includes(cat)) categories.push(cat);
+      });
+
+      container.innerHTML = categories.map(cat => `
+        <button onclick="setCategoryFilter('${cat}', this)" class="cat-filter-btn ${cat === currentCategoryFilter ? 'active' : ''} px-3.5 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer whitespace-nowrap">
+          ${cat === 'all' ? 'ทั้งหมด' : cat}
+        </button>
+      `).join('');
+    }
+
+    function setCategoryFilter(category, btn) {
+      currentCategoryFilter = category;
+      document.querySelectorAll('.cat-filter-btn').forEach(b => b.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+      renderFilteredProducts();
+    }
+
+    function filterProducts() {
+      renderFilteredProducts();
+    }
+
+    function renderFilteredProducts() {
+      const grid = document.getElementById('productsGrid');
+      if (!grid) return;
+      const query = (document.getElementById('productSearchInput')?.value || '').trim().toLowerCase();
+
+      const filtered = allProductsList.filter(p => {
+        const matchCat = currentCategoryFilter === 'all' || (p.category_name || 'ทั่วไป') === currentCategoryFilter;
+        const matchQuery = !query || p.name.toLowerCase().includes(query) || (p.description || '').toLowerCase().includes(query);
+        return matchCat && matchQuery;
+      });
+
+      if (filtered.length === 0) {
+        grid.innerHTML = '<div class="col-span-full text-center py-16 text-zinc-400 text-sm">ไม่พบสินค้าที่ตรงกับการค้นหา</div>';
+        return;
+      }
+
+      grid.innerHTML = filtered.map(p => renderProductCardHtml(p)).join('');
     }
 
     // ── Load Settings ──
@@ -1437,8 +1792,10 @@
         const data = await res.json();
         if (data.success && data.settings) {
           window.shopSettings = data.settings;
-          if (data.settings.site_name) document.getElementById('heroTitle').textContent = `ร้านค้า ${data.settings.site_name}`;
-          if (data.settings.announcement) document.getElementById('heroAnnouncement').textContent = data.settings.announcement;
+          const heroTitleEl = document.getElementById('heroTitle');
+          if (heroTitleEl && data.settings.site_name) heroTitleEl.textContent = `ร้านค้า ${data.settings.site_name}`;
+          const heroAnnounceEl = document.getElementById('heroAnnouncement');
+          if (heroAnnounceEl && data.settings.announcement) heroAnnounceEl.textContent = data.settings.announcement;
 
           // Populate Topup Modal fields
           const tmn = data.settings.truemoney_phone || '081-234-5678';
@@ -1925,6 +2282,7 @@
     let activeTopupChannel = 'truemoney';
 
     function openTopupModal() {
+      setActiveNav('topup');
       const user = getCurrentUser();
       const balEl = document.getElementById('topupModalBalance');
       if (balEl) balEl.textContent = user ? parseFloat(user.balance || 0).toFixed(2) : '0.00';
@@ -1941,6 +2299,7 @@
       modal.classList.add('hidden');
       modal.classList.remove('flex');
       hideTopupAlert();
+      restoreCurrentViewNav();
     }
 
     function selectTopupChannel(channel) {
@@ -2318,6 +2677,7 @@
     }
 
     async function openHistoryModal() {
+      setActiveNav('history');
       const modal = document.getElementById('historyModal');
       const content = document.getElementById('historyContent');
       modal.classList.remove('hidden');
@@ -2359,6 +2719,7 @@
     function closeHistoryModal() {
       document.getElementById('historyModal').classList.add('hidden');
       document.getElementById('historyModal').classList.remove('flex');
+      restoreCurrentViewNav();
     }
 
     // ── Login Form Handler (Real Backend API) ──
@@ -2885,13 +3246,15 @@
       window.addEventListener('focus', refreshUserProfile);
       setInterval(refreshUserProfile, 5000);
 
-      // Check URL hash / parameter: if ?view=wheel or #wheel show wheel, if login show login, else shop
+      // Check URL hash / parameter: if ?view=wheel or #wheel show wheel, if products show products, if login show login, else home
       if (window.location.hash === '#wheel' || window.location.search.includes('view=wheel') || window.location.search.includes('wheel')) {
         showWheelView();
+      } else if (window.location.hash === '#products' || window.location.search.includes('products') || window.location.hash === '#productsSection') {
+        showProductsView();
       } else if (window.location.hash === '#login' || window.location.search.includes('login')) {
         showLoginView();
       } else {
-        showShopView();
+        showHomeView();
       }
     });
   </script>
