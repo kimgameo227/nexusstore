@@ -1,0 +1,191 @@
+﻿<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>แดชบอร์ด — Poppy Admin</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    * { font-family: 'Noto Sans Thai', sans-serif; }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col md:flex-row">
+
+  <!-- Sidebar -->
+  <aside class="w-full md:w-64 bg-slate-900 border-r border-slate-800 flex flex-col justify-between shrink-0">
+    <div>
+      <div class="p-6 flex items-center gap-3 border-b border-slate-800">
+        <img src="/logo.jpg" class="w-9 h-9 rounded-lg object-contain" />
+        <div>
+          <h1 class="font-bold text-base text-white">Poppy Admin</h1>
+          <p class="text-[11px] text-zinc-300">ระบบจัดการหลังบ้าน</p>
+        </div>
+      </div>
+      <nav class="p-4 space-y-1.5 text-sm">
+        <a href="/admin/dashboard.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg bg-zinc-800 border border-zinc-700 text-white font-semibold">
+          📊 แดชบอร์ด
+        </a>
+        <a href="/admin/products.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition">
+          📦 สินค้าและสต็อก
+        </a>
+        <a href="/admin/categories.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition">
+          🏷️ หมวดหมู่สินค้า
+        </a>
+        <a href="/admin/users.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition">
+          👥 จัดการสมาชิก & เงิน
+        </a>
+        <a href="/admin/orders.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition">
+          🧾 ประวัติคำสั่งซื้อ
+        </a>
+        <a href="/admin/settings.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition">
+          ⚙️ ตั้งค่าร้านค้า
+        </a>
+      </nav>
+    </div>
+    <div class="p-4 border-t border-slate-800 space-y-2">
+      <a href="/" target="_blank" class="block w-full py-2 px-3 text-center text-xs font-semibold rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition">
+        🌐 ดูหน้าร้าน
+      </a>
+      <button onclick="logout()" class="block w-full py-2 px-3 text-center text-xs font-semibold rounded-lg bg-red-600/20 text-red-400 hover:bg-red-600/30 transition">
+        🚪 ออกจากระบบ
+      </button>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="flex-1 p-6 md:p-8 overflow-y-auto">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+      <div>
+        <h2 class="text-2xl font-bold text-white">ภาพรวมระบบ (Dashboard)</h2>
+        <p class="text-xs text-slate-400 mt-1">สรุปข้อมูลยอดขาย สมาชิก และสต็อกสินค้า</p>
+      </div>
+      <div class="flex items-center gap-2">
+        <span class="inline-block w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+        <span class="text-xs text-slate-400">สถานะ: เซิร์ฟเวอร์ออนไลน์</span>
+      </div>
+    </div>
+
+    <!-- Stat Cards -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
+      <div class="p-5 rounded-xl bg-slate-900 border border-slate-800">
+        <div class="flex items-center justify-between">
+          <p class="text-xs text-slate-400 font-medium">ผู้เข้าชมเว็บทั้งหมด</p>
+          <span class="text-base">🌐</span>
+        </div>
+        <h3 id="statVisitors" class="text-2xl font-bold text-amber-400 mt-2">0</h3>
+        <p class="text-[11px] text-slate-500 mt-1">วันนี้: <span id="statTodayVisitors" class="text-amber-300 font-bold">0</span> ครั้ง</p>
+      </div>
+      <div class="p-5 rounded-xl bg-slate-900 border border-slate-800">
+        <div class="flex items-center justify-between">
+          <p class="text-xs text-slate-400 font-medium">จำนวนสมาชิกทั้งหมด</p>
+          <span class="text-base">👥</span>
+        </div>
+        <h3 id="statUsers" class="text-2xl font-bold text-violet-400 mt-2">0</h3>
+        <p class="text-[11px] text-slate-500 mt-1">ผู้ใช้ที่ลงทะเบียนในระบบ</p>
+      </div>
+      <div class="p-5 rounded-xl bg-slate-900 border border-slate-800">
+        <div class="flex items-center justify-between">
+          <p class="text-xs text-slate-400 font-medium">ยอดขายรวมทั้งหมด</p>
+          <span class="text-base">💰</span>
+        </div>
+        <h3 id="statSales" class="text-2xl font-bold text-zinc-300 mt-2">฿0.00</h3>
+        <p class="text-[11px] text-slate-500 mt-1">จากออเดอร์ทั้งหมดในระบบ</p>
+      </div>
+      <div class="p-5 rounded-xl bg-slate-900 border border-slate-800">
+        <div class="flex items-center justify-between">
+          <p class="text-xs text-slate-400 font-medium">คำสั่งซื้อสำเร็จ</p>
+          <span class="text-base">🛒</span>
+        </div>
+        <h3 id="statOrders" class="text-2xl font-bold text-emerald-400 mt-2">0</h3>
+        <p class="text-[11px] text-slate-500 mt-1">รายการสินค้าที่ขายออกแล้ว</p>
+      </div>
+      <div class="p-5 rounded-xl bg-slate-900 border border-slate-800">
+        <div class="flex items-center justify-between">
+          <p class="text-xs text-slate-400 font-medium">สต็อกพร้อมขาย</p>
+          <span class="text-base">📦</span>
+        </div>
+        <h3 id="statStock" class="text-2xl font-bold text-cyan-400 mt-2">0</h3>
+        <p class="text-[11px] text-slate-500 mt-1">ไอดี/คีย์ที่ยังไม่ถูกซื้อ</p>
+      </div>
+    </div>
+
+    <!-- Recent Orders Table -->
+    <div class="rounded-xl bg-slate-900 border border-slate-800 p-5">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="font-bold text-base text-white">คำสั่งซื้อล่าสุด 10 รายการ</h3>
+        <a href="/admin/orders.html" class="text-xs text-zinc-300 hover:underline">ดูทั้งหมด →</a>
+      </div>
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-xs text-slate-300">
+          <thead class="text-slate-400 border-b border-slate-800 uppercase text-[10px]">
+            <tr>
+              <th class="py-2.5 px-3">เลขที่</th>
+              <th class="py-2.5 px-3">สินค้า</th>
+              <th class="py-2.5 px-3">ราคา</th>
+              <th class="py-2.5 px-3">ไอเทม / โค้ดที่ได้</th>
+              <th class="py-2.5 px-3">เวลาสั่งซื้อ</th>
+            </tr>
+          </thead>
+          <tbody id="recentOrdersBody" class="divide-y divide-slate-800">
+            <tr>
+              <td colspan="5" class="py-4 text-center text-slate-500">กำลังโหลดข้อมูล...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    const token = localStorage.getItem('nexus_token');
+    if (!token) window.location.href = '/admin/index.html';
+
+    function logout() {
+      localStorage.removeItem('nexus_token');
+      localStorage.removeItem('nexus_user');
+      localStorage.removeItem('nexus_role');
+      window.location.href = '/admin/index.html';
+    }
+
+    async function loadDashboard() {
+      try {
+        const res = await fetch('/api/admin/dashboard', {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (res.status === 401 || res.status === 403) return logout();
+        const data = await res.json();
+
+        if (data.success) {
+          document.getElementById('statVisitors').textContent = (data.stats.totalVisitors || 0).toLocaleString();
+          document.getElementById('statTodayVisitors').textContent = (data.stats.todayVisitors || 0).toLocaleString();
+          document.getElementById('statSales').textContent = `฿${data.stats.totalSales.toLocaleString('th-TH', { minimumFractionDigits: 2 })}`;
+          document.getElementById('statOrders').textContent = data.stats.totalOrders.toLocaleString();
+          document.getElementById('statStock').textContent = data.stats.totalStock.toLocaleString();
+          document.getElementById('statUsers').textContent = data.stats.totalUsers.toLocaleString();
+
+          const tbody = document.getElementById('recentOrdersBody');
+          if (!data.recentOrders || data.recentOrders.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="5" class="py-4 text-center text-slate-500">ยังไม่มีรายการสั่งซื้อ</td></tr>';
+            return;
+          }
+
+          tbody.innerHTML = data.recentOrders.map(o => `
+            <tr class="hover:bg-slate-800/50 transition">
+              <td class="py-3 px-3 font-semibold text-slate-400">#${o.id}</td>
+              <td class="py-3 px-3 font-medium text-white">${o.product_name}</td>
+              <td class="py-3 px-3 text-zinc-300 font-semibold">฿${o.price.toFixed(2)}</td>
+              <td class="py-3 px-3 font-mono text-[11px] text-slate-300 max-w-xs truncate">${o.item_content}</td>
+              <td class="py-3 px-3 text-slate-500">${new Date(o.created_at).toLocaleString('th-TH')}</td>
+            </tr>
+          `).join('');
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    loadDashboard();
+  </script>
+</body>
+</html>

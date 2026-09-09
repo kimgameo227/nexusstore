@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>เข้าสู่ระบบผู้ดูแลระบบ — Poppy Admin</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    * { font-family: 'Noto Sans Thai', sans-serif; }
+  </style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen flex items-center justify-center p-4">
+  <div class="w-full max-w-md bg-slate-800/90 backdrop-blur border border-slate-700 rounded-2xl p-8 shadow-2xl">
+    <div class="flex flex-col items-center mb-6">
+      <img src="/logo_wide.png" alt="Poppy" class="h-12 w-auto object-contain mb-2 drop-shadow-[0_2px_12px_rgba(255,255,255,0.2)]" />
+      <h1 class="text-xl font-bold tracking-tight text-white">Poppy Admin Panel</h1>
+      <p class="text-xs text-zinc-400 mt-0.5">ระบบจัดการหลังบ้านร้านค้า</p>
+    </div>
+
+    <div id="alertBox" class="hidden mb-4 p-3 rounded-lg text-xs font-semibold"></div>
+
+    <form id="loginForm" onsubmit="handleAdminLogin(event)" class="space-y-4">
+      <div>
+        <label class="block text-xs font-semibold text-slate-300 mb-1">ชื่อผู้ใช้งาน (Admin)</label>
+        <input type="text" id="username" required placeholder="admin" value="admin"
+          class="w-full px-3.5 py-2.5 rounded-lg bg-slate-700/60 border border-slate-600 text-sm text-white focus:outline-none focus:border-zinc-500 focus:ring-1 focus:ring-zinc-500 transition" />
+      </div>
+
+      <div>
+        <label class="block text-xs font-semibold text-slate-300 mb-1">รหัสผ่าน</label>
+        <input type="password" id="password" required placeholder="••••••••" value="admin123"
+          class="w-full px-3.5 py-2.5 rounded-lg bg-slate-700/60 border border-slate-600 text-sm text-white focus:outline-none focus:border-zinc-500 focus:ring-1 focus:ring-zinc-500 transition" />
+      </div>
+
+      <button type="submit" id="submitBtn"
+        class="w-full py-2.5 rounded-lg bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 text-white font-semibold text-sm transition-all duration-200 shadow hover:shadow-zinc-700/30 active:scale-98">
+        เข้าสู่ระบบจัดการ
+      </button>
+    </form>
+
+    <div class="mt-6 text-center text-xs text-slate-400 border-t border-slate-700 pt-4">
+      <a href="/" class="text-zinc-300 hover:underline">← กลับไปหน้าร้านค้า</a>
+    </div>
+  </div>
+
+  <script>
+    // Auto redirect if already logged in as admin
+    const token = localStorage.getItem('nexus_token');
+    const userRole = localStorage.getItem('nexus_role');
+    if (token && userRole === 'admin') {
+      window.location.href = '/admin/dashboard.html';
+    }
+
+    async function handleAdminLogin(e) {
+      e.preventDefault();
+      const btn = document.getElementById('submitBtn');
+      const alertBox = document.getElementById('alertBox');
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value;
+
+      btn.disabled = true;
+      btn.textContent = 'กำลังตรวจสอบ...';
+      alertBox.className = 'hidden';
+
+      try {
+        const res = await fetch('/api/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, password })
+        });
+        const data = await res.json();
+
+        if (data.success) {
+          if (data.user.role !== 'admin') {
+            alertBox.className = 'block mb-4 p-3 rounded-lg text-xs font-semibold bg-red-900/50 border border-red-500 text-red-200';
+            alertBox.textContent = 'บัญชีนี้ไม่มีสิทธิ์เข้าถึงส่วนผู้ดูแลระบบ';
+            btn.disabled = false;
+            btn.textContent = 'เข้าสู่ระบบจัดการ';
+            return;
+          }
+          localStorage.setItem('nexus_token', data.token);
+          localStorage.setItem('nexus_user', JSON.stringify(data.user));
+          localStorage.setItem('nexus_role', data.user.role);
+          window.location.href = '/admin/dashboard.html';
+        } else {
+          alertBox.className = 'block mb-4 p-3 rounded-lg text-xs font-semibold bg-red-900/50 border border-red-500 text-red-200';
+          alertBox.textContent = data.message || 'เข้าสู่ระบบไม่สำเร็จ';
+          btn.disabled = false;
+          btn.textContent = 'เข้าสู่ระบบจัดการ';
+        }
+      } catch (err) {
+        alertBox.className = 'block mb-4 p-3 rounded-lg text-xs font-semibold bg-red-900/50 border border-red-500 text-red-200';
+        alertBox.textContent = 'ไม่สามารถเชื่อมต่อเซิร์ฟเวอร์ได้';
+        btn.disabled = false;
+        btn.textContent = 'เข้าสู่ระบบจัดการ';
+      }
+    }
+  </script>
+</body>
+</html>

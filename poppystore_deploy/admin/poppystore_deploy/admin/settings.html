@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ตั้งค่าร้านค้า — Poppy Admin</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style> * { font-family: 'Noto Sans Thai', sans-serif; } </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col md:flex-row">
+  <aside class="w-full md:w-64 bg-slate-900 border-r border-slate-800 flex flex-col justify-between shrink-0">
+    <div>
+      <div class="p-6 flex items-center gap-3 border-b border-slate-800">
+        <img src="/logo.jpg" class="w-9 h-9 rounded-lg object-contain" />
+        <div>
+          <h1 class="font-bold text-base text-white">Poppy Admin</h1>
+          <p class="text-[11px] text-zinc-300">ระบบจัดการหลังบ้าน</p>
+        </div>
+      </div>
+      <nav class="p-4 space-y-1.5 text-sm">
+        <a href="/admin/dashboard.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition">📊 แดชบอร์ด</a>
+        <a href="/admin/products.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition">📦 สินค้าและสต็อก</a>
+        <a href="/admin/categories.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition">🏷️ หมวดหมู่สินค้า</a>
+        <a href="/admin/users.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition">👥 จัดการสมาชิก & เงิน</a>
+        <a href="/admin/orders.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition">🧾 ประวัติคำสั่งซื้อ</a>
+        <a href="/admin/settings.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg bg-zinc-800 border border-zinc-700 text-white font-semibold">⚙️ ตั้งค่าร้านค้า</a>
+      </nav>
+    </div>
+    <div class="p-4 border-t border-slate-800 space-y-2">
+      <a href="/" target="_blank" class="block w-full py-2 px-3 text-center text-xs font-semibold rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition">🌐 ดูหน้าร้าน</a>
+      <button onclick="logout()" class="block w-full py-2 px-3 text-center text-xs font-semibold rounded-lg bg-red-600/20 text-red-400 hover:bg-red-600/30 transition">🚪 ออกจากระบบ</button>
+    </div>
+  </aside>
+
+  <main class="flex-1 p-6 md:p-8 overflow-y-auto">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+      <div>
+        <h2 class="text-2xl font-bold text-white">ตั้งค่าร้านค้าทั่วไป</h2>
+        <p class="text-xs text-slate-400 mt-1">แก้ไขชื่อร้านค้า ข้อความประกาศ และเบอร์ติดต่อหรือพร้อมเพย์</p>
+      </div>
+    </div>
+
+    <div class="max-w-2xl bg-slate-900 border border-slate-800 rounded-xl p-6">
+      <form onsubmit="saveSettings(event)" class="space-y-4 text-xs">
+        <div>
+          <label class="block font-semibold text-slate-300 mb-1">ชื่อร้านค้า (Site Name)</label>
+          <input type="text" id="site_name" class="w-full px-3 py-2 rounded-lg bg-slate-800 border border-slate-700 text-white focus:outline-none focus:border-zinc-500" />
+        </div>
+        <div>
+          <label class="block font-semibold text-slate-300 mb-1">ข้อความประกาศหน้าร้าน</label>
+          <textarea id="announcement" rows="3" class="w-full px-3 py-2 rounded-lg bg-slate-800 border border-slate-700 text-white focus:outline-none focus:border-zinc-500"></textarea>
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block font-semibold text-slate-300 mb-1">เบอร์ TrueMoney Wallet</label>
+            <input type="text" id="truemoney_phone" class="w-full px-3 py-2 rounded-lg bg-slate-800 border border-slate-700 text-white focus:outline-none focus:border-zinc-500" />
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-300 mb-1">เบอร์ / เลขบัญชี พร้อมเพย์ (PromptPay)</label>
+            <input type="text" id="promptpay_number" class="w-full px-3 py-2 rounded-lg bg-slate-800 border border-slate-700 text-white focus:outline-none focus:border-zinc-500" />
+          </div>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
+          <div>
+            <label class="block font-semibold text-slate-300 mb-1">ชื่อธนาคาร (เช่น กสิกรไทย)</label>
+            <input type="text" id="bank_name" placeholder="ธนาคารกสิกรไทย (KBANK)" class="w-full px-3 py-2 rounded-lg bg-slate-800 border border-slate-700 text-white focus:outline-none focus:border-zinc-500" />
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-300 mb-1">เลขที่บัญชีธนาคาร</label>
+            <input type="text" id="bank_account_number" placeholder="123-4-56789-0" class="w-full px-3 py-2 rounded-lg bg-slate-800 border border-slate-700 text-white focus:outline-none focus:border-zinc-500" />
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-300 mb-1">ชื่อเจ้าของบัญชี</label>
+            <input type="text" id="bank_account_name" placeholder="นาย ป๊อปปี้ สโตร์" class="w-full px-3 py-2 rounded-lg bg-slate-800 border border-slate-700 text-white focus:outline-none focus:border-zinc-500" />
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-300 mb-1">SlipOK Branch ID (ไม่บังคับ)</label>
+            <input type="text" id="slipok_branch_id" placeholder="เช่น 12345" class="w-full px-3 py-2 rounded-lg bg-slate-800 border border-slate-700 text-white focus:outline-none focus:border-zinc-500" />
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-300 mb-1">SlipOK API Key (ไม่บังคับ)</label>
+            <input type="text" id="slipok_api_key" placeholder="API Key จากเว็บ slipok.com" class="w-full px-3 py-2 rounded-lg bg-slate-800 border border-slate-700 text-white focus:outline-none focus:border-zinc-500" />
+          </div>
+        </div>
+        <div class="pt-4 border-t border-slate-800">
+          <button type="submit" class="px-6 py-2.5 rounded-lg bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 text-white font-semibold shadow transition">
+            💾 บันทึกการเปลี่ยนแปลง
+          </button>
+        </div>
+      </form>
+    </div>
+  </main>
+
+  <script>
+    const token = localStorage.getItem('nexus_token');
+    if (!token) window.location.href = '/admin/index.html';
+    function logout() { localStorage.clear(); window.location.href = '/admin/index.html'; }
+
+    async function loadSettings() {
+      const res = await fetch('/api/admin/settings', { headers: { 'Authorization': `Bearer ${token}` } });
+      if (res.status === 401 || res.status === 403) return logout();
+      const data = await res.json();
+      if (data.success && data.settings) {
+        document.getElementById('site_name').value = data.settings.site_name || 'Poppy';
+        document.getElementById('announcement').value = data.settings.announcement || '';
+        document.getElementById('truemoney_phone').value = data.settings.truemoney_phone || '';
+        document.getElementById('promptpay_number').value = data.settings.promptpay_number || '';
+        document.getElementById('bank_name').value = data.settings.bank_name || '';
+        document.getElementById('bank_account_number').value = data.settings.bank_account_number || '';
+        document.getElementById('bank_account_name').value = data.settings.bank_account_name || '';
+        document.getElementById('slipok_branch_id').value = data.settings.slipok_branch_id || '';
+        document.getElementById('slipok_api_key').value = data.settings.slipok_api_key || '';
+      }
+    }
+
+    async function saveSettings(e) {
+      e.preventDefault();
+      const body = {
+        site_name: document.getElementById('site_name').value,
+        announcement: document.getElementById('announcement').value,
+        truemoney_phone: document.getElementById('truemoney_phone').value,
+        promptpay_number: document.getElementById('promptpay_number').value,
+        bank_name: document.getElementById('bank_name').value,
+        bank_account_number: document.getElementById('bank_account_number').value,
+        bank_account_name: document.getElementById('bank_account_name').value,
+        slipok_branch_id: document.getElementById('slipok_branch_id').value,
+        slipok_api_key: document.getElementById('slipok_api_key').value
+      };
+
+      const res = await fetch('/api/admin/settings', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+        body: JSON.stringify(body)
+      });
+      const data = await res.json();
+      alert(data.message || 'บันทึกสำเร็จ');
+    }
+
+    loadSettings();
+  </script>
+</body>
+</html>

@@ -1,0 +1,341 @@
+﻿<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>จัดการสินค้าและสต็อก — Poppy Admin</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style> * { font-family: 'Noto Sans Thai', sans-serif; } </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col md:flex-row">
+
+  <!-- Sidebar -->
+  <aside class="w-full md:w-64 bg-slate-900 border-r border-slate-800 flex flex-col justify-between shrink-0">
+    <div>
+      <div class="p-6 flex items-center gap-3 border-b border-slate-800">
+        <img src="/logo.jpg" class="w-9 h-9 rounded-lg object-contain" />
+        <div>
+          <h1 class="font-bold text-base text-white">Poppy Admin</h1>
+          <p class="text-[11px] text-zinc-300">ระบบจัดการหลังบ้าน</p>
+        </div>
+      </div>
+      <nav class="p-4 space-y-1.5 text-sm">
+        <a href="/admin/dashboard.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition">
+          📊 แดชบอร์ด
+        </a>
+        <a href="/admin/products.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg bg-zinc-800 border border-zinc-700 text-white font-semibold">
+          📦 สินค้าและสต็อก
+        </a>
+        <a href="/admin/categories.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition">
+          🏷️ หมวดหมู่สินค้า
+        </a>
+        <a href="/admin/users.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition">
+          👥 จัดการสมาชิก & เงิน
+        </a>
+        <a href="/admin/orders.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition">
+          🧾 ประวัติคำสั่งซื้อ
+        </a>
+        <a href="/admin/settings.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition">
+          ⚙️ ตั้งค่าร้านค้า
+        </a>
+      </nav>
+    </div>
+    <div class="p-4 border-t border-slate-800 space-y-2">
+      <a href="/" target="_blank" class="block w-full py-2 px-3 text-center text-xs font-semibold rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition">
+        🌐 ดูหน้าร้าน
+      </a>
+      <button onclick="logout()" class="block w-full py-2 px-3 text-center text-xs font-semibold rounded-lg bg-red-600/20 text-red-400 hover:bg-red-600/30 transition">
+        🚪 ออกจากระบบ
+      </button>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="flex-1 p-6 md:p-8 overflow-y-auto">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+      <div>
+        <h2 class="text-2xl font-bold text-white">จัดการสินค้าและสต็อก</h2>
+        <p class="text-xs text-slate-400 mt-1">เพิ่ม ลบ แก้ไข และเติมไอดีหรือคีย์สินค้าลงในระบบ</p>
+      </div>
+      <button onclick="openAddModal()" class="px-4 py-2 rounded-lg bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 text-white font-semibold text-xs transition flex items-center gap-2 shadow">
+        ➕ เพิ่มสินค้าใหม่
+      </button>
+    </div>
+
+    <!-- Products Table -->
+    <div class="rounded-xl bg-slate-900 border border-slate-800 overflow-hidden">
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-xs text-slate-300">
+          <thead class="bg-slate-800/60 text-slate-400 uppercase text-[10px] border-b border-slate-800">
+            <tr>
+              <th class="py-3 px-4">รูปภาพ</th>
+              <th class="py-3 px-4">ชื่อสินค้า</th>
+              <th class="py-3 px-4">หมวดหมู่</th>
+              <th class="py-3 px-4">ราคา</th>
+              <th class="py-3 px-4">สต็อกคงเหลือ</th>
+              <th class="py-3 px-4 text-center">จัดการ</th>
+            </tr>
+          </thead>
+          <tbody id="productsBody" class="divide-y divide-slate-800">
+            <tr><td colspan="6" class="py-6 text-center text-slate-500">กำลังโหลดรายการสินค้า...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <!-- Add/Edit Product Modal -->
+  <div id="productModal" class="fixed inset-0 bg-black/70 backdrop-blur-xs flex items-center justify-center p-4 z-50 hidden">
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-lg p-6 shadow-2xl">
+      <div class="flex items-center justify-between mb-4 border-b border-slate-800 pb-3">
+        <h3 id="modalTitle" class="font-bold text-lg text-white">เพิ่มสินค้าใหม่</h3>
+        <button onclick="closeProductModal()" class="text-slate-400 hover:text-white">✕</button>
+      </div>
+      <form id="productForm" onsubmit="saveProduct(event)" class="space-y-3 text-xs">
+        <input type="hidden" id="editProductId" />
+        <div>
+          <label class="block font-semibold text-slate-300 mb-1">ชื่อสินค้า</label>
+          <input type="text" id="prodName" required class="w-full px-3 py-2 rounded-lg bg-slate-800 border border-slate-700 text-white focus:outline-none focus:border-zinc-500" placeholder="เช่น ไอดีไก่ตันผลเสือ" />
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-semibold text-slate-300 mb-1">หมวดหมู่</label>
+            <select id="prodCategory" class="w-full px-3 py-2 rounded-lg bg-slate-800 border border-slate-700 text-white focus:outline-none focus:border-zinc-500"></select>
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-300 mb-1">ราคา (บาท)</label>
+            <input type="number" step="0.01" id="prodPrice" required class="w-full px-3 py-2 rounded-lg bg-slate-800 border border-slate-700 text-white focus:outline-none focus:border-zinc-500" placeholder="100.00" />
+          </div>
+        </div>
+        <div>
+          <label class="block font-semibold text-slate-300 mb-1">รูปภาพสินค้า (URL หรือไฟล์ในเว็บ)</label>
+          <input type="text" id="prodImage" class="w-full px-3 py-2 rounded-lg bg-slate-800 border border-slate-700 text-white focus:outline-none focus:border-zinc-500" value="logo.jpg" />
+        </div>
+        <div>
+          <label class="block font-semibold text-slate-300 mb-1">รายละเอียดสินค้า</label>
+          <textarea id="prodDesc" rows="3" class="w-full px-3 py-2 rounded-lg bg-slate-800 border border-slate-700 text-white focus:outline-none focus:border-zinc-500" placeholder="รายละเอียดหรือข้อมูลไอดี..."></textarea>
+        </div>
+        <div class="flex justify-end gap-2 pt-3 border-t border-slate-800">
+          <button type="button" onclick="closeProductModal()" class="px-4 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold">ยกเลิก</button>
+          <button type="submit" class="px-5 py-2 rounded-lg bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 text-white font-semibold shadow">บันทึกข้อมูล</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Stock Modal -->
+  <div id="stockModal" class="fixed inset-0 bg-black/70 backdrop-blur-xs flex items-center justify-center p-4 z-50 hidden">
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-xl p-6 shadow-2xl">
+      <div class="flex items-center justify-between mb-4 border-b border-slate-800 pb-3">
+        <h3 id="stockModalTitle" class="font-bold text-lg text-white">เติมสต็อกสินค้า</h3>
+        <button onclick="closeStockModal()" class="text-slate-400 hover:text-white">✕</button>
+      </div>
+      <div class="space-y-4 text-xs">
+        <div>
+          <label class="block font-semibold text-slate-300 mb-1">เพิ่มข้อมูลไอดี/โค้ด (1 บรรทัด = 1 ชิ้น)</label>
+          <textarea id="bulkStockInput" rows="6" class="w-full px-3 py-2 font-mono text-[11px] rounded-lg bg-slate-800 border border-slate-700 text-white focus:outline-none focus:border-zinc-500" placeholder="user1:pass1&#10;user2:pass2&#10;CODE-XXXX-YYYY"></textarea>
+          <p class="text-[10px] text-slate-500 mt-1">ระบบจะแยกตามบรรทัดโดยอัตโนมัติ</p>
+        </div>
+        <div class="flex justify-between items-center">
+          <span id="currentStockCount" class="text-xs text-zinc-300 font-semibold"></span>
+          <button onclick="submitBulkStock()" class="px-5 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-semibold shadow">
+            📥 บันทึกการเติมสต็อก
+          </button>
+        </div>
+        <div class="border-t border-slate-800 pt-3">
+          <p class="font-semibold text-slate-300 mb-2">รายการสต็อกปัจจุบันของสินค้านี้:</p>
+          <div id="stockItemsList" class="max-h-48 overflow-y-auto space-y-1 pr-1"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const token = localStorage.getItem('nexus_token');
+    if (!token) window.location.href = '/admin/index.html';
+
+    function logout() {
+      localStorage.clear();
+      window.location.href = '/admin/index.html';
+    }
+
+    let categoriesCache = [];
+    let currentStockProductId = null;
+
+    async function fetchCategories() {
+      const res = await fetch('/api/admin/categories', { headers: { 'Authorization': `Bearer ${token}` } });
+      const data = await res.json();
+      if (data.success) {
+        categoriesCache = data.categories;
+        const select = document.getElementById('prodCategory');
+        select.innerHTML = '<option value="">-- เลือกหมวดหมู่ --</option>' +
+          categoriesCache.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+      }
+    }
+
+    async function loadProducts() {
+      try {
+        const res = await fetch('/api/admin/products', { headers: { 'Authorization': `Bearer ${token}` } });
+        if (res.status === 401 || res.status === 403) return logout();
+        const data = await res.json();
+        const tbody = document.getElementById('productsBody');
+
+        if (!data.products || data.products.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="6" class="py-6 text-center text-slate-500">ยังไม่มีสินค้า</td></tr>';
+          return;
+        }
+
+        tbody.innerHTML = data.products.map(p => `
+          <tr class="hover:bg-slate-800/40 transition">
+            <td class="py-3 px-4">
+              <img src="/${p.image || 'logo.jpg'}" class="w-10 h-10 rounded-lg object-contain bg-slate-800 border border-slate-700" />
+            </td>
+            <td class="py-3 px-4">
+              <p class="font-semibold text-white">${p.name}</p>
+              <p class="text-[11px] text-slate-500 truncate max-w-xs">${p.description || '-'}</p>
+            </td>
+            <td class="py-3 px-4 text-slate-400">${p.category_name}</td>
+            <td class="py-3 px-4 font-bold text-zinc-300">฿${p.price.toFixed(2)}</td>
+            <td class="py-3 px-4">
+              <span class="px-2.5 py-1 rounded-md text-[11px] font-bold ${p.stock > 0 ? 'bg-emerald-500/20 text-emerald-400' : 'bg-red-500/20 text-red-400'}">
+                ${p.stock} ชิ้น
+              </span>
+            </td>
+            <td class="py-3 px-4 text-center space-x-1.5 whitespace-nowrap">
+              <button onclick="openStockModal(${p.id}, '${p.name.replace(/'/g, "\\'")}')" class="px-2.5 py-1.5 rounded-md bg-emerald-600/20 text-emerald-400 hover:bg-emerald-600/30 font-semibold transition">
+                📦 เติมสต็อก
+              </button>
+              <button onclick="deleteProduct(${p.id})" class="px-2.5 py-1.5 rounded-md bg-red-600/20 text-red-400 hover:bg-red-600/30 font-semibold transition">
+                🗑️ ลบ
+              </button>
+            </td>
+          </tr>
+        `).join('');
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    function openAddModal() {
+      document.getElementById('modalTitle').textContent = 'เพิ่มสินค้าใหม่';
+      document.getElementById('editProductId').value = '';
+      document.getElementById('prodName').value = '';
+      document.getElementById('prodDesc').value = '';
+      document.getElementById('prodPrice').value = '';
+      document.getElementById('prodImage').value = 'logo.jpg';
+      document.getElementById('productModal').classList.remove('hidden');
+    }
+
+    function closeProductModal() {
+      document.getElementById('productModal').classList.add('hidden');
+    }
+
+    async function saveProduct(e) {
+      e.preventDefault();
+      const body = {
+        name: document.getElementById('prodName').value,
+        category_id: document.getElementById('prodCategory').value,
+        price: document.getElementById('prodPrice').value,
+        image: document.getElementById('prodImage').value,
+        description: document.getElementById('prodDesc').value
+      };
+
+      const res = await fetch('/api/admin/products', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+        body: JSON.stringify(body)
+      });
+      const data = await res.json();
+      if (data.success) {
+        closeProductModal();
+        loadProducts();
+      } else {
+        alert(data.message);
+      }
+    }
+
+    async function deleteProduct(id) {
+      if (!confirm('ยืนยันลบสินค้านี้และสต็อกทั้งหมดหรือไม่?')) return;
+      const res = await fetch(`/api/admin/products/${id}`, {
+        method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      const data = await res.json();
+      if (data.success) loadProducts();
+    }
+
+    async function openStockModal(productId, productName) {
+      currentStockProductId = productId;
+      document.getElementById('stockModalTitle').textContent = `เติมสต็อก: ${productName}`;
+      document.getElementById('bulkStockInput').value = '';
+      document.getElementById('stockModal').classList.remove('hidden');
+      loadStockItems(productId);
+    }
+
+    function closeStockModal() {
+      document.getElementById('stockModal').classList.add('hidden');
+      loadProducts();
+    }
+
+    async function loadStockItems(productId) {
+      const res = await fetch(`/api/admin/products/${productId}/items`, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      const data = await res.json();
+      const list = document.getElementById('stockItemsList');
+      const countSpan = document.getElementById('currentStockCount');
+
+      if (data.success) {
+        const available = data.items.filter(i => !i.is_sold);
+        countSpan.textContent = `สต็อกพร้อมขาย: ${available.length} ชิ้น (ขายแล้ว: ${data.items.length - available.length})`;
+
+        if (data.items.length === 0) {
+          list.innerHTML = '<p class="text-slate-500">ไม่มีรายการสต็อก</p>';
+          return;
+        }
+
+        list.innerHTML = data.items.map(i => `
+          <div class="flex items-center justify-between p-2 rounded bg-slate-800/60 border border-slate-700/50">
+            <span class="font-mono text-[10px] ${i.is_sold ? 'line-through text-slate-500' : 'text-emerald-400'} truncate max-w-sm">
+              ${i.content} ${i.is_sold ? '(ขายแล้ว)' : ''}
+            </span>
+            <button onclick="deleteStockItem(${i.id})" class="text-red-400 hover:text-red-300 text-[11px] px-1.5">✕</button>
+          </div>
+        `).join('');
+      }
+    }
+
+    async function submitBulkStock() {
+      const text = document.getElementById('bulkStockInput').value.trim();
+      if (!text) return alert('กรุณากรอกไอเทมหรือคีย์ที่ต้องการเติม');
+
+      const res = await fetch(`/api/admin/products/${currentStockProductId}/items`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+        body: JSON.stringify({ itemsText: text })
+      });
+      const data = await res.json();
+      if (data.success) {
+        alert(data.message);
+        document.getElementById('bulkStockInput').value = '';
+        loadStockItems(currentStockProductId);
+      } else {
+        alert(data.message);
+      }
+    }
+
+    async function deleteStockItem(id) {
+      if (!confirm('ยืนยันลบไอเทมนี้?')) return;
+      await fetch(`/api/admin/items/${id}`, {
+        method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      loadStockItems(currentStockProductId);
+    }
+
+    fetchCategories();
+    loadProducts();
+  </script>
+</body>
+</html>

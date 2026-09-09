@@ -1,0 +1,360 @@
+﻿<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>จัดการสมาชิกและรหัสผ่าน — Poppy Admin</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style> * { font-family: 'Noto Sans Thai', sans-serif; } </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col md:flex-row">
+  <!-- Sidebar -->
+  <aside class="w-full md:w-64 bg-slate-900 border-r border-slate-800 flex flex-col justify-between shrink-0">
+    <div>
+      <div class="p-6 flex items-center gap-3 border-b border-slate-800">
+        <img src="/logo.jpg" class="w-9 h-9 rounded-lg object-contain" />
+        <div>
+          <h1 class="font-bold text-base text-white">Poppy Admin</h1>
+          <p class="text-[11px] text-zinc-300">ระบบจัดการหลังบ้าน</p>
+        </div>
+      </div>
+      <nav class="p-4 space-y-1.5 text-sm">
+        <a href="/admin/dashboard.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition">📊 แดชบอร์ด</a>
+        <a href="/admin/products.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition">📦 สินค้าและสต็อก</a>
+        <a href="/admin/categories.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition">🏷️ หมวดหมู่สินค้า</a>
+        <a href="/admin/users.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg bg-zinc-800 border border-zinc-700 text-white font-semibold">👥 จัดการสมาชิก &amp; เงิน</a>
+        <a href="/admin/orders.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition">🧾 ประวัติคำสั่งซื้อ</a>
+        <a href="/admin/settings.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition">⚙️ ตั้งค่าร้านค้า</a>
+      </nav>
+    </div>
+    <div class="p-4 border-t border-slate-800 space-y-2">
+      <a href="/" target="_blank" class="block w-full py-2 px-3 text-center text-xs font-semibold rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition">🌐 ดูหน้าร้าน</a>
+      <button onclick="logout()" class="block w-full py-2 px-3 text-center text-xs font-semibold rounded-lg bg-red-600/20 text-red-400 hover:bg-red-600/30 transition">🚪 ออกจากระบบ</button>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="flex-1 p-6 md:p-8 overflow-y-auto">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+      <div>
+        <h2 class="text-2xl font-bold text-white">จัดการสมาชิกและรหัสผ่านผู้ใช้</h2>
+        <p class="text-xs text-slate-400 mt-1">ดูชื่อผู้ใช้, รหัสผ่านของคนที่สมัคร, ปรับยอดเงิน หรือแก้ไขรหัสผ่านได้ทันที</p>
+      </div>
+      <button onclick="loadUsers()" class="px-3.5 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-bold text-slate-300 transition flex items-center gap-1.5 w-fit">
+        🔄 รีเฟรชข้อมูล
+      </button>
+    </div>
+
+    <!-- Quick Stats Cards -->
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+      <div class="p-4 rounded-xl bg-slate-900 border border-slate-800 flex items-center gap-3">
+        <div class="w-10 h-10 rounded-lg bg-violet-500/20 text-violet-400 flex items-center justify-center text-xl">👥</div>
+        <div>
+          <span class="text-[11px] text-slate-400 font-medium block">สมาชิกที่ลงทะเบียน</span>
+          <span id="statTotalUsers" class="text-lg font-bold text-white">0 คน</span>
+        </div>
+      </div>
+      <div class="p-4 rounded-xl bg-slate-900 border border-slate-800 flex items-center gap-3">
+        <div class="w-10 h-10 rounded-lg bg-amber-500/20 text-amber-400 flex items-center justify-center text-xl">🌐</div>
+        <div>
+          <span class="text-[11px] text-slate-400 font-medium block">ผู้เข้าชมเว็บไซต์ทั้งหมด</span>
+          <span id="statTotalVisitors" class="text-lg font-bold text-amber-400">0 ครั้ง</span>
+        </div>
+      </div>
+      <div class="p-4 rounded-xl bg-slate-900 border border-slate-800 flex items-center gap-3">
+        <div class="w-10 h-10 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xl">💰</div>
+        <div>
+          <span class="text-[11px] text-slate-400 font-medium block">ยอดเงินคงเหลือรวมของผู้ใช้</span>
+          <span id="statTotalBalances" class="text-lg font-bold text-emerald-400">฿0.00</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Users Table -->
+    <div class="rounded-xl bg-slate-900 border border-slate-800 overflow-hidden shadow-xl">
+      <div class="p-4 border-b border-slate-800 flex items-center justify-between">
+        <h3 class="font-bold text-sm text-white">รายชื่อสมาชิกทั้งหมด (<span id="userCountBadge">0</span>)</h3>
+        <span class="text-[11px] text-zinc-300 bg-zinc-800 border border-zinc-700 px-2.5 py-1 rounded-full font-bold">
+          🔒 แสดงรหัสผ่านสำหรับแอดมิน
+        </span>
+      </div>
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-xs text-slate-300">
+          <thead class="bg-slate-800/50 text-slate-400 uppercase text-[10px] border-b border-slate-800">
+            <tr>
+              <th class="py-3 px-4">UID</th>
+              <th class="py-3 px-4">ชื่อผู้ใช้ (Username)</th>
+              <th class="py-3 px-4">รหัสผ่าน (Password)</th>
+              <th class="py-3 px-4">สถานะ</th>
+              <th class="py-3 px-4">ยอดเงินคงเหลือ</th>
+              <th class="py-3 px-4">วันที่สมัคร</th>
+              <th class="py-3 px-4 text-center">จัดการ</th>
+            </tr>
+          </thead>
+          <tbody id="usersBody" class="divide-y divide-slate-800">
+            <tr><td colspan="7" class="py-8 text-center text-slate-500">กำลังโหลดรายชื่อสมาชิก...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <!-- Balance Adjustment Modal -->
+  <div id="balanceModal" class="fixed inset-0 bg-black/70 backdrop-blur-xs flex items-center justify-center p-4 z-50 hidden">
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-sm p-6 shadow-2xl">
+      <h3 class="font-bold text-base text-white mb-1">ปรับยอดเงินสมาชิก</h3>
+      <p id="balanceUserTarget" class="text-xs text-zinc-300 mb-4 font-semibold"></p>
+      <form onsubmit="submitBalance(event)" class="space-y-3 text-xs">
+        <input type="hidden" id="balanceUserId" />
+        <div>
+          <label class="block font-semibold text-slate-300 mb-1">ประเภทการปรับ</label>
+          <select id="balanceAction" class="w-full px-3 py-2 rounded-lg bg-slate-800 border border-slate-700 text-white">
+            <option value="add">➕ เติมเพิ่ม (บวกเพิ่มจากเดิม)</option>
+            <option value="set">✏️ กำหนดยอดเงินใหม่โดยตรง</option>
+          </select>
+        </div>
+        <div>
+          <label class="block font-semibold text-slate-300 mb-1">จำนวนเงิน (บาท)</label>
+          <input type="number" step="0.01" id="balanceAmount" required class="w-full px-3 py-2 rounded-lg bg-slate-800 border border-slate-700 text-white" placeholder="100.00" />
+        </div>
+        <div class="flex justify-end gap-2 pt-3 border-t border-slate-800">
+          <button type="button" onclick="closeBalanceModal()" class="px-4 py-2 rounded-lg bg-slate-800 text-slate-300 cursor-pointer">ยกเลิก</button>
+          <button type="submit" class="px-5 py-2 rounded-lg bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 text-white font-semibold cursor-pointer">บันทึกยอดเงิน</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Change Password Modal -->
+  <div id="passwordModal" class="fixed inset-0 bg-black/70 backdrop-blur-xs flex items-center justify-center p-4 z-50 hidden">
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-sm p-6 shadow-2xl">
+      <h3 class="font-bold text-base text-white mb-1">เปลี่ยนรหัสผ่านสมาชิก</h3>
+      <p id="passwordUserTarget" class="text-xs text-zinc-300 mb-4 font-semibold"></p>
+      <form onsubmit="submitPasswordChange(event)" class="space-y-3 text-xs">
+        <input type="hidden" id="passwordUserId" />
+        <div>
+          <label class="block font-semibold text-slate-300 mb-1">รหัสผ่านใหม่</label>
+          <input type="text" id="newPasswordInput" required minlength="4" class="w-full px-3 py-2 rounded-lg bg-slate-800 border border-slate-700 text-white font-mono" placeholder="กรอกรหัสผ่านใหม่อย่างน้อย 4 ตัวอักษร" />
+        </div>
+        <div class="flex justify-end gap-2 pt-3 border-t border-slate-800">
+          <button type="button" onclick="closePasswordModal()" class="px-4 py-2 rounded-lg bg-slate-800 text-slate-300 cursor-pointer">ยกเลิก</button>
+          <button type="submit" class="px-5 py-2 rounded-lg bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 text-white font-semibold cursor-pointer">บันทึกรหัสผ่าน</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const token = localStorage.getItem('nexus_token');
+    if (!token) window.location.href = '/admin/index.html';
+    function logout() { localStorage.clear(); window.location.href = '/admin/index.html'; }
+
+    async function loadUsers() {
+      try {
+        // Fetch users
+        const res = await fetch('/api/admin/users', { headers: { 'Authorization': `Bearer ${token}` } });
+        if (res.status === 401 || res.status === 403) return logout();
+        const data = await res.json();
+
+        // Fetch dashboard for visitors stat
+        const dashRes = await fetch('/api/admin/dashboard', { headers: { 'Authorization': `Bearer ${token}` } });
+        const dashData = await dashRes.json();
+        if (dashData.success && dashData.stats) {
+          document.getElementById('statTotalVisitors').textContent = `${(dashData.stats.totalVisitors || 0).toLocaleString()} ครั้ง`;
+        }
+
+        const tbody = document.getElementById('usersBody');
+
+        if (!data.users || data.users.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="7" class="py-6 text-center text-slate-500">ไม่มีสมาชิกในระบบ</td></tr>';
+          return;
+        }
+
+        document.getElementById('statTotalUsers').textContent = `${data.users.length} คน`;
+        document.getElementById('userCountBadge').textContent = data.users.length;
+        
+        const totalBal = data.users.reduce((sum, u) => sum + (parseFloat(u.balance) || 0), 0);
+        document.getElementById('statTotalBalances').textContent = `฿${totalBal.toFixed(2)}`;
+
+        tbody.innerHTML = data.users.map(u => {
+          const rawPwd = u.plain_password || u.password || 'admin123';
+          return `
+            <tr class="hover:bg-slate-800/40 transition">
+              <td class="py-3.5 px-4 font-mono text-slate-400">#${u.id}</td>
+              <td class="py-3.5 px-4">
+                <div class="flex items-center gap-2">
+                  <div class="w-6 h-6 rounded-full bg-slate-800 text-zinc-300 flex items-center justify-center font-bold text-xs">
+                    ${(u.username || 'U')[0].toUpperCase()}
+                  </div>
+                  <span class="font-bold text-white">${u.username}</span>
+                </div>
+              </td>
+              <td class="py-3.5 px-4">
+                <div class="flex items-center gap-1.5 bg-slate-950/80 px-2.5 py-1 rounded-lg border border-slate-800 w-fit">
+                  <span id="pwd-${u.id}" class="font-mono text-zinc-200 font-bold select-all tracking-wider">••••••••</span>
+                  <button onclick="togglePasswordView(${u.id}, '${rawPwd.replace(/'/g, "\\'")}')" class="text-slate-400 hover:text-white px-1 cursor-pointer" title="ดู/ซ่อนรหัสผ่าน">
+                    <span id="eye-${u.id}">👁️</span>
+                  </button>
+                  <button onclick="copyPasswordText('${rawPwd.replace(/'/g, "\\'")}', this)" class="text-slate-400 hover:text-zinc-300 px-1 cursor-pointer" title="คัดลอกรหัสผ่าน">
+                    📋
+                  </button>
+                </div>
+              </td>
+              <td class="py-3.5 px-4">
+                <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold ${
+                  u.role === 'admin' 
+                    ? 'bg-zinc-800 border border-zinc-600 text-zinc-200' 
+                    : 'bg-slate-800 text-slate-400 border border-slate-700/50'
+                }">
+                  ${u.role}
+                </span>
+              </td>
+              <td class="py-3.5 px-4 font-extrabold text-emerald-400 text-sm">
+                ฿${parseFloat(u.balance || 0).toFixed(2)}
+              </td>
+              <td class="py-3.5 px-4 text-slate-500 text-[11px]">
+                ${new Date(u.created_at).toLocaleDateString('th-TH', { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
+              </td>
+              <td class="py-3.5 px-4 text-center">
+                <div class="flex items-center justify-center gap-1.5">
+                  <button onclick="openBalanceModal(${u.id}, '${u.username}', ${u.balance})" class="px-2.5 py-1 rounded-lg bg-zinc-800 border border-zinc-700/20 hover:bg-zinc-800 border border-zinc-700/30 text-zinc-300 text-[11px] font-bold transition cursor-pointer" title="ปรับยอดเงิน">
+                    💵 เงิน
+                  </button>
+                  <button onclick="openPasswordModal(${u.id}, '${u.username}')" class="px-2.5 py-1 rounded-lg bg-indigo-600/20 hover:bg-indigo-600/30 text-indigo-400 text-[11px] font-bold transition cursor-pointer" title="เปลี่ยนรหัสผ่าน">
+                    🔑 รหัส
+                  </button>
+                  ${u.id !== 1 ? `
+                    <button onclick="deleteUser(${u.id}, '${u.username}')" class="px-2 py-1 rounded-lg bg-red-600/20 hover:bg-red-600/30 text-red-400 text-[11px] font-bold transition cursor-pointer" title="ลบผู้ใช้">
+                      ✕
+                    </button>
+                  ` : ''}
+                </div>
+              </td>
+            </tr>
+          `;
+        }).join('');
+      } catch (err) {
+        console.error('Failed to load users:', err);
+      }
+    }
+
+    function togglePasswordView(id, realPwd) {
+      const span = document.getElementById(`pwd-${id}`);
+      const eye = document.getElementById(`eye-${id}`);
+      if (!span) return;
+      if (span.textContent === '••••••••') {
+        span.textContent = realPwd;
+        if (eye) eye.textContent = '🙈';
+      } else {
+        span.textContent = '••••••••';
+        if (eye) eye.textContent = '👁️';
+      }
+    }
+
+    function copyPasswordText(pwd, btn) {
+      navigator.clipboard.writeText(pwd).then(() => {
+        const orig = btn.innerHTML;
+        btn.innerHTML = '✓';
+        btn.classList.add('text-emerald-400');
+        setTimeout(() => {
+          btn.innerHTML = orig;
+          btn.classList.remove('text-emerald-400');
+        }, 1500);
+      });
+    }
+
+    function openBalanceModal(id, username, currentBal) {
+      document.getElementById('balanceUserId').value = id;
+      document.getElementById('balanceUserTarget').textContent = `ผู้ใช้: ${username} (ยอดปัจจุบัน: ฿${parseFloat(currentBal || 0).toFixed(2)})`;
+      document.getElementById('balanceAmount').value = '';
+      document.getElementById('balanceModal').classList.remove('hidden');
+    }
+
+    function closeBalanceModal() {
+      document.getElementById('balanceModal').classList.add('hidden');
+    }
+
+    async function submitBalance(e) {
+      e.preventDefault();
+      const id = document.getElementById('balanceUserId').value;
+      const amount = document.getElementById('balanceAmount').value;
+      const action = document.getElementById('balanceAction').value;
+
+      try {
+        const res = await fetch(`/api/admin/users/${id}/balance`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+          body: JSON.stringify({ amount, action })
+        });
+        const data = await res.json();
+        if (data.success) {
+          closeBalanceModal();
+          loadUsers();
+        } else {
+          alert(data.message);
+        }
+      } catch (err) {
+        alert('เกิดข้อผิดพลาดในการปรับยอดเงิน');
+      }
+    }
+
+    function openPasswordModal(id, username) {
+      document.getElementById('passwordUserId').value = id;
+      document.getElementById('passwordUserTarget').textContent = `ผู้ใช้: ${username}`;
+      document.getElementById('newPasswordInput').value = '';
+      document.getElementById('passwordModal').classList.remove('hidden');
+    }
+
+    function closePasswordModal() {
+      document.getElementById('passwordModal').classList.add('hidden');
+    }
+
+    async function submitPasswordChange(e) {
+      e.preventDefault();
+      const id = document.getElementById('passwordUserId').value;
+      const newPassword = document.getElementById('newPasswordInput').value;
+
+      try {
+        const res = await fetch(`/api/admin/users/${id}/password`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+          body: JSON.stringify({ newPassword })
+        });
+        const data = await res.json();
+        if (data.success) {
+          alert(data.message || 'เปลี่ยนรหัสผ่านสำเร็จ');
+          closePasswordModal();
+          loadUsers();
+        } else {
+          alert(data.message || 'ไม่สามารถเปลี่ยนรหัสผ่านได้');
+        }
+      } catch (err) {
+        alert('เกิดข้อผิดพลาดในการเปลี่ยนรหัสผ่าน');
+      }
+    }
+
+    async function deleteUser(id, username) {
+      if (!confirm(`คุณต้องการลบสมาชิก "${username}" (ID: ${id}) ใช่หรือไม่? การกระทำนี้ไม่สามารถย้อนกลับได้`)) {
+        return;
+      }
+      try {
+        const res = await fetch(`/api/admin/users/${id}`, {
+          method: 'DELETE',
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const data = await res.json();
+        if (data.success) {
+          loadUsers();
+        } else {
+          alert(data.message || 'ไม่สามารถลบสมาชิกได้');
+        }
+      } catch (err) {
+        alert('เกิดข้อผิดพลาดในการลบสมาชิก');
+      }
+    }
+
+    loadUsers();
+  </script>
+</body>
+</html>
