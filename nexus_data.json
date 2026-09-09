@@ -1,0 +1,342 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "username": "admin",
+      "password": "$2a$10$d6DUTp7XmOSqoEQeXhBf1eaDscu4bz4ivIUBvIYF/75GwnPQ/Ow8G",
+      "plain_password": "admin123",
+      "balance": 99646,
+      "role": "admin",
+      "created_at": "2026-09-08T08:08:09.987Z"
+    },
+    {
+      "id": 2,
+      "username": "admin1",
+      "password": "$2a$10$WHDJKVXorgB3ISuDMjHKoerfaXmne9nm5fR8.9f5m7EzCf6/47yCm",
+      "plain_password": "admin1234",
+      "balance": 0,
+      "role": "user",
+      "created_at": "2026-09-08T08:14:18.754Z"
+    },
+    {
+      "id": 3,
+      "username": "poppy",
+      "password": "$2a$10$Jk0yf7vB3PLlpgm9E/3r6Ox2iToe57TBW9Y9xYBL6D/SFhiT/DXwu",
+      "plain_password": "123456",
+      "balance": 150,
+      "role": "user",
+      "created_at": "2026-09-08T08:18:49.965Z"
+    }
+  ],
+  "categories": [
+    {
+      "id": 1,
+      "name": "ไอดีไก่ตัน Blox Fruits",
+      "description": "ไอดีพร้อมเวลตัน หมัดครบ ผลตื่น",
+      "created_at": "2026-09-08T08:08:10.093Z"
+    }
+  ],
+  "products": [
+    {
+      "id": 1,
+      "category_id": 1,
+      "name": "ไอดีไก่ตัน หมัดก็อด + ผลโมจิตื่น 100%",
+      "description": "ไอดีเลเวล 2550 สุ่มดาบ มีผลโมจิตื่นครบทุกสกิล รับประกันปลอดภัย",
+      "price": 150,
+      "image": "logo.jpg",
+      "status": "active",
+      "created_at": "2026-09-08T08:08:10.097Z"
+    }
+  ],
+  "product_items": [
+    {
+      "id": 1,
+      "product_id": 1,
+      "content": "nexus_user1:Passw0rd123! | Key: NEXUS-8891",
+      "is_sold": 1,
+      "sold_to": 1,
+      "sold_at": "2026-09-08T08:56:06.822Z"
+    },
+    {
+      "id": 2,
+      "product_id": 1,
+      "content": "nexus_user2:Passw0rd456! | Key: NEXUS-8892",
+      "is_sold": 1,
+      "sold_to": 1,
+      "sold_at": "2026-09-08T08:56:14.587Z"
+    },
+    {
+      "id": 3,
+      "product_id": 1,
+      "content": "nexus_user3:Passw0rd789! | Key: NEXUS-8893",
+      "is_sold": 1,
+      "sold_to": 3,
+      "sold_at": "2026-09-08T08:57:31.840Z"
+    },
+    {
+      "id": 5,
+      "product_id": 1,
+      "content": "1",
+      "is_sold": 1,
+      "sold_to": 3,
+      "sold_at": "2026-09-08T09:02:40.400Z",
+      "created_at": "2026-09-08T08:57:43.518Z"
+    },
+    {
+      "id": 10,
+      "product_id": 1,
+      "content": "nexus_vip_user:BloxFruit2550#Pass1 | KEY: NEXUS-GOD-001",
+      "is_sold": 1,
+      "sold_to": 3,
+      "sold_at": "2026-09-08T09:04:36.270Z"
+    },
+    {
+      "id": 11,
+      "product_id": 1,
+      "content": "nexus_vip_user:BloxFruit2550#Pass2 | KEY: NEXUS-GOD-002",
+      "is_sold": 0,
+      "sold_to": null,
+      "sold_at": null
+    }
+  ],
+  "orders": [
+    {
+      "id": 1,
+      "user_id": 1,
+      "product_id": 1,
+      "product_name": "ไอดีไก่ตัน หมัดก็อด + ผลโมจิตื่น 100%",
+      "item_content": "nexus_user1:Passw0rd123! | Key: NEXUS-8891",
+      "price": 150,
+      "created_at": "2026-09-08T08:56:06.822Z"
+    },
+    {
+      "id": 2,
+      "user_id": 1,
+      "product_id": 1,
+      "product_name": "ไอดีไก่ตัน หมัดก็อด + ผลโมจิตื่น 100%",
+      "item_content": "nexus_user2:Passw0rd456! | Key: NEXUS-8892",
+      "price": 150,
+      "created_at": "2026-09-08T08:56:14.587Z"
+    },
+    {
+      "id": 3,
+      "user_id": 3,
+      "product_id": 1,
+      "product_name": "ไอดีไก่ตัน หมัดก็อด + ผลโมจิตื่น 100%",
+      "item_content": "nexus_user3:Passw0rd789! | Key: NEXUS-8893",
+      "price": 150,
+      "created_at": "2026-09-08T08:57:31.840Z"
+    },
+    {
+      "id": 4,
+      "user_id": 1,
+      "product_id": 2,
+      "product_name": "wwww",
+      "item_content": "1",
+      "price": 99,
+      "created_at": "2026-09-08T08:58:01.025Z"
+    },
+    {
+      "id": 5,
+      "user_id": 3,
+      "product_id": 1,
+      "product_name": "ไอดีไก่ตัน หมัดก็อด + ผลโมจิตื่น 100%",
+      "item_content": "1",
+      "price": 150,
+      "created_at": "2026-09-08T09:02:40.400Z"
+    },
+    {
+      "id": 6,
+      "user_id": 1,
+      "product_id": 2,
+      "product_name": "wwww",
+      "item_content": "1",
+      "price": 99,
+      "created_at": "2026-09-08T09:04:07.056Z"
+    },
+    {
+      "id": 7,
+      "user_id": 3,
+      "product_id": 1,
+      "product_name": "ไอดีไก่ตัน หมัดก็อด + ผลโมจิตื่น 100%",
+      "item_content": "nexus_vip_user:BloxFruit2550#Pass1 | KEY: NEXUS-GOD-001",
+      "price": 150,
+      "created_at": "2026-09-08T09:04:36.270Z"
+    },
+    {
+      "id": 8,
+      "user_id": 3,
+      "product_id": 0,
+      "product_name": "[วงล้อสุ่ม] ไอดี Steam สุ่มเกมแท้",
+      "item_content": "nexus_steam:GamerSteam2026 | CDKEY: NEXUS-STEAM-4491-GAME",
+      "price": 25,
+      "created_at": "2026-09-08T09:19:22.450Z"
+    }
+  ],
+  "topup_history": [
+    {
+      "id": 1,
+      "user_id": 1,
+      "username": "admin",
+      "method": "bank",
+      "sub_method": "transfer",
+      "amount": 50,
+      "bank_from": "พร้อมเพย์",
+      "transfer_time": "16:19:39",
+      "note": "",
+      "status": "completed",
+      "created_at": "2026-09-09T09:19:39.242Z"
+    },
+    {
+      "id": 2,
+      "user_id": 1,
+      "username": "admin",
+      "method": "truemoney",
+      "sub_method": "voucher",
+      "amount": 100,
+      "code": "DEMO100VOUCHER",
+      "status": "completed",
+      "created_at": "2026-09-09T09:19:44.260Z"
+    }
+  ],
+  "settings": {
+    "site_name": "Poppy",
+    "announcement": "ยินดีต้อนรับสู่ร้านค้า Poppy Store",
+    "truemoney_phone": "0808375109",
+    "promptpay_number": "0812345678",
+    "base_users": 184,
+    "base_sales": 10419.08,
+    "base_sold": 167,
+    "bank_name": "กรุงไทย",
+    "bank_account_number": "6614635557",
+    "bank_account_name": "นาย ณัฐวุฒิ อมันตระกูล"
+  },
+  "wheel_prizes": [
+    {
+      "id": 1,
+      "name": "ไอดีไก่ตัน Blox Fruits ผลโมจิตื่น",
+      "type": "item",
+      "icon": "⚡",
+      "color": "#ec4899",
+      "text_color": "#ffffff",
+      "chance": 8,
+      "reward_content": "nexus_blox_spin:GodHuman2550#Pass | KEY: NEXUS-WHEEL-BLOX-99"
+    },
+    {
+      "id": 2,
+      "name": "เครดิต 10 ฿",
+      "type": "credit",
+      "amount": 10,
+      "icon": "💰",
+      "color": "#ffffff",
+      "text_color": "#ec4899",
+      "chance": 25,
+      "reward_content": "ได้รับเครดิต 10 ฿ เพิ่มเข้ากระเป๋าเรียบร้อย"
+    },
+    {
+      "id": 3,
+      "name": "เสียใจด้วยนะ (ไม่ได้รางวัล)",
+      "type": "empty",
+      "icon": "😢",
+      "color": "#fbcfe8",
+      "text_color": "#831843",
+      "chance": 30,
+      "reward_content": null
+    },
+    {
+      "id": 4,
+      "name": "ไอดี Valorant สุ่มสกินปืน",
+      "type": "item",
+      "icon": "🎯",
+      "color": "#e11d48",
+      "text_color": "#ffffff",
+      "chance": 7,
+      "reward_content": "nexus_val_vip:PrimeVandal2026 | KEY: NEXUS-WHEEL-VAL-77"
+    },
+    {
+      "id": 5,
+      "name": "เครดิต 50 ฿",
+      "type": "credit",
+      "amount": 50,
+      "icon": "💎",
+      "color": "#ffffff",
+      "text_color": "#db2777",
+      "chance": 5,
+      "reward_content": "ได้รับเครดิต 50 ฿ เพิ่มเข้ากระเป๋าเรียบร้อย"
+    },
+    {
+      "id": 6,
+      "name": "ไอดี Netflix UltraHD 30 วัน",
+      "type": "item",
+      "icon": "🍿",
+      "color": "#db2777",
+      "text_color": "#ffffff",
+      "chance": 6,
+      "reward_content": "nexus_netflix@shop.com:PassUltra2026 | Profile: 1 (Pin: 9988)"
+    },
+    {
+      "id": 7,
+      "name": "เครดิต 20 ฿",
+      "type": "credit",
+      "amount": 20,
+      "icon": "🎁",
+      "color": "#ffffff",
+      "text_color": "#ec4899",
+      "chance": 15,
+      "reward_content": "ได้รับเครดิต 20 ฿ เพิ่มเข้ากระเป๋าเรียบร้อย"
+    },
+    {
+      "id": 8,
+      "name": "ไอดี Steam สุ่มเกมแท้",
+      "type": "item",
+      "icon": "🎮",
+      "color": "#be185d",
+      "text_color": "#ffffff",
+      "chance": 4,
+      "reward_content": "nexus_steam:GamerSteam2026 | CDKEY: NEXUS-STEAM-4491-GAME"
+    }
+  ],
+  "wheel_history": [
+    {
+      "id": 1,
+      "user_id": 3,
+      "username": "poppy",
+      "prize_id": 3,
+      "prize_name": "เสียใจด้วยนะ (ไม่ได้รางวัล)",
+      "prize_type": "empty",
+      "amount": 0,
+      "content": null,
+      "cost": 25,
+      "created_at": "2026-09-08T09:19:11.642Z"
+    },
+    {
+      "id": 2,
+      "user_id": 3,
+      "username": "poppy",
+      "prize_id": 8,
+      "prize_name": "ไอดี Steam สุ่มเกมแท้",
+      "prize_type": "item",
+      "amount": 0,
+      "content": "nexus_steam:GamerSteam2026 | CDKEY: NEXUS-STEAM-4491-GAME",
+      "cost": 25,
+      "created_at": "2026-09-08T09:19:22.450Z"
+    },
+    {
+      "id": 3,
+      "user_id": 1,
+      "username": "admin",
+      "prize_id": 7,
+      "prize_name": "เครดิต 20 ฿",
+      "prize_type": "credit",
+      "amount": 20,
+      "content": "ได้รับเครดิต 20 ฿ เพิ่มเข้ากระเป๋าเรียบร้อย",
+      "cost": 25,
+      "created_at": "2026-09-09T08:46:50.189Z"
+    }
+  ],
+  "stats": {
+    "total_visits": 36,
+    "today_visits": 21,
+    "last_date": "Wed Sep 09 2026"
+  }
+}
