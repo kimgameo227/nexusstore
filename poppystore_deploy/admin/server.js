@@ -8,6 +8,7 @@ const authRoutes = require('./routes/auth');
 const productRoutes = require('./routes/products');
 const adminRoutes = require('./routes/admin');
 const wheelRoutes = require('./routes/wheel');
+const topupRoutes = require('./routes/topup');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -47,41 +48,26 @@ app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/wheel', wheelRoutes);
+app.use('/api/topup', topupRoutes);
 
 // General shop settings public endpoint
 app.get('/api/settings', (req, res) => {
-  const settings = db.get('settings').value();
-  res.json({ success: true, settings });
-});
-
-// Public store statistics endpoint
-app.get('/api/stats', (req, res) => {
-  try {
-    db.read();
-    const settings = db.get('settings').value() || {};
-
-    const totalUsers = settings.base_users !== undefined ? parseInt(settings.base_users) : 187;
-    const totalSales = settings.base_sales !== undefined ? parseFloat(settings.base_sales) : 10419.08;
-    const totalSold = settings.base_sold !== undefined ? parseInt(settings.base_sold) : 167;
-
-    res.json({
-      success: true,
-      stats: {
-        totalUsers,
-        totalSales: Math.round(totalSales * 100) / 100,
-        totalSold
-      }
-    });
-  } catch (e) {
-    res.json({
-      success: true,
-      stats: {
-        totalUsers: 0,
-        totalSales: 0,
-        totalSold: 0
-      }
-    });
-  }
+  db.read();
+  const settings = db.get('settings').value() || {};
+  res.json({
+    success: true,
+    settings: {
+      site_name: 'Poppy',
+      announcement: 'ยินดีต้อนรับสู่ร้านค้า Poppy ศูนย์รวมไอดีและสินค้าดิจิทัลราคาถูก!',
+      truemoney_phone: '0812345678',
+      promptpay_number: '0812345678',
+      bank_name: 'ธนาคารกสิกรไทย (KBANK)',
+      bank_account_number: '123-4-56789-0',
+      bank_account_name: 'นาย ป๊อปปี้ สโตร์',
+      wheel_price: 25,
+      ...settings
+    }
+  });
 });
 
 // Fallback to index.html
@@ -97,7 +83,7 @@ app.get('/admin', (req, res) => {
 // Start Server
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`===========================================`);
-  console.log(`🚀 Poppy Shop Server running at:`);
+  console.log(`🚀 Poppy Server running at:`);
   console.log(`   👉 Local:   http://localhost:${PORT}`);
   console.log(`   👉 LAN IP:  http://192.168.1.155:${PORT}`);
   console.log(`   👉 Admin:   http://localhost:${PORT}/admin`);
