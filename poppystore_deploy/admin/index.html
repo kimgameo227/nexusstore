@@ -14,8 +14,9 @@
   <meta name="twitter:image" content="logo.jpg" />
   <link rel="icon" href="logo.jpg" />
 
-  <!-- Tailwind CSS CDN -->
+  <!-- Tailwind CSS CDN & jsQR Slip Scanner -->
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
   <script>
     tailwind.config = {
       darkMode: 'class',
@@ -143,13 +144,46 @@
           <nav class="hidden md:flex items-center gap-3.5 p-2 rounded-2xl bg-zinc-100/80 dark:bg-[#141416] border border-zinc-200 dark:border-zinc-800 shadow-sm">
             <a class="text-[13px] font-semibold tracking-tight px-4 py-2 rounded-xl border border-zinc-200 dark:border-zinc-700/80 bg-white dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 hover:border-zinc-300 dark:hover:border-zinc-600 hover:text-zinc-950 dark:hover:text-white hover:bg-zinc-50 dark:hover:bg-zinc-800/80 shadow-xs transition-all cursor-pointer" onclick="showShopView()">หน้าหลัก</a>
             <a class="text-[13px] font-semibold tracking-tight px-4 py-2 rounded-xl border border-zinc-200 dark:border-zinc-700/80 bg-white dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 hover:border-zinc-300 dark:hover:border-zinc-600 hover:text-zinc-950 dark:hover:text-white hover:bg-zinc-50 dark:hover:bg-zinc-800/80 shadow-xs transition-all cursor-pointer" onclick="showShopView('#productsSection')">สินค้า</a>
+            
+            <!-- Topup Dropdown Trigger (Red button matching Screenshot 2) -->
+            <div class="relative" id="topupDropdownContainer">
+              <button type="button" onclick="toggleTopupDropdown(event)" id="topupNavBtn" class="text-[13px] font-bold tracking-tight px-4 py-2 rounded-xl bg-[#ef4444] hover:bg-[#dc2626] text-white shadow-sm transition-all cursor-pointer flex items-center gap-1.5">
+                <span>เติมเงิน</span>
+                <svg id="topupNavChevron" class="w-3.5 h-3.5 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"></path></svg>
+              </button>
+
+              <!-- Topup Dropdown Menu -->
+              <div id="topupDropdownMenu" class="hidden absolute top-full left-0 mt-2 w-72 bg-white dark:bg-[#18181b] rounded-2xl shadow-2xl border border-zinc-200 dark:border-zinc-800 p-2.5 z-50">
+                <div class="px-3 py-1.5 text-[11px] font-semibold text-zinc-400 dark:text-zinc-500">
+                  ช่องทางการเติมเงิน
+                </div>
+                <!-- Option 1: เติมเงินธนาคาร -->
+                <a onclick="showBankTopupView(); closeTopupDropdown();" class="flex items-center gap-3 p-2.5 rounded-xl hover:bg-zinc-100 dark:hover:bg-zinc-800/70 cursor-pointer transition-colors group">
+                  <div class="w-10 h-10 rounded-full bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-750 flex items-center justify-center p-0.5 shrink-0 shadow-xs">
+                    <img src="https://upload.wikimedia.org/wikipedia/th/thumb/3/30/Kasikornbank_Logo.svg/1200px-Kasikornbank_Logo.svg.png" onerror="this.src='https://promptpay.github.io/promptpay-js/banks/kbank.png'" class="w-8 h-8 object-contain rounded-full" alt="KBank" />
+                  </div>
+                  <div>
+                    <div class="text-xs font-bold text-zinc-900 dark:text-white group-hover:text-red-500 transition-colors">เติมเงินธนาคาร</div>
+                    <div class="text-[11px] text-zinc-400">ตรวจสอบสลิปอัตโนมัติ</div>
+                  </div>
+                </a>
+                <!-- Option 2: TrueMoney Wallet -->
+                <a onclick="showTruemoneyTopupView(); closeTopupDropdown();" class="flex items-center gap-3 p-2.5 rounded-xl hover:bg-zinc-100 dark:hover:bg-zinc-800/70 cursor-pointer transition-colors group">
+                  <div class="w-10 h-10 rounded-full bg-orange-500/10 border border-orange-500/20 flex items-center justify-center shrink-0 shadow-xs">
+                    <img src="https://www.truemoney.com/wp-content/uploads/2020/12/logo-truemoneywallet-300x300-1.png" onerror="this.src='https://play-lh.googleusercontent.com/P2D7q9JdE9g2-5zX1j9L_Jv_9n_Fz4E6e1G7v6H7K1_9A9b6C7d8e9f0a1b2c3d4e5f=w240-h480'" class="w-7 h-7 object-contain" alt="TrueMoney" />
+                  </div>
+                  <div>
+                    <div class="text-xs font-bold text-zinc-900 dark:text-white group-hover:text-orange-500 transition-colors">ทรูมันนี่ วอลเล็ท (Wallet)</div>
+                    <div class="text-[11px] text-zinc-400">เติมผ่านทรูมันนี่วอลเล็ท</div>
+                  </div>
+                </a>
+              </div>
+            </div>
+
             <a class="text-[13px] font-semibold tracking-tight px-4 py-2 rounded-xl border border-zinc-200 dark:border-zinc-700/80 bg-white dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 hover:border-zinc-300 dark:hover:border-zinc-600 hover:text-zinc-950 dark:hover:text-white hover:bg-zinc-50 dark:hover:bg-zinc-800/80 shadow-xs transition-all cursor-pointer flex items-center gap-1.5" onclick="showWheelView()">
-              <span>🎡</span> วงล้อสุ่ม
+              <span>🎡</span> มินิเกม
             </a>
-            <a class="text-[13px] font-semibold tracking-tight px-4 py-2 rounded-xl border border-zinc-200 dark:border-zinc-700/80 bg-white dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 hover:border-zinc-300 dark:hover:border-zinc-600 hover:text-zinc-950 dark:hover:text-white hover:bg-zinc-50 dark:hover:bg-zinc-800/80 shadow-xs transition-all cursor-pointer" onclick="openTopupModal()">
-              เติมเงิน
-            </a>
-            <a class="text-[13px] font-semibold tracking-tight px-4 py-2 rounded-xl border border-zinc-200 dark:border-zinc-700/80 bg-white dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 hover:border-zinc-300 dark:hover:border-zinc-600 hover:text-zinc-950 dark:hover:text-white hover:bg-zinc-50 dark:hover:bg-zinc-800/80 shadow-xs transition-all cursor-pointer" onclick="openHistoryModal()">ประวัติการซื้อ</a>
+            <a class="text-[13px] font-semibold tracking-tight px-4 py-2 rounded-xl border border-zinc-200 dark:border-zinc-700/80 bg-white dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 hover:border-zinc-300 dark:hover:border-zinc-600 hover:text-zinc-950 dark:hover:text-white hover:bg-zinc-50 dark:hover:bg-zinc-800/80 shadow-xs transition-all cursor-pointer" onclick="openHistoryModal()">ประวัติการสั่งซื้อ</a>
             <span class="text-[13px] font-semibold tracking-tight px-4 py-2 rounded-xl border border-zinc-200 dark:border-zinc-700/80 bg-white dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 hover:border-zinc-300 dark:hover:border-zinc-600 hover:text-zinc-950 dark:hover:text-white hover:bg-zinc-50 dark:hover:bg-zinc-800/80 shadow-xs transition-all cursor-pointer select-none" onclick="alert('ติดต่อเจ้าของร้าน: Line @poppyshop หรือ Discord Poppy Community')">ติดต่อ</span>
           </nav>
 
@@ -198,10 +232,21 @@
           <a class="text-[14px] font-semibold px-3 py-2 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-950 dark:hover:text-white transition-colors cursor-pointer" onclick="showShopView('#productsSection'); toggleMobileMenu();">สินค้า</a>
           <a class="text-[14px] font-semibold px-3 py-2 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-950 dark:hover:text-white transition-colors cursor-pointer flex items-center gap-2" onclick="showWheelView(); toggleMobileMenu();">
             <span>🎡</span>
-            <span>วงล้อสุ่ม</span>
+            <span>มินิเกม</span>
           </a>
-          <a class="text-[14px] font-semibold px-3 py-2 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-950 dark:hover:text-white transition-colors cursor-pointer" onclick="openTopupModal(); toggleMobileMenu();">เติมเงิน</a>
-          <a class="text-[14px] font-semibold px-3 py-2 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-950 dark:hover:text-white transition-colors cursor-pointer" onclick="openHistoryModal(); toggleMobileMenu();">ประวัติการซื้อ</a>
+          <!-- Mobile Topup Options -->
+          <div class="px-3 py-2 rounded-xl bg-red-500/10 border border-red-500/20 space-y-2">
+            <span class="text-xs font-bold text-red-500 block">ช่องทางเติมเงิน:</span>
+            <div class="grid grid-cols-2 gap-2">
+              <button onclick="showBankTopupView(); toggleMobileMenu();" class="p-2 rounded-lg bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-750 text-left text-xs font-bold text-zinc-800 dark:text-zinc-200 hover:border-red-400 flex items-center gap-1.5">
+                <span class="text-sm">🏦</span> ธนาคาร
+              </button>
+              <button onclick="showTruemoneyTopupView(); toggleMobileMenu();" class="p-2 rounded-lg bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-750 text-left text-xs font-bold text-zinc-800 dark:text-zinc-200 hover:border-orange-400 flex items-center gap-1.5">
+                <span class="text-sm">🟧</span> TrueMoney
+              </button>
+            </div>
+          </div>
+          <a class="text-[14px] font-semibold px-3 py-2 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-950 dark:hover:text-white transition-colors cursor-pointer" onclick="openHistoryModal(); toggleMobileMenu();">ประวัติการสั่งซื้อ</a>
           <span class="text-[14px] font-semibold px-3 py-2 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-950 dark:hover:text-white transition-colors cursor-pointer" onclick="alert('ติดต่อเจ้าของร้าน: Line @poppyshop หรือ Discord Poppy Community'); toggleMobileMenu();">ติดต่อ</span>
           <hr class="border-zinc-200 dark:border-zinc-800 my-2" />
           <div id="mobileAuthArea" class="flex flex-col gap-2 pt-2">
@@ -469,6 +514,201 @@
 
             </div>
 
+          </div>
+        <!-- ── VIEW 4: BANK TOPUP VIEW (EXACT TO REFERENCE SCREENSHOT) ── -->
+        <div id="bankTopupView" class="hidden w-full max-w-2xl mx-auto px-4 sm:px-6 py-8 flex flex-col gap-5 animate-page">
+          <!-- View Header -->
+          <div class="flex items-center gap-3.5">
+            <div class="w-12 h-12 rounded-full border border-red-500/80 p-0.5 flex items-center justify-center shrink-0 bg-white shadow-sm overflow-hidden">
+              <img src="https://upload.wikimedia.org/wikipedia/th/thumb/3/30/Kasikornbank_Logo.svg/1200px-Kasikornbank_Logo.svg.png" onerror="this.src='https://promptpay.github.io/promptpay-js/banks/kbank.png'" class="w-full h-full object-contain rounded-full" alt="KBank" />
+            </div>
+            <div>
+              <h1 class="text-xl sm:text-2xl font-black text-zinc-900 dark:text-white tracking-tight">เติมเงินผ่านธนาคาร</h1>
+              <p class="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">โอนเงินแล้วอัปโหลดสลิป ระบบตรวจสอบให้อัตโนมัติ</p>
+            </div>
+          </div>
+
+          <!-- Back Button -->
+          <div>
+            <button onclick="showShopView()" class="inline-flex items-center gap-1.5 text-xs font-semibold text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-colors cursor-pointer">
+              <span class="text-sm">←</span> กลับไปเลือกช่องทางเติมเงิน
+            </button>
+          </div>
+
+          <!-- Card 1: Bank Information Card -->
+          <div class="rounded-2xl bg-white dark:bg-[#141416] border border-zinc-200 dark:border-zinc-800 p-6 shadow-sm">
+            <!-- Bank Brand Header -->
+            <div class="flex items-center gap-3.5 pb-4 border-b border-zinc-100 dark:border-zinc-800/80">
+              <div class="w-12 h-12 rounded-xl bg-white border border-zinc-200 dark:border-zinc-700 flex items-center justify-center p-1 shrink-0 shadow-xs">
+                <img src="https://upload.wikimedia.org/wikipedia/th/thumb/3/30/Kasikornbank_Logo.svg/1200px-Kasikornbank_Logo.svg.png" onerror="this.src='https://promptpay.github.io/promptpay-js/banks/kbank.png'" class="w-8 h-8 object-contain rounded-full" alt="KBank" />
+              </div>
+              <div>
+                <h3 class="text-base font-bold text-zinc-900 dark:text-white" id="bankViewBankName">ธนาคารกสิกรไทย</h3>
+                <p class="text-xs text-zinc-400">Kasikorn Bank</p>
+              </div>
+            </div>
+
+            <!-- Account Details -->
+            <div class="pt-4 space-y-4">
+              <div>
+                <span class="text-xs text-zinc-400 font-medium block">ชื่อบัญชี</span>
+                <span class="text-sm font-semibold text-zinc-800 dark:text-zinc-200 mt-0.5 block" id="bankViewAccName">พีรพงศ์ เจือจันทร์</span>
+              </div>
+
+              <div>
+                <span class="text-xs text-zinc-400 font-medium block">เลขบัญชี</span>
+                <div class="flex items-center justify-between mt-1">
+                  <span class="text-2xl sm:text-3xl font-black font-mono tracking-wider text-zinc-900 dark:text-white select-all" id="bankViewAccNumber">1588989972</span>
+                  <button type="button" onclick="copyBankViewAcc(this)" id="btnCopyBankViewAcc" class="p-2.5 rounded-xl border border-zinc-200 dark:border-zinc-700 hover:border-zinc-300 dark:hover:border-zinc-600 bg-zinc-50 dark:bg-zinc-850 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-all shadow-xs cursor-pointer" title="คัดลอกเลขบัญชี">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect width="14" height="14" x="8" y="8" rx="2" ry="2" stroke-width="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" stroke-width="2"/></svg>
+                  </button>
+                </div>
+              </div>
+
+              <div class="pt-1 text-[11px] text-zinc-400">
+                ตรวจสอบสลิปได้โดยไม่จำกัดเวลา
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 2: Auto Slip Verification Card -->
+          <div class="rounded-2xl bg-white dark:bg-[#141416] border border-zinc-200 dark:border-zinc-800 p-6 shadow-sm">
+            <!-- Card Title -->
+            <div class="flex items-center gap-2 mb-4">
+              <div class="w-5 h-5 rounded-full border border-red-500 text-red-500 flex items-center justify-center text-xs font-bold shrink-0">
+                ✓
+              </div>
+              <h3 class="text-sm sm:text-base font-bold text-zinc-900 dark:text-white">อัปโหลดสลิปเพื่อตรวจสอบอัตโนมัติ</h3>
+            </div>
+
+            <!-- Upload Drop Zone -->
+            <div 
+              id="bankViewDropZone"
+              onclick="document.getElementById('bankViewFileInput').click()"
+              ondragover="handleBankViewDragOver(event)"
+              ondragleave="handleBankViewDragLeave(event)"
+              ondrop="handleBankViewDrop(event)"
+              class="border-2 border-dashed border-zinc-200 dark:border-zinc-750 hover:border-red-400 dark:hover:border-red-500/70 rounded-2xl p-8 sm:p-10 flex flex-col items-center justify-center cursor-pointer transition-all bg-white dark:bg-zinc-900/30 group relative"
+            >
+              <input type="file" id="bankViewFileInput" accept="image/*" class="hidden" onchange="handleBankViewFileSelect(event)" />
+
+              <!-- Default Prompt -->
+              <div id="bankViewPrompt" class="flex flex-col items-center text-center">
+                <div class="text-red-500 mb-3 group-hover:scale-110 transition-transform">
+                  <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
+                  </svg>
+                </div>
+                <p class="text-sm font-semibold text-zinc-800 dark:text-zinc-200">คลิกหรือลากไฟล์สลิปมาวางที่นี่</p>
+                <p class="text-xs text-zinc-400 mt-1">รองรับไฟล์ JPG, PNG</p>
+              </div>
+
+              <!-- Preview & QR Status -->
+              <div id="bankViewPreview" class="hidden flex-col items-center w-full">
+                <div class="relative max-h-48 max-w-[200px] rounded-xl overflow-hidden border border-zinc-200 dark:border-zinc-700 shadow-md mb-3 bg-black">
+                  <img id="bankViewPreviewImg" class="max-h-48 w-auto object-contain" alt="Slip Preview" />
+                </div>
+                <div id="bankViewStatus" class="text-xs font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5 text-center"></div>
+                <p class="text-[10px] text-zinc-400 mt-1">คลิกที่กรอบเพื่อเลือกรูปใหม่</p>
+              </div>
+            </div>
+
+            <!-- Dynamic Alert Box -->
+            <div id="bankViewAlert" class="hidden mt-4 p-3.5 rounded-xl text-xs font-semibold"></div>
+
+            <!-- Submit Button (Coral/Red matching screenshot) -->
+            <button 
+              type="button" 
+              id="btnBankViewSubmit" 
+              onclick="submitBankViewSlip()" 
+              class="mt-5 w-full py-3.5 px-4 rounded-xl bg-[#f87171] hover:bg-[#ef4444] active:scale-[0.99] text-white font-bold text-sm shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60"
+            >
+              <span id="btnBankViewSubmitText">ตรวจสอบและเติมเงิน</span>
+              <svg id="bankViewSpinner" class="hidden animate-spin h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- ── VIEW 5: TRUEMONEY TOPUP VIEW ── -->
+        <div id="truemoneyTopupView" class="hidden w-full max-w-2xl mx-auto px-4 sm:px-6 py-8 flex flex-col gap-5 animate-page">
+          <!-- View Header -->
+          <div class="flex items-center gap-3.5">
+            <div class="w-12 h-12 rounded-full border border-orange-500/80 p-0.5 flex items-center justify-center shrink-0 bg-white shadow-sm overflow-hidden">
+              <img src="https://www.truemoney.com/wp-content/uploads/2020/12/logo-truemoneywallet-300x300-1.png" onerror="this.src='https://play-lh.googleusercontent.com/P2D7q9JdE9g2-5zX1j9L_Jv_9n_Fz4E6e1G7v6H7K1_9A9b6C7d8e9f0a1b2c3d4e5f=w240-h480'" class="w-8 h-8 object-contain" alt="TrueMoney" />
+            </div>
+            <div>
+              <h1 class="text-xl sm:text-2xl font-black text-zinc-900 dark:text-white tracking-tight">เติมเงินผ่านทรูมันนี่ วอลเล็ท</h1>
+              <p class="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">เติมผ่านซองของขวัญ TrueMoney รับเครดิตอัตโนมัติ 24 ชม.</p>
+            </div>
+          </div>
+
+          <!-- Back Button -->
+          <div>
+            <button onclick="showShopView()" class="inline-flex items-center gap-1.5 text-xs font-semibold text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-colors cursor-pointer">
+              <span class="text-sm">←</span> กลับไปเลือกช่องทางเติมเงิน
+            </button>
+          </div>
+
+          <!-- Card 1: Voucher Topup -->
+          <div class="rounded-2xl bg-white dark:bg-[#141416] border border-zinc-200 dark:border-zinc-800 p-6 shadow-sm space-y-4">
+            <div class="flex items-center justify-between">
+              <span class="font-bold text-sm text-zinc-900 dark:text-white flex items-center gap-2">
+                <span>🎁</span> กรอกลิงก์ซองของขวัญ TrueMoney
+              </span>
+              <span class="text-[10px] font-extrabold px-2.5 py-1 rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">อัตโนมัติทันที</span>
+            </div>
+
+            <div>
+              <label class="text-xs text-zinc-500 dark:text-zinc-400 block mb-1.5 font-medium">วางลิงก์ซองของขวัญที่สร้างจากแอป TrueMoney:</label>
+              <input
+                type="text"
+                id="tmnViewVoucherUrl"
+                placeholder="https://gift.truemoney.com/campaign/?v=..."
+                class="w-full px-4 py-3 rounded-xl bg-zinc-50 dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-700 text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 text-xs focus:outline-none focus:ring-2 focus:ring-orange-500 font-mono"
+              />
+            </div>
+
+            <div id="tmnViewAlert" class="hidden p-3 rounded-xl text-xs font-semibold"></div>
+
+            <button
+              type="button"
+              id="btnSubmitTmnView"
+              onclick="submitTmnViewVoucher()"
+              class="w-full py-3.5 rounded-xl bg-orange-600 hover:bg-orange-500 active:scale-[0.99] text-white font-bold text-sm shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60"
+            >
+              <span id="btnSubmitTmnViewText">⚡ เติมเงินทันทีด้วยซองของขวัญ</span>
+              <svg id="tmnViewSpinner" class="hidden animate-spin h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+            </button>
+
+            <!-- Guide Steps -->
+            <div class="p-3.5 rounded-xl bg-orange-500/5 border border-orange-500/15 text-xs text-zinc-600 dark:text-zinc-400 space-y-1">
+              <p class="font-bold text-orange-600 dark:text-orange-400">💡 วิธีสร้างซองของขวัญ TrueMoney:</p>
+              <p>1. เปิดแอป <b>TrueMoney</b> แล้วกดเมนู <b>"โอนเงิน"</b> &gt; <b>"ส่งซองของขวัญ"</b></p>
+              <p>2. ใส่จำนวนเงินที่ต้องการ และเลือกประเภทเป็น <b>"สุ่มจำนวนเงิน"</b> หรือ <b>"แบ่งเท่ากัน 1 คน"</b></p>
+              <p>3. กดยืนยันแล้วคัดลอก <b>"ลิงก์ซองของขวัญ"</b> นำมาวางที่ช่องด้านบนได้ทันที</p>
+            </div>
+          </div>
+
+          <!-- Card 2: Direct TrueMoney Phone -->
+          <div class="rounded-2xl bg-white dark:bg-[#141416] border border-zinc-200 dark:border-zinc-800 p-6 shadow-sm space-y-3">
+            <span class="font-bold text-xs text-zinc-900 dark:text-white flex items-center gap-1.5">
+              <span>📱</span> หรือโอนเข้าเบอร์ TrueMoney Wallet โดยตรง
+            </span>
+            <div class="flex items-center justify-between p-3.5 rounded-xl bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800">
+              <div>
+                <span class="text-[10px] text-zinc-400 block font-medium">เบอร์ทรูมันนี่วอลเล็ท:</span>
+                <span id="tmnViewPhone" class="text-base font-mono font-bold text-zinc-900 dark:text-white">080-837-5109</span>
+              </div>
+              <button type="button" onclick="copyFromElement('tmnViewPhone', this)" class="px-3.5 py-2 bg-zinc-900 hover:bg-zinc-800 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-white rounded-xl text-xs font-bold shadow transition-all cursor-pointer">
+                คัดลอก
+              </button>
+            </div>
           </div>
         </div>
 
@@ -788,16 +1028,66 @@
                   <p class="text-[11px] text-zinc-500 dark:text-zinc-400">สแกนด้วยแอปธนาคารใดก็ได้ ยอดเงินจะถูกระบุให้อัตโนมัติ</p>
                 </div>
 
-                <!-- Submit Bank Transfer Button -->
-                <button
-                  type="button"
-                  id="btnSubmitBankTransfer"
-                  onclick="submitBankTopup()"
-                  class="w-full py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 active:scale-[0.98] text-white font-bold text-xs shadow-md transition-all flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-50"
-                >
-                  <span id="btnSubmitBankTransferText">✓ โอนเงินเรียบร้อยแล้ว (รับเครดิตทันที)</span>
-                  <svg id="bankSpinner" class="hidden animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
-                </button>
+                <!-- ═════ AUTOMATED BANK SLIP SCANNER (100% REAL-TIME) ═════ -->
+                <div class="p-4 rounded-2xl bg-zinc-50 dark:bg-[#1c1c20] border border-zinc-200 dark:border-zinc-800 space-y-3">
+                  <div class="flex items-center justify-between">
+                    <span class="font-bold text-xs text-zinc-900 dark:text-white flex items-center gap-1.5">
+                      <span>🧾</span> แนบสลิปโอนเงิน (ตรวจสลิปออโต้ 100%)
+                    </span>
+                    <span class="px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-500 border border-emerald-500/20 text-[10px] font-bold animate-pulse">⚡ เรียลไทม์</span>
+                  </div>
+
+                  <!-- Dropzone / File Upload -->
+                  <div
+                    id="slipDropZone"
+                    onclick="document.getElementById('slipFileInput').click()"
+                    ondragover="handleSlipDragOver(event)"
+                    ondragleave="handleSlipDragLeave(event)"
+                    ondrop="handleSlipDrop(event)"
+                    class="relative border-2 border-dashed border-zinc-300 dark:border-zinc-700 hover:border-emerald-500 dark:hover:border-emerald-500 rounded-2xl p-5 text-center cursor-pointer bg-white dark:bg-zinc-900/60 transition-all group"
+                  >
+                    <input type="file" id="slipFileInput" accept="image/*" class="hidden" onchange="handleSlipFileSelect(event)" />
+                    
+                    <!-- Preview Container -->
+                    <div id="slipPreviewWrapper" class="hidden flex-col items-center justify-center space-y-2">
+                      <div class="relative max-w-[180px] max-h-[180px] rounded-xl overflow-hidden border border-zinc-200 dark:border-zinc-700 shadow-md">
+                        <img id="slipPreviewImg" src="" alt="Slip Preview" class="w-full h-auto object-contain" />
+                        <!-- Radar Scan Overlay -->
+                        <div id="slipScannerRadar" class="absolute inset-0 bg-emerald-500/15 flex items-center justify-center">
+                          <div class="w-full h-1 bg-emerald-400 shadow-[0_0_12px_#10b981] animate-bounce"></div>
+                        </div>
+                      </div>
+                      <span id="slipStatusText" class="text-xs font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5">
+                        <svg class="animate-spin h-3.5 w-3.5 text-emerald-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                        กำลังอ่าน QR Code บนสลิป...
+                      </span>
+                    </div>
+
+                    <!-- Default Prompt -->
+                    <div id="slipDefaultPrompt" class="space-y-1.5">
+                      <div class="w-10 h-10 mx-auto rounded-full bg-emerald-500/10 text-emerald-500 flex items-center justify-center text-lg group-hover:scale-110 transition-transform">
+                        📸
+                      </div>
+                      <p class="text-xs font-bold text-zinc-800 dark:text-zinc-200">
+                        คลิกเพื่อเลือกรูปสลิป หรือลากไฟล์มาวางที่นี่
+                      </p>
+                      <p class="text-[11px] text-zinc-500 dark:text-zinc-400">
+                        รองรับ PNG, JPG หรือกด <kbd class="px-1.5 py-0.5 bg-zinc-100 dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 rounded text-[10px] font-mono">Ctrl + V</kbd> วางรูปได้ทันที
+                      </p>
+                    </div>
+                  </div>
+
+                  <!-- Submit Bank Transfer Button (Fallback) -->
+                  <button
+                    type="button"
+                    id="btnSubmitBankTransfer"
+                    onclick="submitBankTopup()"
+                    class="w-full py-2.5 rounded-xl bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800/80 dark:hover:bg-zinc-700 text-zinc-700 dark:text-zinc-300 font-semibold text-xs transition-all flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-50"
+                  >
+                    <span id="btnSubmitBankTransferText">⚡ หรือกดยืนยันโอนเงินแบบระบุยอดเอง (฿<span id="btnBankAmountDisplay">100</span>)</span>
+                    <svg id="bankSpinner" class="hidden animate-spin h-3.5 w-3.5 text-zinc-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                  </button>
+                </div>
               </div>
             </div>
 
@@ -928,11 +1218,18 @@
       }
     });
 
-    // ── View Switching: Shop vs Login vs Wheel ──
-    function showShopView(targetAnchor) {
-      document.getElementById('shopView')?.classList.remove('hidden');
+    // ── View Switching: Shop vs Login vs Wheel vs Bank vs TrueMoney ──
+    function hideAllViews() {
+      document.getElementById('shopView')?.classList.add('hidden');
       document.getElementById('loginView')?.classList.add('hidden');
       document.getElementById('wheelView')?.classList.add('hidden');
+      document.getElementById('bankTopupView')?.classList.add('hidden');
+      document.getElementById('truemoneyTopupView')?.classList.add('hidden');
+    }
+
+    function showShopView(targetAnchor) {
+      hideAllViews();
+      document.getElementById('shopView')?.classList.remove('hidden');
       if (targetAnchor) {
         const el = document.querySelector(targetAnchor);
         if (el) el.scrollIntoView({ behavior: 'smooth' });
@@ -942,20 +1239,32 @@
     }
 
     function showLoginView() {
-      document.getElementById('shopView')?.classList.add('hidden');
+      hideAllViews();
       document.getElementById('loginView')?.classList.remove('hidden');
-      document.getElementById('wheelView')?.classList.add('hidden');
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     function showWheelView() {
-      document.getElementById('shopView')?.classList.add('hidden');
-      document.getElementById('loginView')?.classList.add('hidden');
+      hideAllViews();
       document.getElementById('wheelView')?.classList.remove('hidden');
       window.scrollTo({ top: 0, behavior: 'smooth' });
       initWheel();
       loadRecentWinners();
       updateWheelBalanceDisplay();
+    }
+
+    function showBankTopupView() {
+      hideAllViews();
+      document.getElementById('bankTopupView')?.classList.remove('hidden');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      initBankTopupView();
+    }
+
+    function showTruemoneyTopupView() {
+      hideAllViews();
+      document.getElementById('truemoneyTopupView')?.classList.remove('hidden');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      initTruemoneyTopupView();
     }
 
     // ── Auth State & Header Rendering ──
@@ -1115,6 +1424,16 @@
           if (elBAcc) elBAcc.textContent = bAcc;
           const elBHolder = document.getElementById('topupBankAccName');
           if (elBHolder) elBHolder.textContent = bHolder;
+
+          // Populate Dedicated Bank & TrueMoney views
+          const elBankViewName = document.getElementById('bankViewBankName');
+          if (elBankViewName && bName) elBankViewName.textContent = bName;
+          const elBankViewAcc = document.getElementById('bankViewAccNumber');
+          if (elBankViewAcc && bAcc) elBankViewAcc.textContent = bAcc;
+          const elBankViewHolder = document.getElementById('bankViewAccName');
+          if (elBankViewHolder && bHolder) elBankViewHolder.textContent = bHolder;
+          const elTmnPhone = document.getElementById('tmnViewPhone');
+          if (elTmnPhone && tmn) elTmnPhone.textContent = tmn;
         }
       } catch (e) {}
     }
@@ -1249,6 +1568,324 @@
           btn.className = 'absolute right-2 top-2 px-2.5 py-1 bg-[#27272a] hover:bg-[#38383e] border border-[#3f3f46] text-white rounded-lg text-[11px] font-bold shadow transition-all cursor-pointer';
         }, 1500);
       });
+    }
+
+    // ── Dropdown Controls ──
+    function toggleTopupDropdown(e) {
+      if (e) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+      const menu = document.getElementById('topupDropdownMenu');
+      const chevron = document.getElementById('topupNavChevron');
+      if (!menu) return;
+      const isHidden = menu.classList.contains('hidden');
+      if (isHidden) {
+        menu.classList.remove('hidden');
+        if (chevron) chevron.classList.add('rotate-180');
+      } else {
+        menu.classList.add('hidden');
+        if (chevron) chevron.classList.remove('rotate-180');
+      }
+    }
+
+    function closeTopupDropdown() {
+      const menu = document.getElementById('topupDropdownMenu');
+      const chevron = document.getElementById('topupNavChevron');
+      if (menu) menu.classList.add('hidden');
+      if (chevron) chevron.classList.remove('rotate-180');
+    }
+
+    document.addEventListener('click', function(e) {
+      const container = document.getElementById('topupDropdownContainer');
+      if (container && !container.contains(e.target)) {
+        closeTopupDropdown();
+      }
+    });
+
+    // ── Dedicated Bank Topup View Controllers ──
+    let selectedBankSlipFile = null;
+    let scannedSlipQRData = null;
+
+    function initBankTopupView() {
+      if (window.shopSettings) {
+        if (window.shopSettings.bank_name) {
+          const el = document.getElementById('bankViewBankName');
+          if (el) el.textContent = window.shopSettings.bank_name;
+        }
+        if (window.shopSettings.bank_account_name) {
+          const el = document.getElementById('bankViewAccName');
+          if (el) el.textContent = window.shopSettings.bank_account_name;
+        }
+        if (window.shopSettings.bank_account_number) {
+          const el = document.getElementById('bankViewAccNumber');
+          if (el) el.textContent = window.shopSettings.bank_account_number;
+        }
+      }
+    }
+
+    function copyBankViewAcc(btn) {
+      const acc = document.getElementById('bankViewAccNumber')?.textContent.trim() || '1588989972';
+      navigator.clipboard.writeText(acc).then(() => {
+        const originalHtml = btn.innerHTML;
+        btn.innerHTML = `<span class="text-xs font-bold text-emerald-600 dark:text-emerald-400">✓ คัดลอกแล้ว</span>`;
+        setTimeout(() => {
+          btn.innerHTML = originalHtml;
+        }, 1800);
+      });
+    }
+
+    function handleBankViewDragOver(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      document.getElementById('bankViewDropZone')?.classList.add('border-red-500', 'bg-red-500/5');
+    }
+
+    function handleBankViewDragLeave(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      document.getElementById('bankViewDropZone')?.classList.remove('border-red-500', 'bg-red-500/5');
+    }
+
+    function handleBankViewDrop(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      document.getElementById('bankViewDropZone')?.classList.remove('border-red-500', 'bg-red-500/5');
+      const files = e.dataTransfer?.files;
+      if (files && files.length > 0) processBankViewSlipFile(files[0]);
+    }
+
+    function handleBankViewFileSelect(e) {
+      const files = e.target.files;
+      if (files && files.length > 0) processBankViewSlipFile(files[0]);
+    }
+
+    function processBankViewSlipFile(file) {
+      if (!file || !file.type.startsWith('image/')) {
+        showBankViewAlert('กรุณาอัปโหลดไฟล์รูปภาพสลิปเท่านั้น (PNG, JPG, JPEG)', true);
+        return;
+      }
+      selectedBankSlipFile = file;
+      scannedSlipQRData = null;
+      hideBankViewAlert();
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const dataUrl = e.target.result;
+        document.getElementById('bankViewPrompt')?.classList.add('hidden');
+        const preview = document.getElementById('bankViewPreview');
+        if (preview) {
+          preview.classList.remove('hidden');
+          preview.classList.add('flex');
+        }
+        const imgEl = document.getElementById('bankViewPreviewImg');
+        if (imgEl) imgEl.src = dataUrl;
+
+        const statusEl = document.getElementById('bankViewStatus');
+        if (statusEl) {
+          statusEl.className = 'text-xs font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5';
+          statusEl.innerHTML = `
+            <svg class="animate-spin h-3.5 w-3.5 text-emerald-500" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+            กำลังสแกน QR Code บนสลิป...
+          `;
+        }
+
+        const img = new Image();
+        img.onload = function() {
+          const canvas = document.createElement('canvas');
+          const ctx = canvas.getContext('2d');
+          canvas.width = img.width;
+          canvas.height = img.height;
+          ctx.drawImage(img, 0, 0, img.width, img.height);
+          const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+
+          let code = null;
+          if (typeof jsQR !== 'undefined') {
+            code = jsQR(imgData.data, imgData.width, imgData.height, { inversionAttempts: 'dontInvert' });
+            if (!code) {
+              code = jsQR(imgData.data, imgData.width, imgData.height, { inversionAttempts: 'attemptBoth' });
+            }
+          }
+
+          if (code && code.data) {
+            scannedSlipQRData = code.data;
+            if (statusEl) {
+              statusEl.className = 'text-xs font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5';
+              statusEl.innerHTML = `✓ ตรวจพบ QR Code บนสลิปแล้ว กดปุ่มตรวจสอบเพื่อเติมเงินได้ทันที`;
+            }
+          } else {
+            if (statusEl) {
+              statusEl.className = 'text-xs font-bold text-amber-500 flex items-center gap-1.5';
+              statusEl.innerHTML = `⚠️ ไม่พบ QR Code ในรูปภาพ (กรุณาใช้สลิปที่มี QR ชัดเจน)`;
+            }
+            showBankViewAlert('ไม่พบ QR Code ในรูปสลิป กรุณาเลือกรูปสลิปที่มี QR Code ชัดเจน', true);
+          }
+        };
+        img.src = dataUrl;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function showBankViewAlert(msg, isError = false) {
+      const box = document.getElementById('bankViewAlert');
+      if (!box) return;
+      box.classList.remove('hidden');
+      if (isError) {
+        box.className = 'mt-4 p-3.5 rounded-xl text-xs font-semibold flex items-center gap-2 bg-red-500/10 text-red-500 border border-red-500/20';
+        box.innerHTML = `<svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg><span>${msg}</span>`;
+      } else {
+        box.className = 'mt-4 p-3.5 rounded-xl text-xs font-semibold flex items-center gap-2 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20';
+        box.innerHTML = `<svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg><span>${msg}</span>`;
+      }
+    }
+
+    function hideBankViewAlert() {
+      const box = document.getElementById('bankViewAlert');
+      if (box) box.classList.add('hidden');
+    }
+
+    async function submitBankViewSlip() {
+      const token = localStorage.getItem('nexus_token') || localStorage.getItem('poppy_token');
+      if (!token) {
+        showLoginView();
+        showAlert('กรุณาเข้าสู่ระบบก่อนทำการเติมเงิน', true);
+        return;
+      }
+
+      if (!selectedBankSlipFile) {
+        showBankViewAlert('กรุณาเลือกหรือลากไฟล์รูปสลิปมาก่อน', true);
+        document.getElementById('bankViewFileInput')?.click();
+        return;
+      }
+
+      if (!scannedSlipQRData) {
+        showBankViewAlert('ไม่พบ QR Code ในรูปภาพสลิป กรุณาใช้รูปที่มี QR ชัดเจน', true);
+        return;
+      }
+
+      const btn = document.getElementById('btnBankViewSubmit');
+      const btnText = document.getElementById('btnBankViewSubmitText');
+      const spinner = document.getElementById('bankViewSpinner');
+
+      btn.disabled = true;
+      btnText.textContent = 'กำลังตรวจสอบสลิป...';
+      spinner.classList.remove('hidden');
+      hideBankViewAlert();
+
+      try {
+        const res = await fetch('/api/topup/bank/slip', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({
+            qr_data: scannedSlipQRData
+          })
+        });
+
+        const data = await res.json();
+        if (data.success) {
+          showBankViewAlert(data.message, false);
+          btnText.textContent = '✓ เติมเงินสำเร็จแล้ว!';
+          await refreshUserProfile();
+          setTimeout(() => {
+            btnText.textContent = 'ตรวจสอบและเติมเงิน';
+            btn.disabled = false;
+            document.getElementById('bankViewPrompt')?.classList.remove('hidden');
+            document.getElementById('bankViewPreview')?.classList.add('hidden');
+            selectedBankSlipFile = null;
+            scannedSlipQRData = null;
+          }, 3500);
+        } else {
+          showBankViewAlert(data.message || 'ตรวจสอบสลิปไม่สำเร็จ', true);
+          btnText.textContent = 'ตรวจสอบและเติมเงิน';
+          btn.disabled = false;
+        }
+      } catch (err) {
+        showBankViewAlert('เกิดข้อผิดพลาดในการเชื่อมต่อเซิร์ฟเวอร์', true);
+        btnText.textContent = 'ตรวจสอบและเติมเงิน';
+        btn.disabled = false;
+      } finally {
+        spinner.classList.add('hidden');
+      }
+    }
+
+    // ── Dedicated TrueMoney View Controllers ──
+    function initTruemoneyTopupView() {
+      if (window.shopSettings && window.shopSettings.truemoney_phone) {
+        const el = document.getElementById('tmnViewPhone');
+        if (el) el.textContent = window.shopSettings.truemoney_phone;
+      }
+    }
+
+    async function submitTmnViewVoucher() {
+      const token = localStorage.getItem('nexus_token') || localStorage.getItem('poppy_token');
+      if (!token) {
+        showLoginView();
+        showAlert('กรุณาเข้าสู่ระบบก่อนทำการเติมเงิน', true);
+        return;
+      }
+
+      const input = document.getElementById('tmnViewVoucherUrl');
+      const url = input ? input.value.trim() : '';
+      if (!url) {
+        showTmnViewAlert('กรุณากรอกลิงก์ซองของขวัญ TrueMoney', true);
+        return;
+      }
+
+      const btn = document.getElementById('btnSubmitTmnView');
+      const btnText = document.getElementById('btnSubmitTmnViewText');
+      const spinner = document.getElementById('tmnViewSpinner');
+
+      btn.disabled = true;
+      btnText.textContent = 'กำลังตรวจสอบซองของขวัญ...';
+      spinner.classList.remove('hidden');
+      hideTmnViewAlert();
+
+      try {
+        const res = await fetch('/api/topup/voucher', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({ voucher_url: url })
+        });
+
+        const data = await res.json();
+        if (data.success) {
+          showTmnViewAlert(data.message, false);
+          input.value = '';
+          await refreshUserProfile();
+        } else {
+          showTmnViewAlert(data.message || 'เติมเงินไม่สำเร็จ กรุณาตรวจสอบลิงก์อีกครั้ง', true);
+        }
+      } catch (err) {
+        showTmnViewAlert('ไม่สามารถเชื่อมต่อเซิร์ฟเวอร์ได้ กรุณาลองใหม่อีกครั้ง', true);
+      } finally {
+        btn.disabled = false;
+        btnText.textContent = '⚡ เติมเงินทันทีด้วยซองของขวัญ';
+        spinner.classList.add('hidden');
+      }
+    }
+
+    function showTmnViewAlert(msg, isError = false) {
+      const box = document.getElementById('tmnViewAlert');
+      if (!box) return;
+      box.classList.remove('hidden');
+      if (isError) {
+        box.className = 'mt-3 p-3 rounded-xl text-xs font-semibold flex items-center gap-2 bg-red-500/10 text-red-500 border border-red-500/20';
+        box.innerHTML = `<svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg><span>${msg}</span>`;
+      } else {
+        box.className = 'mt-3 p-3 rounded-xl text-xs font-semibold flex items-center gap-2 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20';
+        box.innerHTML = `<svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg><span>${msg}</span>`;
+      }
+    }
+
+    function hideTmnViewAlert() {
+      const box = document.getElementById('tmnViewAlert');
+      if (box) box.classList.add('hidden');
     }
 
     // ── Topup System Scripts ──
@@ -1427,7 +2064,168 @@
       }
     }
 
-    // Submit Bank Transfer
+    // ═════ Bank Slip Drag & Drop / QR Scanner ═════
+    function handleSlipDragOver(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      document.getElementById('slipDropZone')?.classList.add('border-emerald-500', 'bg-emerald-500/5');
+    }
+
+    function handleSlipDragLeave(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      document.getElementById('slipDropZone')?.classList.remove('border-emerald-500', 'bg-emerald-500/5');
+    }
+
+    function handleSlipDrop(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      document.getElementById('slipDropZone')?.classList.remove('border-emerald-500', 'bg-emerald-500/5');
+      const files = e.dataTransfer?.files;
+      if (files && files.length > 0) processSlipFile(files[0]);
+    }
+
+    function handleSlipFileSelect(e) {
+      const files = e.target.files;
+      if (files && files.length > 0) processSlipFile(files[0]);
+    }
+
+    // Support Ctrl+V paste while topup modal is open
+    window.addEventListener('paste', function(e) {
+      const topupModal = document.getElementById('topupModal');
+      if (!topupModal || topupModal.classList.contains('hidden')) return;
+      const items = (e.clipboardData || window.clipboardData)?.items;
+      if (!items) return;
+      for (let i = 0; i < items.length; i++) {
+        if (items[i].type && items[i].type.indexOf('image') !== -1) {
+          const file = items[i].getAsFile();
+          if (file) {
+            switchTopupTab('bank');
+            processSlipFile(file);
+            break;
+          }
+        }
+      }
+    });
+
+    // Process slip image with jsQR
+    function processSlipFile(file) {
+      if (!file || !file.type.startsWith('image/')) {
+        showTopupAlert('กรุณาอัปโหลดไฟล์รูปภาพสลิปเท่านั้น (PNG, JPG, JPEG)', true);
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const dataUrl = e.target.result;
+        document.getElementById('slipDefaultPrompt')?.classList.add('hidden');
+        const wrapper = document.getElementById('slipPreviewWrapper');
+        if (wrapper) {
+          wrapper.classList.remove('hidden');
+          wrapper.classList.add('flex');
+        }
+        const previewImg = document.getElementById('slipPreviewImg');
+        if (previewImg) previewImg.src = dataUrl;
+
+        const statusText = document.getElementById('slipStatusText');
+        if (statusText) {
+          statusText.className = 'text-xs font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5';
+          statusText.innerHTML = `
+            <svg class="animate-spin h-3.5 w-3.5 text-emerald-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+            กำลังอ่าน QR Code บนสลิป...
+          `;
+        }
+
+        const img = new Image();
+        img.onload = function() {
+          const canvas = document.createElement('canvas');
+          const ctx = canvas.getContext('2d');
+          canvas.width = img.width;
+          canvas.height = img.height;
+          ctx.drawImage(img, 0, 0, img.width, img.height);
+          const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+
+          let code = null;
+          if (typeof jsQR !== 'undefined') {
+            code = jsQR(imgData.data, imgData.width, imgData.height, { inversionAttempts: 'dontInvert' });
+            if (!code) {
+              code = jsQR(imgData.data, imgData.width, imgData.height, { inversionAttempts: 'attemptBoth' });
+            }
+          }
+
+          if (!code || !code.data) {
+            if (statusText) {
+              statusText.className = 'text-xs font-bold text-amber-500 flex items-center gap-1';
+              statusText.innerHTML = '⚠️ อ่าน QR ไม่พบ (รูปไม่ชัด) กรุณาใช้ปุ่มแจ้งโอนด้านล่าง';
+            }
+            showTopupAlert('ไม่พบ QR Code ในรูปภาพสลิป กรุณาใช้รูปสลิปที่มี QR ชัดเจน หรือกดปุ่มแจ้งโอนด้านล่าง', true);
+            return;
+          }
+
+          if (statusText) {
+            statusText.className = 'text-xs font-bold text-emerald-500 flex items-center gap-1.5';
+            statusText.innerHTML = '⚡ ตรวจพบ QR Code! กำลังเช็คยอดเงินกับระบบ...';
+          }
+
+          const token = localStorage.getItem('nexus_token') || localStorage.getItem('poppy_token');
+          if (!token) {
+            closeTopupModal();
+            showLoginView();
+            showAlert('กรุณาเข้าสู่ระบบก่อนทำการเติมเงิน', true);
+            return;
+          }
+
+          const inputAmount = document.getElementById('bankTopupAmount')?.value || 100;
+
+          fetch('/api/topup/bank/slip', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({
+              qr_data: code.data,
+              amount: parseFloat(inputAmount),
+              slip_name: file.name
+            })
+          })
+          .then(res => res.json())
+          .then(data => {
+            if (data.success) {
+              if (statusText) {
+                statusText.className = 'text-xs font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-1';
+                statusText.innerHTML = `✓ สำเร็จ! เติมเงิน ฿${data.amount.toFixed(2)} เข้ากระเป๋าเรียบร้อย`;
+              }
+              showTopupAlert(`🎉 ${data.message}`, false);
+              if (data.new_balance !== undefined) {
+                document.getElementById('topupModalBalance').textContent = parseFloat(data.new_balance).toFixed(2);
+              }
+              refreshUserProfile();
+              setTimeout(() => {
+                closeTopupModal();
+              }, 2200);
+            } else {
+              if (statusText) {
+                statusText.className = 'text-xs font-bold text-red-500 flex items-center gap-1';
+                statusText.innerHTML = `✕ ${data.message || 'ตรวจสลิปไม่ผ่าน'}`;
+              }
+              showTopupAlert(data.message || 'ตรวจสลิปไม่ผ่าน กรุณาลองใหม่อีกครั้ง', true);
+            }
+          })
+          .catch(err => {
+            if (statusText) {
+              statusText.className = 'text-xs font-bold text-red-500 flex items-center gap-1';
+              statusText.innerHTML = '✕ เกิดข้อผิดพลาดในการเชื่อมต่อเซิร์ฟเวอร์';
+            }
+            showTopupAlert('เกิดข้อผิดพลาดในการเชื่อมต่อเซิร์ฟเวอร์', true);
+          });
+        };
+        img.src = dataUrl;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    // Submit Bank Transfer (Manual / Specified Amount)
     async function submitBankTopup() {
       const token = localStorage.getItem('nexus_token');
       if (!token) {
