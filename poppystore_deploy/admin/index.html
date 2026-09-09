@@ -145,32 +145,46 @@
             <a class="text-[13px] font-semibold tracking-tight px-4 py-2 rounded-xl border border-zinc-200 dark:border-zinc-700/80 bg-white dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 hover:border-zinc-300 dark:hover:border-zinc-600 hover:text-zinc-950 dark:hover:text-white hover:bg-zinc-50 dark:hover:bg-zinc-800/80 shadow-xs transition-all cursor-pointer" onclick="showShopView()">หน้าหลัก</a>
             <a class="text-[13px] font-semibold tracking-tight px-4 py-2 rounded-xl border border-zinc-200 dark:border-zinc-700/80 bg-white dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 hover:border-zinc-300 dark:hover:border-zinc-600 hover:text-zinc-950 dark:hover:text-white hover:bg-zinc-50 dark:hover:bg-zinc-800/80 shadow-xs transition-all cursor-pointer" onclick="showShopView('#productsSection')">สินค้า</a>
             
-            <!-- Topup Dropdown Trigger (Red button matching Screenshot 2) -->
+            <!-- Topup Dropdown Trigger (Themed button matching site palette) -->
             <div class="relative" id="topupDropdownContainer">
-              <button type="button" onclick="toggleTopupDropdown(event)" id="topupNavBtn" class="text-[13px] font-bold tracking-tight px-4 py-2 rounded-xl bg-[#ef4444] hover:bg-[#dc2626] text-white shadow-sm transition-all cursor-pointer flex items-center gap-1.5">
+              <button type="button" onclick="toggleTopupDropdown(event)" id="topupNavBtn" class="text-[13px] font-bold tracking-tight px-4 py-2 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-white dark:bg-white dark:text-zinc-950 dark:hover:bg-zinc-200 shadow-sm transition-all cursor-pointer flex items-center gap-1.5 border border-zinc-800 dark:border-white">
                 <span>เติมเงิน</span>
                 <svg id="topupNavChevron" class="w-3.5 h-3.5 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"></path></svg>
               </button>
 
               <!-- Topup Dropdown Menu -->
-              <div id="topupDropdownMenu" class="hidden absolute top-full left-0 mt-2 w-72 bg-white dark:bg-[#18181b] rounded-2xl shadow-2xl border border-zinc-200 dark:border-zinc-800 p-2.5 z-50">
+              <div id="topupDropdownMenu" class="hidden absolute top-full left-0 mt-2 w-72 bg-white dark:bg-[#18181b] rounded-2xl shadow-xl border border-zinc-200 dark:border-zinc-800 p-2.5 z-50">
                 <div class="px-3 py-1.5 text-[11px] font-semibold text-zinc-400 dark:text-zinc-500">
                   ช่องทางการเติมเงิน
                 </div>
                 <!-- Option 1: เติมเงินธนาคาร -->
                 <a onclick="showBankTopupView(); closeTopupDropdown();" class="flex items-center gap-3 p-2.5 rounded-xl hover:bg-zinc-100 dark:hover:bg-zinc-800/70 cursor-pointer transition-colors group">
-                  <div class="w-10 h-10 rounded-full bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-750 flex items-center justify-center p-0.5 shrink-0 shadow-xs">
-                    <img src="https://upload.wikimedia.org/wikipedia/th/thumb/3/30/Kasikornbank_Logo.svg/1200px-Kasikornbank_Logo.svg.png" onerror="this.src='https://promptpay.github.io/promptpay-js/banks/kbank.png'" class="w-8 h-8 object-contain rounded-full" alt="KBank" />
+                  <div class="w-10 h-10 rounded-xl bg-emerald-500/10 dark:bg-emerald-500/15 border border-emerald-500/20 flex items-center justify-center p-1.5 shrink-0 shadow-xs">
+                    <svg viewBox="0 0 100 100" class="w-7 h-7" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M50 16 C38 32 26 44 18 56 C28 56 38 50 45 40 C46 50 40 60 28 66 C38 66 46 60 50 50 C54 60 62 66 72 66 C60 60 54 50 55 40 C62 50 72 56 82 56 C74 44 62 32 50 16 Z" fill="#16a34a"/>
+                      <rect x="47" y="52" width="6" height="30" rx="3" fill="#16a34a"/>
+                    </svg>
                   </div>
                   <div>
-                    <div class="text-xs font-bold text-zinc-900 dark:text-white group-hover:text-red-500 transition-colors">เติมเงินธนาคาร</div>
+                    <div class="text-xs font-bold text-zinc-900 dark:text-white group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">เติมเงินธนาคาร</div>
                     <div class="text-[11px] text-zinc-400">ตรวจสอบสลิปอัตโนมัติ</div>
                   </div>
                 </a>
                 <!-- Option 2: TrueMoney Wallet -->
                 <a onclick="showTruemoneyTopupView(); closeTopupDropdown();" class="flex items-center gap-3 p-2.5 rounded-xl hover:bg-zinc-100 dark:hover:bg-zinc-800/70 cursor-pointer transition-colors group">
-                  <div class="w-10 h-10 rounded-full bg-orange-500/10 border border-orange-500/20 flex items-center justify-center shrink-0 shadow-xs">
-                    <img src="https://www.truemoney.com/wp-content/uploads/2020/12/logo-truemoneywallet-300x300-1.png" onerror="this.src='https://play-lh.googleusercontent.com/P2D7q9JdE9g2-5zX1j9L_Jv_9n_Fz4E6e1G7v6H7K1_9A9b6C7d8e9f0a1b2c3d4e5f=w240-h480'" class="w-7 h-7 object-contain" alt="TrueMoney" />
+                  <div class="w-10 h-10 rounded-xl bg-orange-500/10 dark:bg-orange-500/15 border border-orange-500/20 flex items-center justify-center p-1.5 shrink-0 shadow-xs">
+                    <svg viewBox="0 0 100 100" class="w-7 h-7" xmlns="http://www.w3.org/2000/svg">
+                      <defs>
+                        <linearGradient id="tmnGradNav" x1="0%" y1="0%" x2="100%" y2="100%">
+                          <stop offset="0%" stop-color="#ff7a00"/>
+                          <stop offset="100%" stop-color="#ea580c"/>
+                        </linearGradient>
+                      </defs>
+                      <rect width="100" height="100" rx="24" fill="url(#tmnGradNav)"/>
+                      <path d="M24 64 L46 22 L58 36 L36 78 Z" fill="#ffffff"/>
+                      <path d="M76 64 L54 22 L42 36 L64 78 Z" fill="#fef08a"/>
+                      <circle cx="50" cy="50" r="12" fill="#ffffff"/>
+                    </svg>
                   </div>
                   <div>
                     <div class="text-xs font-bold text-zinc-900 dark:text-white group-hover:text-orange-500 transition-colors">ทรูมันนี่ วอลเล็ท (Wallet)</div>
@@ -235,13 +249,13 @@
             <span>มินิเกม</span>
           </a>
           <!-- Mobile Topup Options -->
-          <div class="px-3 py-2 rounded-xl bg-red-500/10 border border-red-500/20 space-y-2">
-            <span class="text-xs font-bold text-red-500 block">ช่องทางเติมเงิน:</span>
+          <div class="px-3 py-2.5 rounded-xl bg-zinc-100 dark:bg-zinc-850 border border-zinc-200 dark:border-zinc-750 space-y-2">
+            <span class="text-xs font-bold text-zinc-700 dark:text-zinc-300 block">ช่องทางเติมเงิน:</span>
             <div class="grid grid-cols-2 gap-2">
-              <button onclick="showBankTopupView(); toggleMobileMenu();" class="p-2 rounded-lg bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-750 text-left text-xs font-bold text-zinc-800 dark:text-zinc-200 hover:border-red-400 flex items-center gap-1.5">
+              <button onclick="showBankTopupView(); toggleMobileMenu();" class="p-2 rounded-lg bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 text-left text-xs font-bold text-zinc-800 dark:text-zinc-200 hover:border-zinc-400 dark:hover:border-zinc-500 flex items-center gap-1.5 transition-colors">
                 <span class="text-sm">🏦</span> ธนาคาร
               </button>
-              <button onclick="showTruemoneyTopupView(); toggleMobileMenu();" class="p-2 rounded-lg bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-750 text-left text-xs font-bold text-zinc-800 dark:text-zinc-200 hover:border-orange-400 flex items-center gap-1.5">
+              <button onclick="showTruemoneyTopupView(); toggleMobileMenu();" class="p-2 rounded-lg bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 text-left text-xs font-bold text-zinc-800 dark:text-zinc-200 hover:border-zinc-400 dark:hover:border-zinc-500 flex items-center gap-1.5 transition-colors">
                 <span class="text-sm">🟧</span> TrueMoney
               </button>
             </div>
@@ -515,12 +529,17 @@
             </div>
 
           </div>
+        </div>
+
         <!-- ── VIEW 4: BANK TOPUP VIEW (EXACT TO REFERENCE SCREENSHOT) ── -->
         <div id="bankTopupView" class="hidden w-full max-w-2xl mx-auto px-4 sm:px-6 py-8 flex flex-col gap-5 animate-page">
           <!-- View Header -->
           <div class="flex items-center gap-3.5">
-            <div class="w-12 h-12 rounded-full border border-red-500/80 p-0.5 flex items-center justify-center shrink-0 bg-white shadow-sm overflow-hidden">
-              <img src="https://upload.wikimedia.org/wikipedia/th/thumb/3/30/Kasikornbank_Logo.svg/1200px-Kasikornbank_Logo.svg.png" onerror="this.src='https://promptpay.github.io/promptpay-js/banks/kbank.png'" class="w-full h-full object-contain rounded-full" alt="KBank" />
+            <div class="w-12 h-12 rounded-2xl bg-emerald-500/10 dark:bg-emerald-500/15 border border-emerald-500/20 flex items-center justify-center p-2 shrink-0 shadow-sm">
+              <svg viewBox="0 0 100 100" class="w-7 h-7" xmlns="http://www.w3.org/2000/svg">
+                <path d="M50 16 C38 32 26 44 18 56 C28 56 38 50 45 40 C46 50 40 60 28 66 C38 66 46 60 50 50 C54 60 62 66 72 66 C60 60 54 50 55 40 C62 50 72 56 82 56 C74 44 62 32 50 16 Z" fill="#16a34a"/>
+                <rect x="47" y="52" width="6" height="30" rx="3" fill="#16a34a"/>
+              </svg>
             </div>
             <div>
               <h1 class="text-xl sm:text-2xl font-black text-zinc-900 dark:text-white tracking-tight">เติมเงินผ่านธนาคาร</h1>
@@ -539,8 +558,11 @@
           <div class="rounded-2xl bg-white dark:bg-[#141416] border border-zinc-200 dark:border-zinc-800 p-6 shadow-sm">
             <!-- Bank Brand Header -->
             <div class="flex items-center gap-3.5 pb-4 border-b border-zinc-100 dark:border-zinc-800/80">
-              <div class="w-12 h-12 rounded-xl bg-white border border-zinc-200 dark:border-zinc-700 flex items-center justify-center p-1 shrink-0 shadow-xs">
-                <img src="https://upload.wikimedia.org/wikipedia/th/thumb/3/30/Kasikornbank_Logo.svg/1200px-Kasikornbank_Logo.svg.png" onerror="this.src='https://promptpay.github.io/promptpay-js/banks/kbank.png'" class="w-8 h-8 object-contain rounded-full" alt="KBank" />
+              <div class="w-12 h-12 rounded-2xl bg-emerald-500/10 dark:bg-emerald-500/15 border border-emerald-500/20 flex items-center justify-center p-2 shrink-0 shadow-xs">
+                <svg viewBox="0 0 100 100" class="w-7 h-7" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M50 16 C38 32 26 44 18 56 C28 56 38 50 45 40 C46 50 40 60 28 66 C38 66 46 60 50 50 C54 60 62 66 72 66 C60 60 54 50 55 40 C62 50 72 56 82 56 C74 44 62 32 50 16 Z" fill="#16a34a"/>
+                  <rect x="47" y="52" width="6" height="30" rx="3" fill="#16a34a"/>
+                </svg>
               </div>
               <div>
                 <h3 class="text-base font-bold text-zinc-900 dark:text-white" id="bankViewBankName">ธนาคารกสิกรไทย</h3>
@@ -575,7 +597,7 @@
           <div class="rounded-2xl bg-white dark:bg-[#141416] border border-zinc-200 dark:border-zinc-800 p-6 shadow-sm">
             <!-- Card Title -->
             <div class="flex items-center gap-2 mb-4">
-              <div class="w-5 h-5 rounded-full border border-red-500 text-red-500 flex items-center justify-center text-xs font-bold shrink-0">
+              <div class="w-6 h-6 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/25 flex items-center justify-center text-xs font-bold shrink-0">
                 ✓
               </div>
               <h3 class="text-sm sm:text-base font-bold text-zinc-900 dark:text-white">อัปโหลดสลิปเพื่อตรวจสอบอัตโนมัติ</h3>
@@ -588,14 +610,14 @@
               ondragover="handleBankViewDragOver(event)"
               ondragleave="handleBankViewDragLeave(event)"
               ondrop="handleBankViewDrop(event)"
-              class="border-2 border-dashed border-zinc-200 dark:border-zinc-750 hover:border-red-400 dark:hover:border-red-500/70 rounded-2xl p-8 sm:p-10 flex flex-col items-center justify-center cursor-pointer transition-all bg-white dark:bg-zinc-900/30 group relative"
+              class="border-2 border-dashed border-zinc-300 dark:border-zinc-700/80 hover:border-zinc-500 dark:hover:border-zinc-500 rounded-2xl p-8 sm:p-10 flex flex-col items-center justify-center cursor-pointer transition-all bg-zinc-50/50 dark:bg-zinc-900/30 group relative"
             >
               <input type="file" id="bankViewFileInput" accept="image/*" class="hidden" onchange="handleBankViewFileSelect(event)" />
 
               <!-- Default Prompt -->
               <div id="bankViewPrompt" class="flex flex-col items-center text-center">
-                <div class="text-red-500 mb-3 group-hover:scale-110 transition-transform">
-                  <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div class="w-12 h-12 rounded-2xl bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300 flex items-center justify-center mb-3 group-hover:scale-105 transition-transform">
+                  <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
                   </svg>
                 </div>
@@ -616,15 +638,15 @@
             <!-- Dynamic Alert Box -->
             <div id="bankViewAlert" class="hidden mt-4 p-3.5 rounded-xl text-xs font-semibold"></div>
 
-            <!-- Submit Button (Coral/Red matching screenshot) -->
+            <!-- Submit Button (Themed to match website's primary action button) -->
             <button 
               type="button" 
               id="btnBankViewSubmit" 
               onclick="submitBankViewSlip()" 
-              class="mt-5 w-full py-3.5 px-4 rounded-xl bg-[#f87171] hover:bg-[#ef4444] active:scale-[0.99] text-white font-bold text-sm shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60"
+              class="mt-5 w-full py-4 px-5 rounded-2xl bg-zinc-900 hover:bg-zinc-800 text-white dark:bg-white dark:text-zinc-950 dark:hover:bg-zinc-200 active:scale-[0.99] font-bold text-sm sm:text-base shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
             >
               <span id="btnBankViewSubmitText">ตรวจสอบและเติมเงิน</span>
-              <svg id="bankViewSpinner" class="hidden animate-spin h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
+              <svg id="bankViewSpinner" class="hidden animate-spin h-4 w-4" fill="none" viewBox="0 0 24 24">
                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                 <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
               </svg>
@@ -636,8 +658,19 @@
         <div id="truemoneyTopupView" class="hidden w-full max-w-2xl mx-auto px-4 sm:px-6 py-8 flex flex-col gap-5 animate-page">
           <!-- View Header -->
           <div class="flex items-center gap-3.5">
-            <div class="w-12 h-12 rounded-full border border-orange-500/80 p-0.5 flex items-center justify-center shrink-0 bg-white shadow-sm overflow-hidden">
-              <img src="https://www.truemoney.com/wp-content/uploads/2020/12/logo-truemoneywallet-300x300-1.png" onerror="this.src='https://play-lh.googleusercontent.com/P2D7q9JdE9g2-5zX1j9L_Jv_9n_Fz4E6e1G7v6H7K1_9A9b6C7d8e9f0a1b2c3d4e5f=w240-h480'" class="w-8 h-8 object-contain" alt="TrueMoney" />
+            <div class="w-12 h-12 rounded-full bg-[#ff5a00]/10 border border-[#ff5a00]/25 flex items-center justify-center shrink-0 shadow-xs overflow-hidden">
+              <svg viewBox="0 0 100 100" class="w-8 h-8" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <linearGradient id="tmnGradHeader" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#ff7a00"/>
+                    <stop offset="100%" stop-color="#e11d48"/>
+                  </linearGradient>
+                </defs>
+                <rect width="100" height="100" rx="26" fill="url(#tmnGradHeader)"/>
+                <path d="M24 64 L46 22 L58 36 L36 78 Z" fill="#ffffff"/>
+                <path d="M76 64 L54 22 L42 36 L64 78 Z" fill="#fef08a"/>
+                <circle cx="50" cy="50" r="12" fill="#ffffff"/>
+              </svg>
             </div>
             <div>
               <h1 class="text-xl sm:text-2xl font-black text-zinc-900 dark:text-white tracking-tight">เติมเงินผ่านทรูมันนี่ วอลเล็ท</h1>
@@ -677,10 +710,10 @@
               type="button"
               id="btnSubmitTmnView"
               onclick="submitTmnViewVoucher()"
-              class="w-full py-3.5 rounded-xl bg-orange-600 hover:bg-orange-500 active:scale-[0.99] text-white font-bold text-sm shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60"
+              class="w-full py-4 px-5 rounded-2xl bg-zinc-900 hover:bg-zinc-800 text-white dark:bg-white dark:text-zinc-950 dark:hover:bg-zinc-200 active:scale-[0.99] font-bold text-sm sm:text-base shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
             >
               <span id="btnSubmitTmnViewText">⚡ เติมเงินทันทีด้วยซองของขวัญ</span>
-              <svg id="tmnViewSpinner" class="hidden animate-spin h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
+              <svg id="tmnViewSpinner" class="hidden animate-spin h-4 w-4" fill="none" viewBox="0 0 24 24">
                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                 <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
               </svg>
