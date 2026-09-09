@@ -14,8 +14,9 @@
   <meta name="twitter:image" content="logo.jpg" />
   <link rel="icon" href="logo.jpg" />
 
-  <!-- Tailwind CSS CDN -->
+  <!-- Tailwind CSS CDN & jsQR Slip Scanner -->
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
   <script>
     tailwind.config = {
       darkMode: 'class',
@@ -788,16 +789,66 @@
                   <p class="text-[11px] text-zinc-500 dark:text-zinc-400">สแกนด้วยแอปธนาคารใดก็ได้ ยอดเงินจะถูกระบุให้อัตโนมัติ</p>
                 </div>
 
-                <!-- Submit Bank Transfer Button -->
-                <button
-                  type="button"
-                  id="btnSubmitBankTransfer"
-                  onclick="submitBankTopup()"
-                  class="w-full py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 active:scale-[0.98] text-white font-bold text-xs shadow-md transition-all flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-50"
-                >
-                  <span id="btnSubmitBankTransferText">✓ โอนเงินเรียบร้อยแล้ว (รับเครดิตทันที)</span>
-                  <svg id="bankSpinner" class="hidden animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
-                </button>
+                <!-- ═════ AUTOMATED BANK SLIP SCANNER (100% REAL-TIME) ═════ -->
+                <div class="p-4 rounded-2xl bg-zinc-50 dark:bg-[#1c1c20] border border-zinc-200 dark:border-zinc-800 space-y-3">
+                  <div class="flex items-center justify-between">
+                    <span class="font-bold text-xs text-zinc-900 dark:text-white flex items-center gap-1.5">
+                      <span>🧾</span> แนบสลิปโอนเงิน (ตรวจสลิปออโต้ 100%)
+                    </span>
+                    <span class="px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-500 border border-emerald-500/20 text-[10px] font-bold animate-pulse">⚡ เรียลไทม์</span>
+                  </div>
+
+                  <!-- Dropzone / File Upload -->
+                  <div
+                    id="slipDropZone"
+                    onclick="document.getElementById('slipFileInput').click()"
+                    ondragover="handleSlipDragOver(event)"
+                    ondragleave="handleSlipDragLeave(event)"
+                    ondrop="handleSlipDrop(event)"
+                    class="relative border-2 border-dashed border-zinc-300 dark:border-zinc-700 hover:border-emerald-500 dark:hover:border-emerald-500 rounded-2xl p-5 text-center cursor-pointer bg-white dark:bg-zinc-900/60 transition-all group"
+                  >
+                    <input type="file" id="slipFileInput" accept="image/*" class="hidden" onchange="handleSlipFileSelect(event)" />
+                    
+                    <!-- Preview Container -->
+                    <div id="slipPreviewWrapper" class="hidden flex-col items-center justify-center space-y-2">
+                      <div class="relative max-w-[180px] max-h-[180px] rounded-xl overflow-hidden border border-zinc-200 dark:border-zinc-700 shadow-md">
+                        <img id="slipPreviewImg" src="" alt="Slip Preview" class="w-full h-auto object-contain" />
+                        <!-- Radar Scan Overlay -->
+                        <div id="slipScannerRadar" class="absolute inset-0 bg-emerald-500/15 flex items-center justify-center">
+                          <div class="w-full h-1 bg-emerald-400 shadow-[0_0_12px_#10b981] animate-bounce"></div>
+                        </div>
+                      </div>
+                      <span id="slipStatusText" class="text-xs font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5">
+                        <svg class="animate-spin h-3.5 w-3.5 text-emerald-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                        กำลังอ่าน QR Code บนสลิป...
+                      </span>
+                    </div>
+
+                    <!-- Default Prompt -->
+                    <div id="slipDefaultPrompt" class="space-y-1.5">
+                      <div class="w-10 h-10 mx-auto rounded-full bg-emerald-500/10 text-emerald-500 flex items-center justify-center text-lg group-hover:scale-110 transition-transform">
+                        📸
+                      </div>
+                      <p class="text-xs font-bold text-zinc-800 dark:text-zinc-200">
+                        คลิกเพื่อเลือกรูปสลิป หรือลากไฟล์มาวางที่นี่
+                      </p>
+                      <p class="text-[11px] text-zinc-500 dark:text-zinc-400">
+                        รองรับ PNG, JPG หรือกด <kbd class="px-1.5 py-0.5 bg-zinc-100 dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 rounded text-[10px] font-mono">Ctrl + V</kbd> วางรูปได้ทันที
+                      </p>
+                    </div>
+                  </div>
+
+                  <!-- Submit Bank Transfer Button (Fallback) -->
+                  <button
+                    type="button"
+                    id="btnSubmitBankTransfer"
+                    onclick="submitBankTopup()"
+                    class="w-full py-2.5 rounded-xl bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800/80 dark:hover:bg-zinc-700 text-zinc-700 dark:text-zinc-300 font-semibold text-xs transition-all flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-50"
+                  >
+                    <span id="btnSubmitBankTransferText">⚡ หรือกดยืนยันโอนเงินแบบระบุยอดเอง (฿<span id="btnBankAmountDisplay">100</span>)</span>
+                    <svg id="bankSpinner" class="hidden animate-spin h-3.5 w-3.5 text-zinc-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                  </button>
+                </div>
               </div>
             </div>
 
@@ -1427,7 +1478,168 @@
       }
     }
 
-    // Submit Bank Transfer
+    // ═════ Bank Slip Drag & Drop / QR Scanner ═════
+    function handleSlipDragOver(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      document.getElementById('slipDropZone')?.classList.add('border-emerald-500', 'bg-emerald-500/5');
+    }
+
+    function handleSlipDragLeave(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      document.getElementById('slipDropZone')?.classList.remove('border-emerald-500', 'bg-emerald-500/5');
+    }
+
+    function handleSlipDrop(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      document.getElementById('slipDropZone')?.classList.remove('border-emerald-500', 'bg-emerald-500/5');
+      const files = e.dataTransfer?.files;
+      if (files && files.length > 0) processSlipFile(files[0]);
+    }
+
+    function handleSlipFileSelect(e) {
+      const files = e.target.files;
+      if (files && files.length > 0) processSlipFile(files[0]);
+    }
+
+    // Support Ctrl+V paste while topup modal is open
+    window.addEventListener('paste', function(e) {
+      const topupModal = document.getElementById('topupModal');
+      if (!topupModal || topupModal.classList.contains('hidden')) return;
+      const items = (e.clipboardData || window.clipboardData)?.items;
+      if (!items) return;
+      for (let i = 0; i < items.length; i++) {
+        if (items[i].type && items[i].type.indexOf('image') !== -1) {
+          const file = items[i].getAsFile();
+          if (file) {
+            switchTopupTab('bank');
+            processSlipFile(file);
+            break;
+          }
+        }
+      }
+    });
+
+    // Process slip image with jsQR
+    function processSlipFile(file) {
+      if (!file || !file.type.startsWith('image/')) {
+        showTopupAlert('กรุณาอัปโหลดไฟล์รูปภาพสลิปเท่านั้น (PNG, JPG, JPEG)', true);
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const dataUrl = e.target.result;
+        document.getElementById('slipDefaultPrompt')?.classList.add('hidden');
+        const wrapper = document.getElementById('slipPreviewWrapper');
+        if (wrapper) {
+          wrapper.classList.remove('hidden');
+          wrapper.classList.add('flex');
+        }
+        const previewImg = document.getElementById('slipPreviewImg');
+        if (previewImg) previewImg.src = dataUrl;
+
+        const statusText = document.getElementById('slipStatusText');
+        if (statusText) {
+          statusText.className = 'text-xs font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5';
+          statusText.innerHTML = `
+            <svg class="animate-spin h-3.5 w-3.5 text-emerald-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+            กำลังอ่าน QR Code บนสลิป...
+          `;
+        }
+
+        const img = new Image();
+        img.onload = function() {
+          const canvas = document.createElement('canvas');
+          const ctx = canvas.getContext('2d');
+          canvas.width = img.width;
+          canvas.height = img.height;
+          ctx.drawImage(img, 0, 0, img.width, img.height);
+          const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+
+          let code = null;
+          if (typeof jsQR !== 'undefined') {
+            code = jsQR(imgData.data, imgData.width, imgData.height, { inversionAttempts: 'dontInvert' });
+            if (!code) {
+              code = jsQR(imgData.data, imgData.width, imgData.height, { inversionAttempts: 'attemptBoth' });
+            }
+          }
+
+          if (!code || !code.data) {
+            if (statusText) {
+              statusText.className = 'text-xs font-bold text-amber-500 flex items-center gap-1';
+              statusText.innerHTML = '⚠️ อ่าน QR ไม่พบ (รูปไม่ชัด) กรุณาใช้ปุ่มแจ้งโอนด้านล่าง';
+            }
+            showTopupAlert('ไม่พบ QR Code ในรูปภาพสลิป กรุณาใช้รูปสลิปที่มี QR ชัดเจน หรือกดปุ่มแจ้งโอนด้านล่าง', true);
+            return;
+          }
+
+          if (statusText) {
+            statusText.className = 'text-xs font-bold text-emerald-500 flex items-center gap-1.5';
+            statusText.innerHTML = '⚡ ตรวจพบ QR Code! กำลังเช็คยอดเงินกับระบบ...';
+          }
+
+          const token = localStorage.getItem('nexus_token') || localStorage.getItem('poppy_token');
+          if (!token) {
+            closeTopupModal();
+            showLoginView();
+            showAlert('กรุณาเข้าสู่ระบบก่อนทำการเติมเงิน', true);
+            return;
+          }
+
+          const inputAmount = document.getElementById('bankTopupAmount')?.value || 100;
+
+          fetch('/api/topup/bank/slip', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({
+              qr_data: code.data,
+              amount: parseFloat(inputAmount),
+              slip_name: file.name
+            })
+          })
+          .then(res => res.json())
+          .then(data => {
+            if (data.success) {
+              if (statusText) {
+                statusText.className = 'text-xs font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-1';
+                statusText.innerHTML = `✓ สำเร็จ! เติมเงิน ฿${data.amount.toFixed(2)} เข้ากระเป๋าเรียบร้อย`;
+              }
+              showTopupAlert(`🎉 ${data.message}`, false);
+              if (data.new_balance !== undefined) {
+                document.getElementById('topupModalBalance').textContent = parseFloat(data.new_balance).toFixed(2);
+              }
+              refreshUserProfile();
+              setTimeout(() => {
+                closeTopupModal();
+              }, 2200);
+            } else {
+              if (statusText) {
+                statusText.className = 'text-xs font-bold text-red-500 flex items-center gap-1';
+                statusText.innerHTML = `✕ ${data.message || 'ตรวจสลิปไม่ผ่าน'}`;
+              }
+              showTopupAlert(data.message || 'ตรวจสลิปไม่ผ่าน กรุณาลองใหม่อีกครั้ง', true);
+            }
+          })
+          .catch(err => {
+            if (statusText) {
+              statusText.className = 'text-xs font-bold text-red-500 flex items-center gap-1';
+              statusText.innerHTML = '✕ เกิดข้อผิดพลาดในการเชื่อมต่อเซิร์ฟเวอร์';
+            }
+            showTopupAlert('เกิดข้อผิดพลาดในการเชื่อมต่อเซิร์ฟเวอร์', true);
+          });
+        };
+        img.src = dataUrl;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    // Submit Bank Transfer (Manual / Specified Amount)
     async function submitBankTopup() {
       const token = localStorage.getItem('nexus_token');
       if (!token) {

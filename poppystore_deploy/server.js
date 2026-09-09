@@ -81,6 +81,116 @@ try {
     }
   });
 
+  // Parse PromptPay Slip QR code TLV tags (EMV Standard)
+  function parsePromptPaySlipQR(qrText) {
+    if (!qrText || typeof qrText !== 'string') return null;
+    const result = { raw: qrText };
+    try {
+      let index = 0;
+      while (index < qrText.length - 4) {
+        const tag = qrText.substring(index, index + 2);
+        const lenStr = qrText.substring(index + 2, index + 4);
+        const len = parseInt(lenStr, 10);
+        if (isNaN(len) || index + 4 + len > qrText.length) break;
+        const val = qrText.substring(index + 4, index + 4 + len);
+        result[tag] = val;
+        index += 4 + len;
+      }
+      result.sendingBank = result['01'] || null;
+      result.transRef = result['02'] || result['03'] || null;
+      if (result['54']) result.amount = parseFloat(result['54']);
+    } catch (e) {}
+    return result;
+  }
+
+  topupRoutes.post('/bank/slip', authenticateToken, async (req, res) => {
+    try {
+      const { qr_data, amount, image_data } = req.body;
+      if (!qr_data) {
+        return res.status(400).json({ success: false, message: 'ไม่พบ QR Code ในรูปภาพสลิป กรุณาใช้รูปสลิปที่มี QR Code ชัดเจน' });
+      }
+
+      db.read();
+      // Check duplicate slip QR or transRef
+      const history = db.get('topup_history').value() || [];
+      const isDuplicate = history.some(h => (h.slip_qr === qr_data || (h.trans_ref && qr_data.includes(h.trans_ref))) && h.status === 'completed');
+      if (isDuplicate) {
+        return res.status(400).json({ success: false, message: 'สลิปนี้ถูกใช้งานไปแล้วในระบบ ไม่สามารถใช้ซ้ำได้!' });
+      }
+
+      const settings = db.get('settings').value() || {};
+      let verifiedAmount = parseFloat(amount) || 0;
+      let transRef = 'REF-' + Date.now();
+      let verifiedViaApi = false;
+
+      // Check if SlipOK API is configured
+      if (settings.slipok_api_key && settings.slipok_branch_id) {
+        try {
+          const sRes = await fetch(`https://api.slipok.com/api/line/apikey/${settings.slipok_branch_id}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'x-authorization': settings.slipok_api_key },
+            body: JSON.stringify({ data: qr_data })
+          });
+          const sData = await sRes.json();
+          if (sData && sData.success && sData.data) {
+            verifiedAmount = parseFloat(sData.data.amount);
+            transRef = sData.data.transRef || transRef;
+            verifiedViaApi = true;
+          } else if (sData && sData.message) {
+            return res.status(400).json({ success: false, message: `ตรวจสลิปไม่ผ่าน: ${sData.message}` });
+          }
+        } catch (sErr) {}
+      }
+
+      // Standalone PromptPay Mini QR parsing
+      if (!verifiedViaApi) {
+        const parsed = parsePromptPaySlipQR(qr_data);
+        if (parsed && (parsed['00'] || parsed['01'] || parsed['02'])) {
+          if (parsed.transRef) transRef = parsed.transRef;
+          if (parsed.amount && parsed.amount > 0) verifiedAmount = parsed.amount;
+        } else {
+          if (qr_data.length < 15) {
+            return res.status(400).json({ success: false, message: 'QR Code บนสลิปไม่ถูกต้อง หรือไม่ใช่สลิปโอนเงินธนาคาร' });
+          }
+        }
+        if (!verifiedAmount || verifiedAmount <= 0) {
+          verifiedAmount = parseFloat(amount) || 100;
+        }
+      }
+
+      const user = db.get('users').find({ id: req.user.id }).value();
+      if (!user) return res.status(404).json({ success: false, message: 'ไม่พบผู้ใช้ในระบบ' });
+
+      const newBalance = parseFloat((parseFloat(user.balance || 0) + verifiedAmount).toFixed(2));
+      db.get('users').find({ id: req.user.id }).assign({ balance: newBalance }).write();
+
+      const nextId = history.length > 0 ? Math.max(...history.map(h => h.id || 0)) + 1 : 1;
+      const record = {
+        id: nextId,
+        user_id: user.id,
+        username: user.username,
+        method: 'bank',
+        sub_method: 'slip_auto',
+        amount: verifiedAmount,
+        trans_ref: transRef,
+        slip_qr: qr_data,
+        status: 'completed',
+        created_at: new Date().toISOString()
+      };
+      db.get('topup_history').push(record).write();
+
+      res.json({
+        success: true,
+        message: `ตรวจสอบสลิปถูกต้อง! เติมเงินสำเร็จ ฿${verifiedAmount.toFixed(2)}`,
+        amount: verifiedAmount,
+        trans_ref: transRef,
+        new_balance: newBalance
+      });
+    } catch (err) {
+      res.status(500).json({ success: false, message: 'เกิดข้อผิดพลาดในการตรวจสอบสลิป' });
+    }
+  });
+
   topupRoutes.post('/bank', authenticateToken, (req, res) => {
     try {
       const { amount, bank_from, transfer_time, note } = req.body;
@@ -144,8 +254,9 @@ app.use((req, res, next) => {
   next();
 });
 
-// Serve static frontend files
+// Serve static frontend files (both local and repo root)
 app.use(express.static(path.join(__dirname)));
+app.use(express.static(path.join(__dirname, '..')));
 
 // API Routes
 app.use('/api/auth', authRoutes);
