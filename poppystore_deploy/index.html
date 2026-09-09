@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="th" class="font-sans scroll-smooth dark">
+<html lang="th" class="font-sans scroll-smooth">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -48,7 +48,7 @@
       --site-secondary-color: #71717a;
       --site-font-color: #09090b;
       --site-radius: 1rem;
-      --site-bg-color: #f4f4f6;
+      --site-bg-color: #ffffff;
       --site-bg-color-elevated: #ffffff;
       --site-card-bg: #ffffff;
       --site-border-color: #e4e4e7;
@@ -134,9 +134,9 @@
       <header id="header" class="fixed top-0 left-0 right-0 z-50 flex items-center transition-all duration-200 ease-out border-b h-[88px]" style="background-color: var(--site-bg-color); border-color: var(--site-border-color); transform: translateZ(0); will-change: height, box-shadow;">
         <div class="max-w-7xl mx-auto px-6 w-full flex items-center justify-between relative">
 
-          <!-- Logo / Brand -->
-          <a class="flex items-center gap-2.5 group transition-transform duration-200 hover:scale-[.98] active:scale-[.95] relative z-50 cursor-pointer" onclick="showShopView()">
-            <img src="logo_wide.png" alt="Poppy" class="h-9 sm:h-10 w-auto object-contain drop-shadow-[0_2px_12px_rgba(255,255,255,0.15)]" />
+          <!-- Logo / Brand (Click to Toggle White/Dark Theme) -->
+          <a class="flex items-center gap-2.5 group transition-transform duration-200 hover:scale-105 active:scale-95 relative z-50 cursor-pointer" onclick="toggleTheme()" title="คลิกที่รูปเพื่อเปลี่ยนเป็นสีขาว / สีมืด">
+            <img src="logo_wide.png" onerror="this.onerror=null; this.src='logo.jpg';" alt="Poppy" class="h-9 sm:h-10 w-auto object-contain drop-shadow-[0_2px_12px_rgba(255,255,255,0.15)] transition-transform duration-200 group-hover:brightness-110" />
           </a>
 
           <!-- Desktop Nav -->
@@ -231,7 +231,7 @@
               </div>
             </div>
             <div class="absolute -right-6 -bottom-8 opacity-10 dark:opacity-15 pointer-events-none hidden sm:block">
-              <img src="logo_wide.png" alt="Poppy Bg" class="w-80 h-auto object-contain dark:invert-0 invert" />
+              <img src="logo_wide.png" onerror="this.onerror=null; this.src='logo.jpg';" alt="Poppy Bg" class="w-80 h-auto object-contain dark:invert-0 invert" />
             </div>
           </div>
 
@@ -283,7 +283,7 @@
 
             <!-- Logo -->
             <div class="flex flex-col items-center justify-center mb-7">
-              <img src="logo_wide.png" alt="Poppy" class="h-12 sm:h-14 w-auto object-contain drop-shadow-[0_4px_20px_rgba(0,0,0,0.12)] dark:drop-shadow-[0_4px_25px_rgba(255,255,255,0.2)] mb-1" />
+              <img src="logo_wide.png" onerror="this.onerror=null; this.src='logo.jpg';" alt="Poppy" class="h-12 sm:h-14 w-auto object-contain drop-shadow-[0_4px_20px_rgba(0,0,0,0.12)] dark:drop-shadow-[0_4px_25px_rgba(255,255,255,0.2)] mb-1" />
               <p class="text-xs text-zinc-500 dark:text-zinc-400 font-medium">เข้าสู่ระบบเพื่อดำเนินการต่อ</p>
             </div>
 
@@ -872,19 +872,36 @@
       }
     }
 
-    // ── Theme Switcher ──
+    // ── Theme Switcher (White / Dark) ──
     function toggleTheme() {
       const isDark = document.documentElement.classList.toggle('dark');
       localStorage.setItem('theme', isDark ? 'dark' : 'light');
+      showThemeToast(isDark ? '🌙 เปลี่ยนเป็นโหมดมืด (Dark Mode)' : '☀️ เปลี่ยนเป็นโหมดสีขาว (White Mode)');
+    }
+
+    function showThemeToast(msg) {
+      let toast = document.getElementById('themeToast');
+      if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'themeToast';
+        toast.className = 'fixed bottom-6 right-6 z-50 px-4 py-2.5 rounded-2xl bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 text-xs font-bold shadow-2xl transition-all duration-300 transform translate-y-4 opacity-0 pointer-events-none flex items-center gap-2';
+        document.body.appendChild(toast);
+      }
+      toast.innerText = msg;
+      toast.classList.remove('translate-y-4', 'opacity-0');
+      clearTimeout(window.__themeToastTimer);
+      window.__themeToastTimer = setTimeout(() => {
+        toast.classList.add('translate-y-4', 'opacity-0');
+      }, 1800);
     }
 
     (function initTheme() {
       const saved = localStorage.getItem('theme');
-      if (saved === 'light') {
-        document.documentElement.classList.remove('dark');
-      } else {
+      if (saved === 'dark') {
         document.documentElement.classList.add('dark');
-        if (!saved) localStorage.setItem('theme', 'dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+        if (!saved) localStorage.setItem('theme', 'light');
       }
     })();
 
@@ -2042,9 +2059,8 @@
         showWheelView();
       } else if (window.location.hash === '#login' || window.location.search.includes('login')) {
         showLoginView();
-      } else if (!getCurrentUser()) {
-        // If not logged in, keep login accessible
-        showLoginView();
+      } else {
+        showShopView();
       }
     });
   </script>
