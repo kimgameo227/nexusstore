@@ -16,14 +16,14 @@
         <img src="/logo.jpg" class="w-9 h-9 rounded-lg object-contain" />
         <div>
           <h1 class="font-bold text-base text-white">Poppy Admin</h1>
-          <p class="text-[11px] text-pink-400">ระบบจัดการหลังบ้าน</p>
+          <p class="text-[11px] text-zinc-300">ระบบจัดการหลังบ้าน</p>
         </div>
       </div>
       <nav class="p-4 space-y-1.5 text-sm">
         <a href="/admin/dashboard.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition">📊 แดชบอร์ด</a>
         <a href="/admin/products.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition">📦 สินค้าและสต็อก</a>
         <a href="/admin/categories.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition">🏷️ หมวดหมู่สินค้า</a>
-        <a href="/admin/users.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg bg-pink-600 text-white font-semibold">👥 จัดการสมาชิก &amp; เงิน</a>
+        <a href="/admin/users.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg bg-zinc-800 border border-zinc-700 text-white font-semibold">👥 จัดการสมาชิก &amp; เงิน</a>
         <a href="/admin/orders.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition">🧾 ประวัติคำสั่งซื้อ</a>
         <a href="/admin/settings.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition">⚙️ ตั้งค่าร้านค้า</a>
       </nav>
@@ -39,11 +39,20 @@
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
       <div>
         <h2 class="text-2xl font-bold text-white">จัดการสมาชิกและรหัสผ่านผู้ใช้</h2>
-        <p class="text-xs text-slate-400 mt-1">ดูชื่อผู้ใช้, รหัสผ่านของคนที่สมัคร, ปรับยอดเงิน หรือแก้ไขรหัสผ่านได้ทันที</p>
+        <p class="text-xs text-slate-400 mt-1">ดูชื่อผู้ใช้, รหัสผ่านของคนที่สมัคร, ปรับยอดเงิน หรือสำรองข้อมูลกันหายได้ทันที</p>
       </div>
-      <button onclick="loadUsers()" class="px-3.5 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-bold text-slate-300 transition flex items-center gap-1.5 w-fit">
-        🔄 รีเฟรชข้อมูล
-      </button>
+      <div class="flex flex-wrap items-center gap-2">
+        <button onclick="exportUsersBackup()" class="px-3 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-xs font-bold text-white transition flex items-center gap-1.5 shadow-sm" title="ดาวน์โหลดไฟล์ข้อมูลสมาชิกและรหัสผ่านทั้งหมดเก็บไว้ในเครื่อง">
+          📥 สำรองข้อมูล (JSON)
+        </button>
+        <button onclick="document.getElementById('importBackupInput').click()" class="px-3 py-2 rounded-lg bg-blue-600 hover:bg-blue-500 text-xs font-bold text-white transition flex items-center gap-1.5 shadow-sm" title="กู้คืนข้อมูลสมาชิกจากไฟล์สำรอง">
+          📤 กู้คืนข้อมูล
+        </button>
+        <input type="file" id="importBackupInput" accept=".json" class="hidden" onchange="importUsersBackup(event)" />
+        <button onclick="loadUsers()" class="px-3.5 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-bold text-slate-300 transition flex items-center gap-1.5 w-fit">
+          🔄 รีเฟรช
+        </button>
+      </div>
     </div>
 
     <!-- Quick Stats Cards -->
@@ -75,7 +84,7 @@
     <div class="rounded-xl bg-slate-900 border border-slate-800 overflow-hidden shadow-xl">
       <div class="p-4 border-b border-slate-800 flex items-center justify-between">
         <h3 class="font-bold text-sm text-white">รายชื่อสมาชิกทั้งหมด (<span id="userCountBadge">0</span>)</h3>
-        <span class="text-[11px] text-pink-400 bg-pink-950/40 border border-pink-800/40 px-2.5 py-1 rounded-full font-bold">
+        <span class="text-[11px] text-zinc-300 bg-zinc-800 border border-zinc-700 px-2.5 py-1 rounded-full font-bold">
           🔒 แสดงรหัสผ่านสำหรับแอดมิน
         </span>
       </div>
@@ -104,7 +113,7 @@
   <div id="balanceModal" class="fixed inset-0 bg-black/70 backdrop-blur-xs flex items-center justify-center p-4 z-50 hidden">
     <div class="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-sm p-6 shadow-2xl">
       <h3 class="font-bold text-base text-white mb-1">ปรับยอดเงินสมาชิก</h3>
-      <p id="balanceUserTarget" class="text-xs text-pink-400 mb-4 font-semibold"></p>
+      <p id="balanceUserTarget" class="text-xs text-zinc-300 mb-4 font-semibold"></p>
       <form onsubmit="submitBalance(event)" class="space-y-3 text-xs">
         <input type="hidden" id="balanceUserId" />
         <div>
@@ -120,7 +129,7 @@
         </div>
         <div class="flex justify-end gap-2 pt-3 border-t border-slate-800">
           <button type="button" onclick="closeBalanceModal()" class="px-4 py-2 rounded-lg bg-slate-800 text-slate-300 cursor-pointer">ยกเลิก</button>
-          <button type="submit" class="px-5 py-2 rounded-lg bg-pink-600 hover:bg-pink-500 text-white font-semibold cursor-pointer">บันทึกยอดเงิน</button>
+          <button type="submit" class="px-5 py-2 rounded-lg bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 text-white font-semibold cursor-pointer">บันทึกยอดเงิน</button>
         </div>
       </form>
     </div>
@@ -130,7 +139,7 @@
   <div id="passwordModal" class="fixed inset-0 bg-black/70 backdrop-blur-xs flex items-center justify-center p-4 z-50 hidden">
     <div class="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-sm p-6 shadow-2xl">
       <h3 class="font-bold text-base text-white mb-1">เปลี่ยนรหัสผ่านสมาชิก</h3>
-      <p id="passwordUserTarget" class="text-xs text-pink-400 mb-4 font-semibold"></p>
+      <p id="passwordUserTarget" class="text-xs text-zinc-300 mb-4 font-semibold"></p>
       <form onsubmit="submitPasswordChange(event)" class="space-y-3 text-xs">
         <input type="hidden" id="passwordUserId" />
         <div>
@@ -139,14 +148,14 @@
         </div>
         <div class="flex justify-end gap-2 pt-3 border-t border-slate-800">
           <button type="button" onclick="closePasswordModal()" class="px-4 py-2 rounded-lg bg-slate-800 text-slate-300 cursor-pointer">ยกเลิก</button>
-          <button type="submit" class="px-5 py-2 rounded-lg bg-pink-600 hover:bg-pink-500 text-white font-semibold cursor-pointer">บันทึกรหัสผ่าน</button>
+          <button type="submit" class="px-5 py-2 rounded-lg bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 text-white font-semibold cursor-pointer">บันทึกรหัสผ่าน</button>
         </div>
       </form>
     </div>
   </div>
 
   <script>
-    const token = localStorage.getItem('poppy_token');
+    const token = localStorage.getItem('nexus_token');
     if (!token) window.location.href = '/admin/index.html';
     function logout() { localStorage.clear(); window.location.href = '/admin/index.html'; }
 
@@ -184,7 +193,7 @@
               <td class="py-3.5 px-4 font-mono text-slate-400">#${u.id}</td>
               <td class="py-3.5 px-4">
                 <div class="flex items-center gap-2">
-                  <div class="w-6 h-6 rounded-full bg-slate-800 text-pink-400 flex items-center justify-center font-bold text-xs">
+                  <div class="w-6 h-6 rounded-full bg-slate-800 text-zinc-300 flex items-center justify-center font-bold text-xs">
                     ${(u.username || 'U')[0].toUpperCase()}
                   </div>
                   <span class="font-bold text-white">${u.username}</span>
@@ -192,11 +201,11 @@
               </td>
               <td class="py-3.5 px-4">
                 <div class="flex items-center gap-1.5 bg-slate-950/80 px-2.5 py-1 rounded-lg border border-slate-800 w-fit">
-                  <span id="pwd-${u.id}" class="font-mono text-pink-300 font-bold select-all tracking-wider">••••••••</span>
+                  <span id="pwd-${u.id}" class="font-mono text-zinc-200 font-bold select-all tracking-wider">••••••••</span>
                   <button onclick="togglePasswordView(${u.id}, '${rawPwd.replace(/'/g, "\\'")}')" class="text-slate-400 hover:text-white px-1 cursor-pointer" title="ดู/ซ่อนรหัสผ่าน">
                     <span id="eye-${u.id}">👁️</span>
                   </button>
-                  <button onclick="copyPasswordText('${rawPwd.replace(/'/g, "\\'")}', this)" class="text-slate-400 hover:text-pink-400 px-1 cursor-pointer" title="คัดลอกรหัสผ่าน">
+                  <button onclick="copyPasswordText('${rawPwd.replace(/'/g, "\\'")}', this)" class="text-slate-400 hover:text-zinc-300 px-1 cursor-pointer" title="คัดลอกรหัสผ่าน">
                     📋
                   </button>
                 </div>
@@ -204,7 +213,7 @@
               <td class="py-3.5 px-4">
                 <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold ${
                   u.role === 'admin' 
-                    ? 'bg-pink-600/30 text-pink-400 border border-pink-500/50' 
+                    ? 'bg-zinc-800 border border-zinc-600 text-zinc-200' 
                     : 'bg-slate-800 text-slate-400 border border-slate-700/50'
                 }">
                   ${u.role}
@@ -218,7 +227,7 @@
               </td>
               <td class="py-3.5 px-4 text-center">
                 <div class="flex items-center justify-center gap-1.5">
-                  <button onclick="openBalanceModal(${u.id}, '${u.username}', ${u.balance})" class="px-2.5 py-1 rounded-lg bg-pink-600/20 hover:bg-pink-600/30 text-pink-400 text-[11px] font-bold transition cursor-pointer" title="ปรับยอดเงิน">
+                  <button onclick="openBalanceModal(${u.id}, '${u.username}', ${u.balance})" class="px-2.5 py-1 rounded-lg bg-zinc-800 border border-zinc-700/20 hover:bg-zinc-800 border border-zinc-700/30 text-zinc-300 text-[11px] font-bold transition cursor-pointer" title="ปรับยอดเงิน">
                     💵 เงิน
                   </button>
                   <button onclick="openPasswordModal(${u.id}, '${u.username}')" class="px-2.5 py-1 rounded-lg bg-indigo-600/20 hover:bg-indigo-600/30 text-indigo-400 text-[11px] font-bold transition cursor-pointer" title="เปลี่ยนรหัสผ่าน">
@@ -352,6 +361,51 @@
       } catch (err) {
         alert('เกิดข้อผิดพลาดในการลบสมาชิก');
       }
+    }
+
+    async function exportUsersBackup() {
+      try {
+        const res = await fetch('/api/admin/users/export', {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const blob = await res.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `nexus_users_backup_${new Date().toISOString().slice(0,10)}.json`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        window.URL.revokeObjectURL(url);
+      } catch (err) {
+        alert('เกิดข้อผิดพลาดในการดาวน์โหลดข้อมูลสำรอง');
+      }
+    }
+
+    async function importUsersBackup(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = async function(evt) {
+        try {
+          const backupUsers = JSON.parse(evt.target.result);
+          if (!Array.isArray(backupUsers)) throw new Error('Format invalid');
+
+          const res = await fetch('/api/admin/users/import', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+            body: JSON.stringify({ backupUsers })
+          });
+          const data = await res.json();
+          alert(data.message);
+          loadUsers();
+        } catch (err) {
+          alert('ไฟล์สำรองไม่ถูกต้อง ต้องเป็นไฟล์ JSON ของระบบ');
+        }
+        e.target.value = '';
+      };
+      reader.readAsText(file);
     }
 
     loadUsers();
