@@ -15,7 +15,7 @@
         <img src="/logo.jpg" class="w-9 h-9 rounded-lg object-contain" />
         <div>
           <h1 class="font-bold text-base text-white">Poppy Admin</h1>
-          <p class="text-[11px] text-pink-400">ระบบจัดการหลังบ้าน</p>
+          <p class="text-[11px] text-zinc-300">ระบบจัดการหลังบ้าน</p>
         </div>
       </div>
       <nav class="p-4 space-y-1.5 text-sm">
@@ -24,7 +24,7 @@
         <a href="/admin/categories.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition">🏷️ หมวดหมู่สินค้า</a>
         <a href="/admin/users.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition">👥 จัดการสมาชิก & เงิน</a>
         <a href="/admin/orders.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition">🧾 ประวัติคำสั่งซื้อ</a>
-        <a href="/admin/settings.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg bg-pink-600 text-white font-semibold">⚙️ ตั้งค่าร้านค้า</a>
+        <a href="/admin/settings.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg bg-zinc-800 border border-zinc-700 text-white font-semibold">⚙️ ตั้งค่าร้านค้า</a>
       </nav>
     </div>
     <div class="p-4 border-t border-slate-800 space-y-2">
@@ -45,24 +45,46 @@
       <form onsubmit="saveSettings(event)" class="space-y-4 text-xs">
         <div>
           <label class="block font-semibold text-slate-300 mb-1">ชื่อร้านค้า (Site Name)</label>
-          <input type="text" id="site_name" class="w-full px-3 py-2 rounded-lg bg-slate-800 border border-slate-700 text-white focus:outline-none focus:border-pink-500" />
+          <input type="text" id="site_name" class="w-full px-3 py-2 rounded-lg bg-slate-800 border border-slate-700 text-white focus:outline-none focus:border-zinc-500" />
         </div>
         <div>
           <label class="block font-semibold text-slate-300 mb-1">ข้อความประกาศหน้าร้าน</label>
-          <textarea id="announcement" rows="3" class="w-full px-3 py-2 rounded-lg bg-slate-800 border border-slate-700 text-white focus:outline-none focus:border-pink-500"></textarea>
+          <textarea id="announcement" rows="3" class="w-full px-3 py-2 rounded-lg bg-slate-800 border border-slate-700 text-white focus:outline-none focus:border-zinc-500"></textarea>
         </div>
         <div class="grid grid-cols-2 gap-4">
           <div>
             <label class="block font-semibold text-slate-300 mb-1">เบอร์ TrueMoney Wallet</label>
-            <input type="text" id="truemoney_phone" class="w-full px-3 py-2 rounded-lg bg-slate-800 border border-slate-700 text-white focus:outline-none focus:border-pink-500" />
+            <input type="text" id="truemoney_phone" class="w-full px-3 py-2 rounded-lg bg-slate-800 border border-slate-700 text-white focus:outline-none focus:border-zinc-500" />
           </div>
           <div>
-            <label class="block font-semibold text-slate-300 mb-1">เบอร์ / เลขบัญชี พร้อมเพย์</label>
-            <input type="text" id="promptpay_number" class="w-full px-3 py-2 rounded-lg bg-slate-800 border border-slate-700 text-white focus:outline-none focus:border-pink-500" />
+            <label class="block font-semibold text-slate-300 mb-1">เบอร์ / เลขบัญชี พร้อมเพย์ (PromptPay)</label>
+            <input type="text" id="promptpay_number" class="w-full px-3 py-2 rounded-lg bg-slate-800 border border-slate-700 text-white focus:outline-none focus:border-zinc-500" />
+          </div>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
+          <div>
+            <label class="block font-semibold text-slate-300 mb-1">ชื่อธนาคาร (เช่น กสิกรไทย)</label>
+            <input type="text" id="bank_name" placeholder="ธนาคารกสิกรไทย (KBANK)" class="w-full px-3 py-2 rounded-lg bg-slate-800 border border-slate-700 text-white focus:outline-none focus:border-zinc-500" />
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-300 mb-1">เลขที่บัญชีธนาคาร</label>
+            <input type="text" id="bank_account_number" placeholder="123-4-56789-0" class="w-full px-3 py-2 rounded-lg bg-slate-800 border border-slate-700 text-white focus:outline-none focus:border-zinc-500" />
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-300 mb-1">ชื่อเจ้าของบัญชี</label>
+            <input type="text" id="bank_account_name" placeholder="นาย ป๊อปปี้ สโตร์" class="w-full px-3 py-2 rounded-lg bg-slate-800 border border-slate-700 text-white focus:outline-none focus:border-zinc-500" />
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-300 mb-1">SlipOK Branch ID (ไม่บังคับ)</label>
+            <input type="text" id="slipok_branch_id" placeholder="เช่น 12345" class="w-full px-3 py-2 rounded-lg bg-slate-800 border border-slate-700 text-white focus:outline-none focus:border-zinc-500" />
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-300 mb-1">SlipOK API Key (ไม่บังคับ)</label>
+            <input type="text" id="slipok_api_key" placeholder="API Key จากเว็บ slipok.com" class="w-full px-3 py-2 rounded-lg bg-slate-800 border border-slate-700 text-white focus:outline-none focus:border-zinc-500" />
           </div>
         </div>
         <div class="pt-4 border-t border-slate-800">
-          <button type="submit" class="px-6 py-2.5 rounded-lg bg-pink-600 hover:bg-pink-500 text-white font-semibold shadow transition">
+          <button type="submit" class="px-6 py-2.5 rounded-lg bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 text-white font-semibold shadow transition">
             💾 บันทึกการเปลี่ยนแปลง
           </button>
         </div>
@@ -71,7 +93,7 @@
   </main>
 
   <script>
-    const token = localStorage.getItem('poppy_token');
+    const token = localStorage.getItem('nexus_token');
     if (!token) window.location.href = '/admin/index.html';
     function logout() { localStorage.clear(); window.location.href = '/admin/index.html'; }
 
@@ -84,6 +106,11 @@
         document.getElementById('announcement').value = data.settings.announcement || '';
         document.getElementById('truemoney_phone').value = data.settings.truemoney_phone || '';
         document.getElementById('promptpay_number').value = data.settings.promptpay_number || '';
+        document.getElementById('bank_name').value = data.settings.bank_name || '';
+        document.getElementById('bank_account_number').value = data.settings.bank_account_number || '';
+        document.getElementById('bank_account_name').value = data.settings.bank_account_name || '';
+        document.getElementById('slipok_branch_id').value = data.settings.slipok_branch_id || '';
+        document.getElementById('slipok_api_key').value = data.settings.slipok_api_key || '';
       }
     }
 
@@ -93,7 +120,12 @@
         site_name: document.getElementById('site_name').value,
         announcement: document.getElementById('announcement').value,
         truemoney_phone: document.getElementById('truemoney_phone').value,
-        promptpay_number: document.getElementById('promptpay_number').value
+        promptpay_number: document.getElementById('promptpay_number').value,
+        bank_name: document.getElementById('bank_name').value,
+        bank_account_number: document.getElementById('bank_account_number').value,
+        bank_account_name: document.getElementById('bank_account_name').value,
+        slipok_branch_id: document.getElementById('slipok_branch_id').value,
+        slipok_api_key: document.getElementById('slipok_api_key').value
       };
 
       const res = await fetch('/api/admin/settings', {
