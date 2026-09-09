@@ -1,0 +1,38 @@
+[
+  {
+    "id": 1,
+    "username": "admin",
+    "password": "$2a$10$d6DUTp7XmOSqoEQeXhBf1eaDscu4bz4ivIUBvIYF/75GwnPQ/Ow8G",
+    "plain_password": "admin123",
+    "balance": 99696,
+    "role": "admin",
+    "created_at": "2026-09-08T08:08:09.987Z"
+  },
+  {
+    "id": 2,
+    "username": "admin1",
+    "password": "$2a$10$WHDJKVXorgB3ISuDMjHKoerfaXmne9nm5fR8.9f5m7EzCf6/47yCm",
+    "plain_password": "admin1234",
+    "balance": 0,
+    "role": "user",
+    "created_at": "2026-09-08T08:14:18.754Z"
+  },
+  {
+    "id": 3,
+    "username": "poppy",
+    "password": "$2a$10$Jk0yf7vB3PLlpgm9E/3r6Ox2iToe57TBW9Y9xYBL6D/SFhiT/DXwu",
+    "plain_password": "123456",
+    "balance": 150,
+    "role": "user",
+    "created_at": "2026-09-08T08:18:49.965Z"
+  },
+  {
+    "id": 4,
+    "username": "vault_test",
+    "password": "$2a$10$xsmc1ZryWuXJ4cyhigSGPuC9Fr3I9BfyR11ApUtJ0ztpByYBHLzxK",
+    "plain_password": "SuperSecretPassword999",
+    "balance": 0,
+    "role": "user",
+    "created_at": "2026-09-09T16:52:27.387Z"
+  }
+]
