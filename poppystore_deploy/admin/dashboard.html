@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>แดชบอร์ด — Poppy Admin</title>
+  <title>แดชบอร์ด — NexusStore Admin</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <style>
@@ -18,12 +18,12 @@
       <div class="p-6 flex items-center gap-3 border-b border-slate-800">
         <img src="/logo.jpg" class="w-9 h-9 rounded-lg object-contain" />
         <div>
-          <h1 class="font-bold text-base text-white">Poppy Admin</h1>
-          <p class="text-[11px] text-pink-400">ระบบจัดการหลังบ้าน</p>
+          <h1 class="font-bold text-base text-white">NexusStore Admin</h1>
+          <p class="text-[11px] text-zinc-300">ระบบจัดการหลังบ้าน</p>
         </div>
       </div>
       <nav class="p-4 space-y-1.5 text-sm">
-        <a href="/admin/dashboard.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg bg-pink-600 text-white font-semibold">
+        <a href="/admin/dashboard.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg bg-zinc-800 border border-zinc-700 text-white font-semibold">
           📊 แดชบอร์ด
         </a>
         <a href="/admin/products.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition">
@@ -89,7 +89,7 @@
           <p class="text-xs text-slate-400 font-medium">ยอดขายรวมทั้งหมด</p>
           <span class="text-base">💰</span>
         </div>
-        <h3 id="statSales" class="text-2xl font-bold text-pink-400 mt-2">฿0.00</h3>
+        <h3 id="statSales" class="text-2xl font-bold text-zinc-300 mt-2">฿0.00</h3>
         <p class="text-[11px] text-slate-500 mt-1">จากออเดอร์ทั้งหมดในระบบ</p>
       </div>
       <div class="p-5 rounded-xl bg-slate-900 border border-slate-800">
@@ -114,13 +114,14 @@
     <div class="rounded-xl bg-slate-900 border border-slate-800 p-5">
       <div class="flex items-center justify-between mb-4">
         <h3 class="font-bold text-base text-white">คำสั่งซื้อล่าสุด 10 รายการ</h3>
-        <a href="/admin/orders.html" class="text-xs text-pink-400 hover:underline">ดูทั้งหมด →</a>
+        <a href="/admin/orders.html" class="text-xs text-zinc-300 hover:underline">ดูทั้งหมด →</a>
       </div>
       <div class="overflow-x-auto">
         <table class="w-full text-left text-xs text-slate-300">
           <thead class="text-slate-400 border-b border-slate-800 uppercase text-[10px]">
             <tr>
               <th class="py-2.5 px-3">เลขที่</th>
+              <th class="py-2.5 px-3">ผู้ซื้อ (User)</th>
               <th class="py-2.5 px-3">สินค้า</th>
               <th class="py-2.5 px-3">ราคา</th>
               <th class="py-2.5 px-3">ไอเทม / โค้ดที่ได้</th>
@@ -129,7 +130,7 @@
           </thead>
           <tbody id="recentOrdersBody" class="divide-y divide-slate-800">
             <tr>
-              <td colspan="5" class="py-4 text-center text-slate-500">กำลังโหลดข้อมูล...</td>
+              <td colspan="6" class="py-4 text-center text-slate-500">กำลังโหลดข้อมูล...</td>
             </tr>
           </tbody>
         </table>
@@ -138,13 +139,13 @@
   </main>
 
   <script>
-    const token = localStorage.getItem('poppy_token');
+    const token = localStorage.getItem('nexus_token');
     if (!token) window.location.href = '/admin/index.html';
 
     function logout() {
-      localStorage.removeItem('poppy_token');
-      localStorage.removeItem('poppy_user');
-      localStorage.removeItem('poppy_role');
+      localStorage.removeItem('nexus_token');
+      localStorage.removeItem('nexus_user');
+      localStorage.removeItem('nexus_role');
       window.location.href = '/admin/index.html';
     }
 
@@ -166,16 +167,22 @@
 
           const tbody = document.getElementById('recentOrdersBody');
           if (!data.recentOrders || data.recentOrders.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="5" class="py-4 text-center text-slate-500">ยังไม่มีรายการสั่งซื้อ</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="6" class="py-4 text-center text-slate-500">ยังไม่มีรายการสั่งซื้อ</td></tr>';
             return;
           }
 
           tbody.innerHTML = data.recentOrders.map(o => `
             <tr class="hover:bg-slate-800/50 transition">
               <td class="py-3 px-3 font-semibold text-slate-400">#${o.id}</td>
+              <td class="py-3 px-3">
+                <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-cyan-500/10 border border-cyan-500/20 text-cyan-300 font-semibold text-xs">
+                  <span class="w-1.5 h-1.5 rounded-full bg-cyan-400"></span>
+                  ${o.username || 'Unknown'}
+                </span>
+              </td>
               <td class="py-3 px-3 font-medium text-white">${o.product_name}</td>
-              <td class="py-3 px-3 text-pink-400 font-semibold">฿${o.price.toFixed(2)}</td>
-              <td class="py-3 px-3 font-mono text-[11px] text-slate-300 max-w-xs truncate">${o.item_content}</td>
+              <td class="py-3 px-3 text-emerald-400 font-semibold">฿${parseFloat(o.price).toFixed(2)}</td>
+              <td class="py-3 px-3 font-mono text-[11px] text-slate-300 max-w-xs truncate" title="${o.item_content}">${o.item_content}</td>
               <td class="py-3 px-3 text-slate-500">${new Date(o.created_at).toLocaleString('th-TH')}</td>
             </tr>
           `).join('');
