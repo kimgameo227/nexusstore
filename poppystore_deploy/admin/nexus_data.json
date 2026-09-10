@@ -26,6 +26,15 @@
       "balance": 150,
       "role": "user",
       "created_at": "2026-09-08T08:18:49.965Z"
+    },
+    {
+      "id": 4,
+      "username": "vault_test",
+      "password": "$2a$10$xsmc1ZryWuXJ4cyhigSGPuC9Fr3I9BfyR11ApUtJ0ztpByYBHLzxK",
+      "plain_password": "SuperSecretPassword999",
+      "balance": 0,
+      "role": "user",
+      "created_at": "2026-09-09T16:52:27.387Z"
     }
   ],
   "categories": [
@@ -212,16 +221,16 @@
     }
   ],
   "settings": {
-    "site_name": "Poppy",
-    "announcement": "ยินดีต้อนรับสู่ร้านค้า Poppy Store",
+    "site_name": "NexusStore",
+    "announcement": "ยินดีต้อนรับสู่ร้านค้า NexusStore",
     "truemoney_phone": "0808375109",
-    "promptpay_number": "0812345678",
+    "promptpay_number": "0808375109",
     "base_users": 184,
     "base_sales": 10419.08,
     "base_sold": 167,
-    "bank_name": "ธนาคารกสิกรไทย (Kasikorn Bank)",
-    "bank_account_number": "1588989972",
-    "bank_account_name": "พีรพงศ์ เจือจันทร์"
+    "bank_name": "ธนาคารกรุงไทย (Krungthai Bank)",
+    "bank_account_number": "6614635557",
+    "bank_account_name": "นาย ณัฐวุฒิ อมันตระกูล"
   },
   "wheel_prizes": [
     {
@@ -347,8 +356,8 @@
     }
   ],
   "stats": {
-    "total_visits": 52,
-    "today_visits": 37,
-    "last_date": "Wed Sep 09 2026"
+    "total_visits": 89,
+    "today_visits": 15,
+    "last_date": "Thu Sep 10 2026"
   }
 }

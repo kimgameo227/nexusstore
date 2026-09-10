@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>สมัครสมาชิก — Poppy</title>
+  <title>สมัครสมาชิก — NexusStore</title>
   <meta name="description" content="ไอดีไก่ตันต่างๆราคาถูก🛒" />
   <link rel="icon" href="logo.jpg" />
 
@@ -75,6 +75,82 @@
     .mobile-menu.open { transform: translateX(0); }
     .mobile-backdrop { opacity: 0; pointer-events: none; transition: opacity 0.3s; }
     .mobile-backdrop.open { opacity: 1; pointer-events: auto; }
+
+    /* DYNAMIC ISLAND NAVBAR */
+    .dynamic-island-nav {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      padding: 5px 6px;
+      border-radius: 9999px;
+      backdrop-filter: blur(24px) saturate(190%);
+      -webkit-backdrop-filter: blur(24px) saturate(190%);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    html.dark .dynamic-island-nav {
+      background: rgba(18, 18, 22, 0.65);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 10px 30px -4px rgba(0, 0, 0, 0.6),
+                  0 0 0 1px rgba(255, 255, 255, 0.06) inset,
+                  0 1px 0 0 rgba(255, 255, 255, 0.16) inset;
+    }
+    html:not(.dark) .dynamic-island-nav {
+      background: rgba(255, 255, 255, 0.65);
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      box-shadow: 0 10px 25px -4px rgba(0, 0, 0, 0.07),
+                  0 0 0 1px rgba(255, 255, 255, 0.8) inset;
+    }
+    .nav-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 6px 16px;
+      border-radius: 9999px;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+      cursor: pointer;
+      user-select: none;
+      white-space: nowrap;
+      border: none !important;
+      outline: none !important;
+    }
+    html.dark .nav-pill:not(.active) {
+      background-color: transparent !important;
+      color: rgba(244, 244, 245, 0.65) !important;
+      box-shadow: none !important;
+    }
+    html.dark .nav-pill:not(.active):hover {
+      background-color: rgba(255, 255, 255, 0.09) !important;
+      color: #ffffff !important;
+      transform: translateY(-1px);
+    }
+    html:not(.dark) .nav-pill:not(.active) {
+      background-color: transparent !important;
+      color: #52525b !important;
+      box-shadow: none !important;
+    }
+    html:not(.dark) .nav-pill:not(.active):hover {
+      background-color: rgba(0, 0, 0, 0.06) !important;
+      color: #09090b !important;
+      transform: translateY(-1px);
+    }
+    html.dark .nav-pill.active {
+      background: #ffffff !important;
+      color: #09090b !important;
+      font-weight: 700 !important;
+      box-shadow: 0 4px 18px rgba(255, 255, 255, 0.25), 0 1px 3px rgba(0, 0, 0, 0.3) !important;
+      transform: scale(1.02);
+    }
+    html:not(.dark) .nav-pill.active {
+      background: #09090b !important;
+      color: #ffffff !important;
+      font-weight: 700 !important;
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.18), 0 1px 3px rgba(0, 0, 0, 0.1) !important;
+      transform: scale(1.02);
+    }
   </style>
 </head>
 
@@ -86,20 +162,18 @@
       <header id="header" class="fixed top-0 left-0 right-0 z-50 flex items-center transition-all duration-200 ease-out border-b h-[88px] bg-white dark:bg-[#09090b] border-zinc-200 dark:border-zinc-800" style="transform: translateZ(0); will-change: height, box-shadow;">
         <div class="max-w-7xl mx-auto px-6 w-full flex items-center justify-between relative">
           <a class="flex items-center gap-2.5 group transition-transform duration-200 hover:scale-[.98] active:scale-[.95] relative z-50" href="index.html">
-            <img src="logo_wide.png" alt="Poppy" class="h-9 sm:h-10 w-auto object-contain drop-shadow-[0_2px_12px_rgba(255,255,255,0.15)]" />
+            <img src="logo_wide.png" alt="NexusStore" class="h-8 sm:h-[34px] w-auto object-contain drop-shadow-[0_2px_12px_rgba(255,255,255,0.15)]" />
           </a>
-          <!-- Desktop Nav -->
-          <nav class="hidden md:flex items-center gap-3.5 p-2 rounded-2xl bg-zinc-100/80 dark:bg-[#141416] border border-zinc-200 dark:border-zinc-800 shadow-sm">
-            <a class="text-[13px] font-semibold tracking-tight px-4 py-2 rounded-xl border border-zinc-200 dark:border-zinc-700/80 bg-white dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 hover:border-zinc-300 dark:hover:border-zinc-600 hover:text-zinc-950 dark:hover:text-white hover:bg-zinc-50 dark:hover:bg-zinc-800/80 shadow-xs transition-all cursor-pointer" href="index.html">หน้าหลัก</a>
-            <a class="text-[13px] font-semibold tracking-tight px-4 py-2 rounded-xl border border-zinc-200 dark:border-zinc-700/80 bg-white dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 hover:border-zinc-300 dark:hover:border-zinc-600 hover:text-zinc-950 dark:hover:text-white hover:bg-zinc-50 dark:hover:bg-zinc-800/80 shadow-xs transition-all cursor-pointer" href="index.html#productsSection">สินค้า</a>
-            <a class="text-[13px] font-semibold tracking-tight px-4 py-2 rounded-xl border border-zinc-200 dark:border-zinc-700/80 bg-white dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 hover:border-zinc-300 dark:hover:border-zinc-600 hover:text-zinc-950 dark:hover:text-white hover:bg-zinc-50 dark:hover:bg-zinc-800/80 shadow-xs transition-all cursor-pointer flex items-center gap-1.5" href="index.html?view=wheel">
+          <!-- Desktop Nav (Dynamic Island Frosted Glass) -->
+          <nav class="hidden md:flex dynamic-island-nav">
+            <a class="nav-pill" href="index.html">หน้าหลัก</a>
+            <a class="nav-pill" href="index.html#productsSection">สินค้า</a>
+            <a class="nav-pill flex items-center gap-1.5" href="index.html?view=wheel">
               <span>🎡</span> วงล้อสุ่ม
             </a>
-            <a class="text-[13px] font-semibold tracking-tight px-4 py-2 rounded-xl border border-zinc-200 dark:border-zinc-700/80 bg-white dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 hover:border-zinc-300 dark:hover:border-zinc-600 hover:text-zinc-950 dark:hover:text-white hover:bg-zinc-50 dark:hover:bg-zinc-800/80 shadow-xs transition-all cursor-pointer" href="index.html">
-              เติมเงิน
-            </a>
-            <a class="text-[13px] font-semibold tracking-tight px-4 py-2 rounded-xl border border-zinc-200 dark:border-zinc-700/80 bg-white dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 hover:border-zinc-300 dark:hover:border-zinc-600 hover:text-zinc-950 dark:hover:text-white hover:bg-zinc-50 dark:hover:bg-zinc-800/80 shadow-xs transition-all cursor-pointer" href="index.html">ประวัติการซื้อ</a>
-            <span class="text-[13px] font-semibold tracking-tight px-4 py-2 rounded-xl border border-zinc-200 dark:border-zinc-700/80 bg-white dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 hover:border-zinc-300 dark:hover:border-zinc-600 hover:text-zinc-950 dark:hover:text-white hover:bg-zinc-50 dark:hover:bg-zinc-800/80 shadow-xs transition-all cursor-pointer select-none" onclick="alert('ติดต่อเจ้าของร้าน: Line @poppyshop หรือ Discord Poppy Community')">ติดต่อ</span>
+            <a class="nav-pill" href="index.html">เติมเงิน</a>
+            <a class="nav-pill" href="index.html">ประวัติการซื้อ</a>
+            <span class="nav-pill select-none" onclick="alert('ติดต่อเจ้าของร้าน: Line @NexusStoreshop หรือ Discord NexusStore Community')">ติดต่อ</span>
           </nav>
           <div class="hidden md:flex items-center gap-3">
             <!-- Dark / Light Theme Toggle -->
@@ -140,7 +214,7 @@
           </a>
           <a class="text-[14px] font-semibold px-3 py-2 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-950 dark:hover:text-white transition-colors" href="index.html">เติมเงิน</a>
           <a class="text-[14px] font-semibold px-3 py-2 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-950 dark:hover:text-white transition-colors" href="index.html">ประวัติการซื้อ</a>
-          <span class="text-[14px] font-semibold px-3 py-2 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-950 dark:hover:text-white transition-colors cursor-pointer" onclick="alert('ติดต่อเจ้าของร้าน: Line @poppyshop หรือ Discord Poppy Community')">ติดต่อ</span>
+          <span class="text-[14px] font-semibold px-3 py-2 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-950 dark:hover:text-white transition-colors cursor-pointer" onclick="alert('ติดต่อเจ้าของร้าน: Line @NexusStoreshop หรือ Discord NexusStore Community')">ติดต่อ</span>
           <hr class="border-zinc-200 dark:border-zinc-800 my-2" />
           <a class="text-[14px] font-semibold text-center py-2.5 rounded-xl border border-zinc-300 dark:border-zinc-700/80 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all" href="register.html">สมัครสมาชิก</a>
           <a class="text-[14px] font-semibold text-center text-white py-2.5 rounded-xl bg-zinc-900 dark:bg-[#27272a] hover:bg-zinc-800 dark:hover:bg-[#34343a] border border-zinc-800 dark:border-[#3f3f46] shadow-sm transition-all flex items-center justify-center gap-1.5" href="index.html">เข้าสู่ระบบ</a>
@@ -153,7 +227,7 @@
 
           <!-- Logo -->
           <div class="flex flex-col items-center justify-center mb-7">
-            <img src="logo_wide.png" alt="Poppy" class="h-12 sm:h-14 w-auto object-contain drop-shadow-[0_4px_20px_rgba(0,0,0,0.12)] dark:drop-shadow-[0_4px_25px_rgba(255,255,255,0.2)] mb-1" />
+            <img src="logo_wide.png" alt="NexusStore" class="h-10 sm:h-11 w-auto object-contain drop-shadow-[0_4px_20px_rgba(0,0,0,0.12)] dark:drop-shadow-[0_4px_25px_rgba(255,255,255,0.2)] mb-1" />
             <p class="text-xs text-zinc-500 dark:text-zinc-400 font-medium">สมัครสมาชิกใหม่เพื่อเริ่มสั่งซื้อ</p>
           </div>
 
@@ -191,7 +265,7 @@
       <footer class="w-full mt-auto border-t border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#09090b] text-zinc-500 transition-colors duration-300 relative z-20 shadow-sm">
         <div class="mx-auto flex max-w-7xl flex-col items-center gap-1 px-6 py-4 text-center text-[11px] font-semibold sm:text-xs">
           <div class="flex w-full flex-col items-center justify-between gap-2 sm:flex-row sm:text-left">
-            <span class="text-zinc-600 dark:text-zinc-400 font-medium">© 2025 Poppy All Rights Reserved.</span>
+            <span class="text-zinc-600 dark:text-zinc-400 font-medium">© 2025 NexusStore All Rights Reserved.</span>
             <div class="flex flex-col items-center gap-1 sm:items-end sm:text-right">
               <span>Designed &amp; Secured by <a href="https://discord.com/invite/qe3cxQ2n6t" target="_blank" rel="noopener noreferrer" class="bg-gradient-to-r from-[#FF4500] via-[#FF6A00] to-[#FFB800] bg-clip-text text-transparent hover:opacity-80 transition-opacity font-bold">Orynx</a></span>
               <a target="_blank" rel="noopener noreferrer" class="hover:underline transition-colors text-zinc-500 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-200" href="https://discord.com/invite/qe3cxQ2n6t">ติดต่อเจ้าของร้านไม่ได้ / แจ้งปัญหาร้านค้าโกง</a>

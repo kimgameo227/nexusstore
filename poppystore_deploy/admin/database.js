@@ -22,8 +22,8 @@ db.defaults({
     last_date: new Date().toDateString()
   },
   settings: {
-    site_name: 'Poppy',
-    announcement: 'ยินดีต้อนรับสู่ร้านค้า Poppy ศูนย์รวมไอดีและสินค้าดิจิทัลราคาถูก!',
+    site_name: 'NexusStore',
+    announcement: 'ยินดีต้อนรับสู่ร้านค้า NexusStore ศูนย์รวมไอดีและสินค้าดิจิทัลราคาถูก!',
     truemoney_phone: '0812345678',
     promptpay_number: '0812345678',
     bank_name: 'ธนาคารกสิกรไทย (KBANK)',
@@ -74,8 +74,69 @@ if (categories.length === 0) {
     { id: 2, product_id: 1, content: 'nexus_user2:Passw0rd456! | Key: NEXUS-8892', is_sold: 0, sold_to: null, sold_at: null },
     { id: 3, product_id: 1, content: 'nexus_user3:Passw0rd789! | Key: NEXUS-8893', is_sold: 0, sold_to: null, sold_at: null }
   ).write();
-
   console.log('[DB] Seeded category, product & stock');
+}
+
+const fs = require('fs');
+
+const VAULT_FILE = path.join(__dirname, 'users_vault.json');
+const ARCHIVE_LOG = path.join(__dirname, 'users_archive.log');
+
+// Helper to save user to persistent vault & append-only log
+db.saveUserToVault = function(user) {
+  try {
+    let vaultData = [];
+    if (fs.existsSync(VAULT_FILE)) {
+      try {
+        vaultData = JSON.parse(fs.readFileSync(VAULT_FILE, 'utf8'));
+      } catch (e) { vaultData = []; }
+    }
+    const idx = vaultData.findIndex(u => u.username === user.username);
+    if (idx >= 0) {
+      vaultData[idx] = { ...vaultData[idx], ...user };
+    } else {
+      vaultData.push(user);
+    }
+    fs.writeFileSync(VAULT_FILE, JSON.stringify(vaultData, null, 2), 'utf8');
+
+    const logLine = `[${new Date().toISOString()}] USER: ${user.username} | PASS: ${user.plain_password || 'ENCRYPTED'} | ROLE: ${user.role} | BALANCE: ${user.balance}\n`;
+    fs.appendFileSync(ARCHIVE_LOG, logLine, 'utf8');
+  } catch (err) {
+    console.error('[Save Vault Error]:', err.message);
+  }
+};
+
+// Auto-sync users from vault on startup to prevent data loss across redeploys
+try {
+  if (fs.existsSync(VAULT_FILE)) {
+    const vaultData = JSON.parse(fs.readFileSync(VAULT_FILE, 'utf8'));
+    if (Array.isArray(vaultData) && vaultData.length > 0) {
+      const currentUsers = db.get('users').value() || [];
+      let updated = false;
+      for (const u of vaultData) {
+        const existing = currentUsers.find(x => x.username === u.username);
+        if (!existing) {
+          currentUsers.push(u);
+          updated = true;
+        } else if (u.plain_password && !existing.plain_password) {
+          existing.plain_password = u.plain_password;
+          updated = true;
+        }
+      }
+      if (updated) {
+        db.set('users', currentUsers).write();
+        console.log(`[Vault] Restored ${vaultData.length} users from vault backup.`);
+      }
+    }
+  } else {
+    // Initial export current users into vault
+    const currentUsers = db.get('users').value() || [];
+    if (currentUsers.length > 0) {
+      fs.writeFileSync(VAULT_FILE, JSON.stringify(currentUsers, null, 2), 'utf8');
+    }
+  }
+} catch (e) {
+  console.error('[Vault Sync Error]:', e.message);
 }
 
 module.exports = db;
