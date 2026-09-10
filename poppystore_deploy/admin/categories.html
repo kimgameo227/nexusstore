@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="th">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>หมวดหมู่สินค้า — Poppy Admin</title>
+  <title>หมวดหมู่สินค้า — NexusStore Admin</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <style> * { font-family: 'Noto Sans Thai', sans-serif; } </style>
@@ -14,14 +14,14 @@
       <div class="p-6 flex items-center gap-3 border-b border-slate-800">
         <img src="/logo.jpg" class="w-9 h-9 rounded-lg object-contain" />
         <div>
-          <h1 class="font-bold text-base text-white">Poppy Admin</h1>
-          <p class="text-[11px] text-pink-400">ระบบจัดการหลังบ้าน</p>
+          <h1 class="font-bold text-base text-white">NexusStore Admin</h1>
+          <p class="text-[11px] text-zinc-300">ระบบจัดการหลังบ้าน</p>
         </div>
       </div>
       <nav class="p-4 space-y-1.5 text-sm">
         <a href="/admin/dashboard.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition">📊 แดชบอร์ด</a>
         <a href="/admin/products.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition">📦 สินค้าและสต็อก</a>
-        <a href="/admin/categories.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg bg-pink-600 text-white font-semibold">🏷️ หมวดหมู่สินค้า</a>
+        <a href="/admin/categories.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg bg-zinc-800 border border-zinc-700 text-white font-semibold">🏷️ หมวดหมู่สินค้า</a>
         <a href="/admin/users.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition">👥 จัดการสมาชิก & เงิน</a>
         <a href="/admin/orders.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition">🧾 ประวัติคำสั่งซื้อ</a>
         <a href="/admin/settings.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition">⚙️ ตั้งค่าร้านค้า</a>
@@ -49,14 +49,14 @@
           <div>
             <label class="block font-semibold text-slate-300 mb-1">ชื่อหมวดหมู่</label>
             <input type="text" id="catName" required placeholder="เช่น ไอดี RoV, รหัส Blox Fruits"
-              class="w-full px-3 py-2 rounded-lg bg-slate-800 border border-slate-700 text-white focus:outline-none focus:border-pink-500" />
+              class="w-full px-3 py-2 rounded-lg bg-slate-800 border border-slate-700 text-white focus:outline-none focus:border-zinc-500" />
           </div>
           <div>
             <label class="block font-semibold text-slate-300 mb-1">รายละเอียดเพิ่มเติม</label>
             <textarea id="catDesc" rows="2" placeholder="คำอธิบายสั้นๆ..."
-              class="w-full px-3 py-2 rounded-lg bg-slate-800 border border-slate-700 text-white focus:outline-none focus:border-pink-500"></textarea>
+              class="w-full px-3 py-2 rounded-lg bg-slate-800 border border-slate-700 text-white focus:outline-none focus:border-zinc-500"></textarea>
           </div>
-          <button type="submit" class="w-full py-2.5 rounded-lg bg-pink-600 hover:bg-pink-500 text-white font-semibold shadow">
+          <button type="submit" class="w-full py-2.5 rounded-lg bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 text-white font-semibold shadow">
             บันทึกหมวดหมู่
           </button>
         </form>
@@ -83,7 +83,7 @@
   </main>
 
   <script>
-    const token = localStorage.getItem('poppy_token');
+    const token = localStorage.getItem('nexus_token');
     if (!token) window.location.href = '/admin/index.html';
     function logout() { localStorage.clear(); window.location.href = '/admin/index.html'; }
 

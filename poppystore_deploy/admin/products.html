@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="th">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>จัดการสินค้าและสต็อก — Poppy Admin</title>
+  <title>จัดการสินค้าและสต็อก — NexusStore Admin</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <style> * { font-family: 'Noto Sans Thai', sans-serif; } </style>
@@ -16,15 +16,15 @@
       <div class="p-6 flex items-center gap-3 border-b border-slate-800">
         <img src="/logo.jpg" class="w-9 h-9 rounded-lg object-contain" />
         <div>
-          <h1 class="font-bold text-base text-white">Poppy Admin</h1>
-          <p class="text-[11px] text-pink-400">ระบบจัดการหลังบ้าน</p>
+          <h1 class="font-bold text-base text-white">NexusStore Admin</h1>
+          <p class="text-[11px] text-zinc-300">ระบบจัดการหลังบ้าน</p>
         </div>
       </div>
       <nav class="p-4 space-y-1.5 text-sm">
         <a href="/admin/dashboard.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition">
           📊 แดชบอร์ด
         </a>
-        <a href="/admin/products.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg bg-pink-600 text-white font-semibold">
+        <a href="/admin/products.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg bg-zinc-800 border border-zinc-700 text-white font-semibold">
           📦 สินค้าและสต็อก
         </a>
         <a href="/admin/categories.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition">
@@ -58,7 +58,7 @@
         <h2 class="text-2xl font-bold text-white">จัดการสินค้าและสต็อก</h2>
         <p class="text-xs text-slate-400 mt-1">เพิ่ม ลบ แก้ไข และเติมไอดีหรือคีย์สินค้าลงในระบบ</p>
       </div>
-      <button onclick="openAddModal()" class="px-4 py-2 rounded-lg bg-pink-600 hover:bg-pink-500 text-white font-semibold text-xs transition flex items-center gap-2 shadow">
+      <button onclick="openAddModal()" class="px-4 py-2 rounded-lg bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 text-white font-semibold text-xs transition flex items-center gap-2 shadow">
         ➕ เพิ่มสินค้าใหม่
       </button>
     </div>
@@ -96,29 +96,29 @@
         <input type="hidden" id="editProductId" />
         <div>
           <label class="block font-semibold text-slate-300 mb-1">ชื่อสินค้า</label>
-          <input type="text" id="prodName" required class="w-full px-3 py-2 rounded-lg bg-slate-800 border border-slate-700 text-white focus:outline-none focus:border-pink-500" placeholder="เช่น ไอดีไก่ตันผลเสือ" />
+          <input type="text" id="prodName" required class="w-full px-3 py-2 rounded-lg bg-slate-800 border border-slate-700 text-white focus:outline-none focus:border-zinc-500" placeholder="เช่น ไอดีไก่ตันผลเสือ" />
         </div>
         <div class="grid grid-cols-2 gap-3">
           <div>
             <label class="block font-semibold text-slate-300 mb-1">หมวดหมู่</label>
-            <select id="prodCategory" class="w-full px-3 py-2 rounded-lg bg-slate-800 border border-slate-700 text-white focus:outline-none focus:border-pink-500"></select>
+            <select id="prodCategory" class="w-full px-3 py-2 rounded-lg bg-slate-800 border border-slate-700 text-white focus:outline-none focus:border-zinc-500"></select>
           </div>
           <div>
             <label class="block font-semibold text-slate-300 mb-1">ราคา (บาท)</label>
-            <input type="number" step="0.01" id="prodPrice" required class="w-full px-3 py-2 rounded-lg bg-slate-800 border border-slate-700 text-white focus:outline-none focus:border-pink-500" placeholder="100.00" />
+            <input type="number" step="0.01" id="prodPrice" required class="w-full px-3 py-2 rounded-lg bg-slate-800 border border-slate-700 text-white focus:outline-none focus:border-zinc-500" placeholder="100.00" />
           </div>
         </div>
         <div>
           <label class="block font-semibold text-slate-300 mb-1">รูปภาพสินค้า (URL หรือไฟล์ในเว็บ)</label>
-          <input type="text" id="prodImage" class="w-full px-3 py-2 rounded-lg bg-slate-800 border border-slate-700 text-white focus:outline-none focus:border-pink-500" value="logo.jpg" />
+          <input type="text" id="prodImage" class="w-full px-3 py-2 rounded-lg bg-slate-800 border border-slate-700 text-white focus:outline-none focus:border-zinc-500" value="logo.jpg" />
         </div>
         <div>
           <label class="block font-semibold text-slate-300 mb-1">รายละเอียดสินค้า</label>
-          <textarea id="prodDesc" rows="3" class="w-full px-3 py-2 rounded-lg bg-slate-800 border border-slate-700 text-white focus:outline-none focus:border-pink-500" placeholder="รายละเอียดหรือข้อมูลไอดี..."></textarea>
+          <textarea id="prodDesc" rows="3" class="w-full px-3 py-2 rounded-lg bg-slate-800 border border-slate-700 text-white focus:outline-none focus:border-zinc-500" placeholder="รายละเอียดหรือข้อมูลไอดี..."></textarea>
         </div>
         <div class="flex justify-end gap-2 pt-3 border-t border-slate-800">
           <button type="button" onclick="closeProductModal()" class="px-4 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold">ยกเลิก</button>
-          <button type="submit" class="px-5 py-2 rounded-lg bg-pink-600 hover:bg-pink-500 text-white font-semibold shadow">บันทึกข้อมูล</button>
+          <button type="submit" class="px-5 py-2 rounded-lg bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 text-white font-semibold shadow">บันทึกข้อมูล</button>
         </div>
       </form>
     </div>
@@ -134,11 +134,11 @@
       <div class="space-y-4 text-xs">
         <div>
           <label class="block font-semibold text-slate-300 mb-1">เพิ่มข้อมูลไอดี/โค้ด (1 บรรทัด = 1 ชิ้น)</label>
-          <textarea id="bulkStockInput" rows="6" class="w-full px-3 py-2 font-mono text-[11px] rounded-lg bg-slate-800 border border-slate-700 text-white focus:outline-none focus:border-pink-500" placeholder="user1:pass1&#10;user2:pass2&#10;CODE-XXXX-YYYY"></textarea>
+          <textarea id="bulkStockInput" rows="6" class="w-full px-3 py-2 font-mono text-[11px] rounded-lg bg-slate-800 border border-slate-700 text-white focus:outline-none focus:border-zinc-500" placeholder="user1:pass1&#10;user2:pass2&#10;CODE-XXXX-YYYY"></textarea>
           <p class="text-[10px] text-slate-500 mt-1">ระบบจะแยกตามบรรทัดโดยอัตโนมัติ</p>
         </div>
         <div class="flex justify-between items-center">
-          <span id="currentStockCount" class="text-xs text-pink-400 font-semibold"></span>
+          <span id="currentStockCount" class="text-xs text-zinc-300 font-semibold"></span>
           <button onclick="submitBulkStock()" class="px-5 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-semibold shadow">
             📥 บันทึกการเติมสต็อก
           </button>
@@ -152,7 +152,7 @@
   </div>
 
   <script>
-    const token = localStorage.getItem('poppy_token');
+    const token = localStorage.getItem('nexus_token');
     if (!token) window.location.href = '/admin/index.html';
 
     function logout() {
@@ -196,7 +196,7 @@
               <p class="text-[11px] text-slate-500 truncate max-w-xs">${p.description || '-'}</p>
             </td>
             <td class="py-3 px-4 text-slate-400">${p.category_name}</td>
-            <td class="py-3 px-4 font-bold text-pink-400">฿${p.price.toFixed(2)}</td>
+            <td class="py-3 px-4 font-bold text-zinc-300">฿${p.price.toFixed(2)}</td>
             <td class="py-3 px-4">
               <span class="px-2.5 py-1 rounded-md text-[11px] font-bold ${p.stock > 0 ? 'bg-emerald-500/20 text-emerald-400' : 'bg-red-500/20 text-red-400'}">
                 ${p.stock} ชิ้น

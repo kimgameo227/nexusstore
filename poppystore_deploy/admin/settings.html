@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="th">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>ตั้งค่าร้านค้า — Poppy Admin</title>
+  <title>ตั้งค่าร้านค้า — NexusStore Admin</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <style> * { font-family: 'Noto Sans Thai', sans-serif; } </style>
@@ -14,7 +14,7 @@
       <div class="p-6 flex items-center gap-3 border-b border-slate-800">
         <img src="/logo.jpg" class="w-9 h-9 rounded-lg object-contain" />
         <div>
-          <h1 class="font-bold text-base text-white">Poppy Admin</h1>
+          <h1 class="font-bold text-base text-white">NexusStore Admin</h1>
           <p class="text-[11px] text-zinc-300">ระบบจัดการหลังบ้าน</p>
         </div>
       </div>
@@ -107,7 +107,7 @@
       if (res.status === 401 || res.status === 403) return logout();
       const data = await res.json();
       if (data.success && data.settings) {
-        document.getElementById('site_name').value = data.settings.site_name || 'Poppy';
+        document.getElementById('site_name').value = data.settings.site_name || 'NexusStore';
         document.getElementById('announcement').value = data.settings.announcement || '';
         document.getElementById('truemoney_phone').value = data.settings.truemoney_phone || '';
         document.getElementById('promptpay_number').value = data.settings.promptpay_number || '';
