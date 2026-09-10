@@ -72,10 +72,12 @@ router.post('/:id/buy', authenticateToken, (req, res) => {
   // Record Order
   const orders = db.get('orders').value();
   const nextOrderId = orders.length > 0 ? Math.max(...orders.map(o => o.id)) + 1 : 1;
+  const buyerUser = db.get('users').find({ id: userId }).value();
 
   const newOrder = {
     id: nextOrderId,
     user_id: userId,
+    username: buyerUser ? buyerUser.username : 'Unknown',
     product_id: productId,
     product_name: product.name,
     item_content: item.content,

@@ -18,6 +18,14 @@ router.get('/dashboard', (req, res) => {
   const totalSales = orders.reduce((sum, o) => sum + (o.price || 0), 0);
   const totalStock = items.filter(i => !i.is_sold).length;
 
+  const recentOrdersEnriched = orders.slice(-10).reverse().map(o => {
+    const u = users.find(user => user.id === o.user_id);
+    return {
+      ...o,
+      username: o.username || (u ? u.username : 'Unknown')
+    };
+  });
+
   res.json({
     success: true,
     stats: {
@@ -29,7 +37,7 @@ router.get('/dashboard', (req, res) => {
       totalSales: Math.round(totalSales * 100) / 100,
       totalStock
     },
-    recentOrders: orders.slice(-10).reverse()
+    recentOrders: recentOrdersEnriched
   });
 });
 
@@ -308,13 +316,13 @@ router.patch('/users/:id/balance', (req, res) => {
 // --- Orders History ---
 router.get('/orders', (req, res) => {
   const orders = db.get('orders').sortBy('id').reverse().value();
-  const users = db.get('users').value();
+  const users = db.get('users').value() || [];
 
   const enriched = orders.map(o => {
     const u = users.find(user => user.id === o.user_id);
     return {
       ...o,
-      username: u ? u.username : 'Unknown'
+      username: o.username || (u ? u.username : 'Unknown')
     };
   });
 

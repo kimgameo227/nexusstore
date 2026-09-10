@@ -13,7 +13,7 @@ const DEFAULT_PRIZES = [
     color: "#ec4899",
     text_color: "#ffffff",
     chance: 8,
-    reward_content: "poppy_blox_spin:GodHuman2550#Pass | KEY: POPPY-WHEEL-BLOX-99"
+    reward_content: "nexus_blox_spin:GodHuman2550#Pass | KEY: NEXUS-WHEEL-BLOX-99"
   },
   {
     id: 2,
@@ -44,7 +44,7 @@ const DEFAULT_PRIZES = [
     color: "#e11d48",
     text_color: "#ffffff",
     chance: 7,
-    reward_content: "poppy_val_vip:PrimeVandal2026 | KEY: POPPY-WHEEL-VAL-77"
+    reward_content: "nexus_val_vip:PrimeVandal2026 | KEY: NEXUS-WHEEL-VAL-77"
   },
   {
     id: 5,
@@ -65,7 +65,7 @@ const DEFAULT_PRIZES = [
     color: "#db2777",
     text_color: "#ffffff",
     chance: 6,
-    reward_content: "poppy_netflix@shop.com:PassUltra2026 | Profile: 1 (Pin: 9988)"
+    reward_content: "nexus_netflix@shop.com:PassUltra2026 | Profile: 1 (Pin: 9988)"
   },
   {
     id: 7,
@@ -86,7 +86,7 @@ const DEFAULT_PRIZES = [
     color: "#be185d",
     text_color: "#ffffff",
     chance: 4,
-    reward_content: "poppy_steam:GamerSteam2026 | CDKEY: POPPY-STEAM-4491-GAME"
+    reward_content: "nexus_steam:GamerSteam2026 | CDKEY: NEXUS-STEAM-4491-GAME"
   }
 ];
 
@@ -181,9 +181,10 @@ router.post('/spin', authenticateToken, (req, res) => {
     orderRecord = {
       id: nextOrderId,
       user_id: userId,
+      username: user ? user.username : 'Unknown',
       product_id: 0,
       product_name: `[วงล้อสุ่ม] ${wonPrize.name}`,
-      item_content: wonPrize.reward_content || 'ไอดีสุ่มจากวงล้อ Poppy',
+      item_content: wonPrize.reward_content || 'ไอดีสุ่มจากวงล้อ NexusStore',
       price: spinPrice,
       created_at: now
     };
@@ -242,7 +243,7 @@ router.get('/recent', (req, res) => {
     .slice(-15)
     .reverse()
     .map(h => {
-      // Mask username e.g. "poppy" -> "pop***"
+      // Mask username e.g. "nexus" -> "pop***"
       const u = h.username || 'ผู้เล่น';
       const masked = u.length > 2 ? u.substring(0, 3) + '***' : u + '***';
       return {
