@@ -267,7 +267,32 @@
                   0 0 0 1px rgba(255, 255, 255, 0.8) inset;
     }
 
+    /* Gliding Pill Indicator (Slides & follows mouse hover smoothly) */
+    .nav-slider-pill {
+      position: absolute;
+      top: 0;
+      left: 0;
+      border-radius: 9999px;
+      pointer-events: none;
+      transition: transform 0.26s cubic-bezier(0.16, 1, 0.3, 1),
+                  width 0.26s cubic-bezier(0.16, 1, 0.3, 1),
+                  height 0.26s cubic-bezier(0.16, 1, 0.3, 1),
+                  opacity 0.2s ease;
+      will-change: transform, width, height;
+      z-index: 1;
+    }
+    html:not(.dark) .nav-slider-pill {
+      background: #09090b;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18), 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+    html.dark .nav-slider-pill {
+      background: #ffffff;
+      box-shadow: 0 4px 18px rgba(255, 255, 255, 0.22), 0 1px 3px rgba(0, 0, 0, 0.35);
+    }
+
     .nav-pill {
+      position: relative;
+      z-index: 10;
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -276,72 +301,49 @@
       font-size: 13px;
       font-weight: 600;
       letter-spacing: -0.01em;
-      transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: color 0.18s cubic-bezier(0.16, 1, 0.3, 1);
       cursor: pointer;
       user-select: none;
       white-space: nowrap;
       border: none !important;
       outline: none !important;
-    }
-
-    /* INACTIVE BUTTON - DARK THEME */
-    html.dark .nav-pill:not(.active) {
-      background-color: transparent !important;
-      color: rgba(244, 244, 245, 0.65) !important;
+      background: transparent !important;
       box-shadow: none !important;
-    }
-    html.dark .nav-pill:not(.active):hover {
-      background-color: rgba(255, 255, 255, 0.09) !important;
-      color: #ffffff !important;
-      transform: translateY(-1px);
-    }
-    html.dark .nav-pill:not(.active) svg {
-      stroke: rgba(244, 244, 245, 0.65) !important;
-    }
-    html.dark .nav-pill:not(.active):hover svg {
-      stroke: #ffffff !important;
+      transform: none !important;
     }
 
-    /* INACTIVE BUTTON - LIGHT THEME */
-    html:not(.dark) .nav-pill:not(.active) {
-      background-color: transparent !important;
+    /* Text Colors - LIGHT THEME */
+    html:not(.dark) .nav-pill {
       color: #52525b !important;
-      box-shadow: none !important;
     }
-    html:not(.dark) .nav-pill:not(.active):hover {
-      background-color: rgba(0, 0, 0, 0.06) !important;
-      color: #09090b !important;
-      transform: translateY(-1px);
-    }
-    html:not(.dark) .nav-pill:not(.active) svg {
+    html:not(.dark) .nav-pill svg {
       stroke: #71717a !important;
     }
-    html:not(.dark) .nav-pill:not(.active):hover svg {
-      stroke: #09090b !important;
-    }
-
-    /* ACTIVE BUTTON IN DARK THEME: Dynamic Island White Pill */
-    html.dark .nav-pill.active {
-      background: #ffffff !important;
-      color: #09090b !important;
-      font-weight: 700 !important;
-      box-shadow: 0 4px 18px rgba(255, 255, 255, 0.25), 0 1px 3px rgba(0, 0, 0, 0.3) !important;
-      transform: scale(1.02);
-    }
-    html.dark .nav-pill.active svg {
-      stroke: #09090b !important;
-    }
-
-    /* ACTIVE BUTTON IN LIGHT THEME: Dynamic Island Black Pill */
-    html:not(.dark) .nav-pill.active {
-      background: #09090b !important;
+    /* Hovered or Active (sits on black slider pill) */
+    html:not(.dark) .nav-pill.pill-hovered,
+    html:not(.dark) .nav-pill.active.no-hover {
       color: #ffffff !important;
-      font-weight: 700 !important;
-      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.18), 0 1px 3px rgba(0, 0, 0, 0.1) !important;
-      transform: scale(1.02);
     }
-    html:not(.dark) .nav-pill.active svg {
+    html:not(.dark) .nav-pill.pill-hovered svg,
+    html:not(.dark) .nav-pill.active.no-hover svg {
       stroke: #ffffff !important;
+    }
+
+    /* Text Colors - DARK THEME */
+    html.dark .nav-pill {
+      color: rgba(244, 244, 245, 0.65) !important;
+    }
+    html.dark .nav-pill svg {
+      stroke: rgba(244, 244, 245, 0.65) !important;
+    }
+    /* Hovered or Active (sits on white slider pill) */
+    html.dark .nav-pill.pill-hovered,
+    html.dark .nav-pill.active.no-hover {
+      color: #09090b !important;
+    }
+    html.dark .nav-pill.pill-hovered svg,
+    html.dark .nav-pill.active.no-hover svg {
+      stroke: #09090b !important;
     }
 
     /* Category Filter Buttons */
@@ -398,13 +400,16 @@
             <img src="logo_wide.png" onerror="this.onerror=null; this.src='logo.jpg';" alt="NexusStore" class="h-8 sm:h-[34px] w-auto object-contain drop-shadow-[0_2px_12px_rgba(255,255,255,0.15)] transition-transform duration-200 group-hover:brightness-110" />
           </a>
 
-          <!-- Desktop Nav (Dynamic Island Frosted Glass) -->
-          <nav class="hidden md:flex dynamic-island-nav">
+          <!-- Desktop Nav (Dynamic Island Frosted Glass with Gliding Pill) -->
+          <nav id="desktopNav" class="hidden md:flex dynamic-island-nav relative">
+            <!-- Gliding Indicator Pill (Slides & follows mouse hover) -->
+            <div id="navIndicator" class="nav-slider-pill opacity-0"></div>
+
             <a id="nav-home" class="nav-pill active" onclick="showHomeView()">หน้าหลัก</a>
             <a id="nav-products" class="nav-pill" onclick="showProductsView()">สินค้า</a>
             
             <a id="nav-wheel" class="nav-pill flex items-center gap-1.5" onclick="showWheelView()">
-              <span>🎡</span> มินิเกม
+              <span>มินิเกม</span>
             </a>
 
             <!-- Topup Dropdown Trigger (Themed button matching site palette) -->
@@ -1723,6 +1728,75 @@
           if (k === navKey) mEl.classList.add('active');
           else mEl.classList.remove('active');
         }
+      });
+      if (window.refreshNavSlider) {
+        window.refreshNavSlider();
+      }
+    }
+
+    // ── Smooth Gliding Navbar Indicator Pill (Follows mouse hover smoothly) ──
+    function initNavSlider() {
+      const nav = document.getElementById('desktopNav');
+      const indicator = document.getElementById('navIndicator');
+      if (!nav || !indicator) return;
+
+      const pills = Array.from(nav.querySelectorAll('.nav-pill'));
+
+      function getActivePill() {
+        return nav.querySelector('.nav-pill.active') || document.getElementById('nav-home') || pills[0];
+      }
+
+      function updateIndicatorTo(el, isHover = false) {
+        if (!el) return;
+        const navRect = nav.getBoundingClientRect();
+        const elRect = el.getBoundingClientRect();
+
+        const left = Math.round(elRect.left - navRect.left);
+        const top = Math.round(elRect.top - navRect.top);
+        const width = Math.round(elRect.width);
+        const height = Math.round(elRect.height);
+
+        indicator.style.transform = `translate3d(${left}px, ${top}px, 0)`;
+        indicator.style.width = `${width}px`;
+        indicator.style.height = `${height}px`;
+        indicator.style.opacity = '1';
+
+        pills.forEach(p => {
+          p.classList.remove('pill-hovered', 'no-hover');
+        });
+
+        if (isHover) {
+          el.classList.add('pill-hovered');
+        } else {
+          el.classList.add('no-hover');
+        }
+      }
+
+      pills.forEach(pill => {
+        pill.addEventListener('mouseenter', () => {
+          updateIndicatorTo(pill, true);
+        });
+      });
+
+      nav.addEventListener('mouseleave', () => {
+        const active = getActivePill();
+        if (active) updateIndicatorTo(active, false);
+      });
+
+      window.refreshNavSlider = function() {
+        const active = getActivePill();
+        if (active) updateIndicatorTo(active, false);
+      };
+
+      // Initial alignment
+      setTimeout(() => {
+        const active = getActivePill();
+        if (active) updateIndicatorTo(active, false);
+      }, 70);
+
+      window.addEventListener('resize', () => {
+        const active = getActivePill();
+        if (active) updateIndicatorTo(active, false);
       });
     }
 
@@ -3904,6 +3978,7 @@
 
       // Initialize State & Products
       updateAuthUI();
+      initNavSlider();
       refreshUserProfile();
       loadProducts();
       loadShopSettings();
