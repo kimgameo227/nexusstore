@@ -14,9 +14,10 @@
   <meta name="twitter:image" content="logo.jpg" />
   <link rel="icon" href="logo.jpg" />
 
-  <!-- Tailwind CSS CDN & jsQR Slip Scanner -->
+  <!-- Tailwind CSS CDN & jsQR Slip Scanner & QRCode Generator -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <script>
     tailwind.config = {
       darkMode: 'class',
@@ -782,7 +783,79 @@
             </div>
           </div>
 
-          <!-- Card 2: Auto Slip Verification Card -->
+          <!-- Card 2: Dynamic PromptPay QR Code Generator (ระบุจำนวนเงินแล้ว QR Code เด้งขึ้นมาทันที) -->
+          <div class="rounded-2xl bg-white dark:bg-[#141416] border border-zinc-200 dark:border-zinc-800 p-6 shadow-sm">
+            <div class="flex items-center justify-between pb-4 border-b border-zinc-100 dark:border-zinc-800/80">
+              <div class="flex items-center gap-3">
+                <div class="w-11 h-11 rounded-2xl bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20 flex items-center justify-center font-bold text-lg shrink-0">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="3" rx="2" stroke-width="2"/><path d="M7 7h.01M17 7h.01M7 17h.01M17 17h.01" stroke-width="3"/></svg>
+                </div>
+                <div>
+                  <h3 class="text-base font-bold text-zinc-900 dark:text-white">สร้าง QR Code พร้อมเพย์</h3>
+                  <p class="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">ระบุจำนวนเงินที่ต้องการ แล้ว QR Code จะแสดงขึ้นมาทันที</p>
+                </div>
+              </div>
+              <span class="text-[10px] font-extrabold px-2.5 py-1 rounded-full bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20">ระบุยอดอัตโนมัติ</span>
+            </div>
+
+            <!-- Amount Input & Quick Preset Buttons -->
+            <div class="pt-4 space-y-3">
+              <label class="text-xs font-semibold text-zinc-700 dark:text-zinc-300 block">จำนวนเงินที่ต้องการเติม (บาท):</label>
+              <div class="relative">
+                <span class="absolute left-4 top-1/2 -translate-y-1/2 text-lg font-bold text-zinc-400">฿</span>
+                <input 
+                  type="number" 
+                  id="topupQrAmountInput" 
+                  min="1" 
+                  step="1" 
+                  placeholder="กรอกจำนวนเงิน เช่น 1, 20, 50, 100" 
+                  oninput="onQrAmountChange(this.value)"
+                  class="w-full pl-10 pr-4 py-3.5 rounded-xl bg-zinc-50 dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-700 text-zinc-900 dark:text-white text-base font-bold placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+
+              <!-- Quick Buttons -->
+              <div class="grid grid-cols-3 sm:grid-cols-6 gap-2 pt-1">
+                <button type="button" onclick="setPresetQrAmount(1)" class="py-2 px-2 rounded-xl bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-xs font-bold text-zinc-800 dark:text-zinc-200 border border-zinc-200 dark:border-zinc-700 transition cursor-pointer">1 ฿</button>
+                <button type="button" onclick="setPresetQrAmount(20)" class="py-2 px-2 rounded-xl bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-xs font-bold text-zinc-800 dark:text-zinc-200 border border-zinc-200 dark:border-zinc-700 transition cursor-pointer">20 ฿</button>
+                <button type="button" onclick="setPresetQrAmount(50)" class="py-2 px-2 rounded-xl bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-xs font-bold text-zinc-800 dark:text-zinc-200 border border-zinc-200 dark:border-zinc-700 transition cursor-pointer">50 ฿</button>
+                <button type="button" onclick="setPresetQrAmount(100)" class="py-2 px-2 rounded-xl bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-xs font-bold text-zinc-800 dark:text-zinc-200 border border-zinc-200 dark:border-zinc-700 transition cursor-pointer">100 ฿</button>
+                <button type="button" onclick="setPresetQrAmount(300)" class="py-2 px-2 rounded-xl bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-xs font-bold text-zinc-800 dark:text-zinc-200 border border-zinc-200 dark:border-zinc-700 transition cursor-pointer">300 ฿</button>
+                <button type="button" onclick="setPresetQrAmount(500)" class="py-2 px-2 rounded-xl bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-xs font-bold text-zinc-800 dark:text-zinc-200 border border-zinc-200 dark:border-zinc-700 transition cursor-pointer">500 ฿</button>
+              </div>
+
+              <!-- Animated Pop-up Dynamic QR Code Box -->
+              <div id="dynamicQrContainer" class="hidden mt-6 transition-all duration-300">
+                <div class="max-w-sm mx-auto p-5 rounded-2xl bg-gradient-to-b from-[#003d6b] to-[#002447] text-white shadow-xl text-center relative overflow-hidden border border-blue-400/30">
+                  <div class="flex items-center justify-between pb-3 border-b border-blue-300/20 mb-3">
+                    <span class="font-extrabold text-sm tracking-wider">PROMPTPAY พร้อมเพย์</span>
+                    <span class="text-[10px] bg-white/20 px-2 py-0.5 rounded-full font-semibold">Thai QR Payment</span>
+                  </div>
+
+                  <!-- QR Code Canvas Display -->
+                  <div class="bg-white p-4 rounded-2xl inline-block shadow-inner mx-auto mb-3">
+                    <div id="dynamicQrCanvas" class="flex items-center justify-center min-w-[200px] min-h-[200px]"></div>
+                    <img id="dynamicQrImg" class="hidden w-[200px] h-[200px] object-contain mx-auto" alt="PromptPay QR Code" />
+                  </div>
+
+                  <!-- Amount & Info -->
+                  <div class="space-y-1 text-center">
+                    <div class="text-3xl font-black font-mono tracking-tight text-white" id="dynamicQrAmountText">฿ 0.00</div>
+                    <div class="text-xs text-blue-200 font-medium" id="dynamicQrPayeeName">นาย ณัฐวุฒิ อมันตระกูล</div>
+                    <div class="text-[11px] text-blue-300/80">สแกนผ่านแอปธนาคารใดก็ได้ ยอดเงินขึ้นตรงทันที</div>
+                  </div>
+
+                  <!-- Save Button -->
+                  <button type="button" onclick="downloadPromptPayQr()" class="mt-4 w-full py-2.5 px-4 rounded-xl bg-white text-zinc-900 hover:bg-blue-50 font-bold text-xs shadow-md transition flex items-center justify-center gap-1.5 cursor-pointer">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                    <span>บันทึกรูป QR Code</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 3: Auto Slip Verification Card -->
           <div class="rounded-2xl bg-white dark:bg-[#141416] border border-zinc-200 dark:border-zinc-800 p-6 shadow-sm">
             <!-- Card Title -->
             <div class="flex items-center gap-2 mb-4">
@@ -1996,6 +2069,131 @@
     // ── Dedicated Bank Topup View Controllers ──
     let selectedBankSlipFile = null;
     let scannedSlipQRData = null;
+    let currentQrAmount = 0;
+
+    // PromptPay Standard EMVCo Payload Generator
+    function generatePromptPayPayload(target, amount) {
+      target = (target || '0808375109').replace(/[^0-9]/g, '');
+      let formattedTarget = '';
+      let targetType = '01';
+      if (target.length >= 10 && target.startsWith('0')) {
+        targetType = '01';
+        formattedTarget = '0066' + target.substring(1);
+      } else if (target.length === 13) {
+        targetType = '02';
+        formattedTarget = target;
+      } else {
+        targetType = '01';
+        formattedTarget = '0066' + target.replace(/^0/, '');
+      }
+
+      const tag29_00 = '0016A000000677010111';
+      const tag29_01 = targetType + formattedTarget.length.toString().padStart(2, '0') + formattedTarget;
+      const tag29_val = tag29_00 + tag29_01;
+      const tag29 = '29' + tag29_val.length.toString().padStart(2, '0') + tag29_val;
+
+      let payload = '000201010212' + tag29 + '5303764';
+      if (amount && parseFloat(amount) > 0) {
+        const amtStr = parseFloat(amount).toFixed(2);
+        payload += '54' + amtStr.length.toString().padStart(2, '0') + amtStr;
+      }
+      payload += '5802TH6304';
+
+      let crc = 0xFFFF;
+      for (let i = 0; i < payload.length; i++) {
+        let c = payload.charCodeAt(i);
+        crc ^= (c << 8);
+        for (let j = 0; j < 8; j++) {
+          if ((crc & 0x8000) !== 0) {
+            crc = ((crc << 1) ^ 0x1021) & 0xFFFF;
+          } else {
+            crc = (crc << 1) & 0xFFFF;
+          }
+        }
+      }
+      return payload + (crc & 0xFFFF).toString(16).toUpperCase().padStart(4, '0');
+    }
+
+    function setPresetQrAmount(amt) {
+      const input = document.getElementById('topupQrAmountInput');
+      if (input) {
+        input.value = amt;
+        onQrAmountChange(amt);
+      }
+    }
+
+    function onQrAmountChange(val) {
+      const amt = parseFloat(val);
+      const container = document.getElementById('dynamicQrContainer');
+      if (!amt || isNaN(amt) || amt <= 0) {
+        if (container) container.classList.add('hidden');
+        currentQrAmount = 0;
+        return;
+      }
+
+      currentQrAmount = amt;
+      if (container) {
+        container.classList.remove('hidden');
+      }
+
+      const amtText = document.getElementById('dynamicQrAmountText');
+      if (amtText) amtText.textContent = `฿ ${amt.toFixed(2)}`;
+
+      const settings = window.shopSettings || {};
+      const payee = settings.bank_account_name || 'นาย ณัฐวุฒิ อมันตระกูล';
+      const payeeEl = document.getElementById('dynamicQrPayeeName');
+      if (payeeEl) payeeEl.textContent = payee;
+
+      // Target PromptPay ID: PromptPay Number / TrueMoney Phone / Fallback
+      const target = (settings.promptpay_number || settings.truemoney_phone || '0808375109').replace(/[^0-9]/g, '');
+      const payload = generatePromptPayPayload(target, amt);
+
+      const canvasContainer = document.getElementById('dynamicQrCanvas');
+      const imgFallback = document.getElementById('dynamicQrImg');
+
+      if (typeof QRCode !== 'undefined' && canvasContainer) {
+        canvasContainer.innerHTML = '';
+        canvasContainer.classList.remove('hidden');
+        if (imgFallback) imgFallback.classList.add('hidden');
+        new QRCode(canvasContainer, {
+          text: payload,
+          width: 200,
+          height: 200,
+          colorDark: '#000000',
+          colorLight: '#ffffff',
+          correctLevel: QRCode.CorrectLevel.M
+        });
+      } else {
+        if (canvasContainer) canvasContainer.classList.add('hidden');
+        if (imgFallback) {
+          imgFallback.classList.remove('hidden');
+          imgFallback.src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(payload)}`;
+        }
+      }
+    }
+
+    function downloadPromptPayQr() {
+      const canvas = document.querySelector('#dynamicQrCanvas canvas');
+      if (canvas) {
+        const url = canvas.toDataURL('image/png');
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `PromptPay_QR_${currentQrAmount}THB.png`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+      } else {
+        const img = document.getElementById('dynamicQrImg');
+        if (img && img.src) {
+          const a = document.createElement('a');
+          a.href = img.src;
+          a.download = `PromptPay_QR_${currentQrAmount}THB.png`;
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+        }
+      }
+    }
 
     function initBankTopupView() {
       if (window.shopSettings) {
@@ -2006,6 +2204,8 @@
         if (window.shopSettings.bank_account_name) {
           const el = document.getElementById('bankViewAccName');
           if (el) el.textContent = window.shopSettings.bank_account_name;
+          const payeeEl = document.getElementById('dynamicQrPayeeName');
+          if (payeeEl) payeeEl.textContent = window.shopSettings.bank_account_name;
         }
         if (window.shopSettings.bank_account_number) {
           const el = document.getElementById('bankViewAccNumber');
@@ -2170,7 +2370,8 @@
             'Authorization': `Bearer ${token}`
           },
           body: JSON.stringify({
-            qr_data: scannedSlipQRData
+            qr_data: scannedSlipQRData,
+            amount: currentQrAmount
           })
         });
 
